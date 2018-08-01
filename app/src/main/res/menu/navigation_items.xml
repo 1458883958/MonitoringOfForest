@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_device"
+        android:icon="@drawable/ic_devices"
+        android:title="@string/action_device"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_deal"
+        android:icon="@drawable/ic_deal"
+        android:title="@string/action_deal"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_contact"
+        android:icon="@drawable/ic_contact"
+        android:title="@string/action_contact"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_personal"
+        android:icon="@drawable/ic_personal"
+        android:title="@string/action_personal"
+        app:showAsAction="ifRoom" />
+
+</menu>

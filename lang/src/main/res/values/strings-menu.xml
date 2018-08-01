@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_device">设备</string>
+    <string name="action_contact">好友</string>
+    <string name="action_personal">我的</string>
+    <string name="action_deal">处理</string>
+</resources>
