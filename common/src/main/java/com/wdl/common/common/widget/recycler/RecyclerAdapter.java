@@ -212,6 +212,15 @@ public abstract class RecyclerAdapter<Data>
      */
     public static abstract class AdapterListenerImpl<Data> implements RecyclerAdapter.AdapterListener<Data> {
 
+        @Override
+        public void onItemClick(ViewHolder holder, Data data) {
+
+        }
+
+        @Override
+        public void onItemLongClick(ViewHolder holder, Data data) {
+
+        }
     }
 
     /**

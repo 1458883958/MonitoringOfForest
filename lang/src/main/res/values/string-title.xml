@@ -4,4 +4,7 @@
     <string name="title_contact">好友</string>
     <string name="title_personal">我的</string>
     <string name="title_deal">处理</string>
+
+    <string name="title_select_gallery">选择照片</string>
+    <string name="title_assist_permissions">授予权限</string>
 </resources>
