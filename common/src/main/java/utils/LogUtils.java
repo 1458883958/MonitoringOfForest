@@ -1,5 +1,7 @@
 package utils;
 
+import android.util.Log;
+
 /**
  * 项目名：  MonitoringOfForest
  * 包名：    utils
@@ -14,7 +16,24 @@ public class LogUtils {
     //全局打印控制
     private static final boolean IS_PRINTF = true;
 
-    public static void d(String text){
-        
+    public static void d(String text) {
+        if (IS_PRINTF)
+            Log.d(TAG, text);
     }
+
+    public static void e(String text) {
+        if (IS_PRINTF)
+            Log.e(TAG, text);
+    }
+
+    public static void i(String text){
+        if (IS_PRINTF)
+            Log.i(TAG, text);
+    }
+
+    public static void w(String text){
+        if (IS_PRINTF)
+            Log.w(TAG, text);
+    }
+
 }

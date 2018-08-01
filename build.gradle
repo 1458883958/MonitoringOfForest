@@ -46,4 +46,5 @@ ext{
     butterknifeVersion = '8.8.1'
     geniusVersion = '2.0.0'
     circleimageviewVersion = '2.2.0'
+    glideVersion = '3.7.0'
 }
