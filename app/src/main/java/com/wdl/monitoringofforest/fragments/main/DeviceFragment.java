@@ -14,6 +14,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.wdl.common.common.app.Application;
 import com.wdl.common.common.app.Fragment;
 import com.wdl.common.common.widget.PortraitView;
+import com.wdl.factory.Factory;
+import com.wdl.factory.net.UploadHelper;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.fragments.media.GalleryFragment;
 import com.yalantis.ucrop.UCrop;
@@ -104,6 +106,12 @@ public class DeviceFragment extends Fragment {
                 .dontAnimate()
                 .into(mPortrait);
         path = resultUrl.getPath();
-        LogUtils.e(path);
+        Factory.runOnAsy(new Runnable() {
+            @Override
+            public void run() {
+                String url = UploadHelper.uploadImage(path);
+                LogUtils.e(path);
+            }
+        });
     }
 }

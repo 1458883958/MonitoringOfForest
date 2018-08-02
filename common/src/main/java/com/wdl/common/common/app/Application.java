@@ -17,7 +17,7 @@ import java.io.File;
  * 创建时间： 2018/8/1 18:09
  * 描述：    全局的application
  */
-@SuppressWarnings({"unused","unchecked"})
+@SuppressWarnings({"unused", "unchecked"})
 public class Application extends android.app.Application {
 
     private static Application instance;
@@ -54,17 +54,42 @@ public class Application extends android.app.Application {
      */
     public static File getPortraitTmpFile() {
         //获取头像缓存地址
-        File dir = new File(getCacheDirFile(),"portrait");
+        File dir = new File(getCacheDirFile(), "portrait");
         //创建所有对应的目录
         dir.mkdirs();
         //清空旧缓存文件
         File[] files = dir.listFiles();
-        if (files!=null&&files.length>0) {
+        if (files != null && files.length > 0) {
             for (File file : files) {
                 file.delete();
             }
         }
-        File path = new File(dir, SystemClock.uptimeMillis()+".jpg");
+        File path = new File(dir, SystemClock.uptimeMillis() + ".jpg");
+        return path.getAbsoluteFile();
+    }
+
+    /**
+     * 获取录音的本地文件
+     *
+     * @param isTmp 是否是缓存文件
+     *              true 每次返回的地址一致
+     *              false 反之
+     * @return path.getAbsoluteFile()
+     */
+    public static File getAudioTmpFile(boolean isTmp) {
+        //获取audio的缓存地址
+        File dir = new File(getCacheDirFile(), "audio");
+        dir.mkdirs();
+
+        //删除旧的缓存文件
+        File[] files = dir.listFiles();
+        if (files != null && files.length > 0) {
+            for (File file : files) {
+                file.delete();
+            }
+        }
+
+        File path = new File(getCacheDirFile(), isTmp ? "tmp.mp3" : SystemClock.uptimeMillis() + ".mp3");
         return path.getAbsoluteFile();
     }
 

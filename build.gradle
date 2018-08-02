@@ -49,4 +49,5 @@ ext{
     glideVersion = '3.7.0'
     easyPMVersion = '0.3.0'
     ucropVersion = '2.2.1-native'
+    ossVersion = '2.3.0'
 }
