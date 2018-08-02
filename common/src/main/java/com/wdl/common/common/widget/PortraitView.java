@@ -1,6 +1,7 @@
 package com.wdl.common.common.widget;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -25,4 +26,5 @@ public class PortraitView extends CircleImageView{
     public PortraitView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
+
 }

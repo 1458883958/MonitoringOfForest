@@ -12,4 +12,7 @@
     <string name="label_permission_camera_desc">用于拍照</string>
     <string name="label_permission_submit">授权</string>
     <string name="label_permission_ok">授权成功！</string>
+
+    <string name="label_gallery_select_max_size">至多选择%s张</string>
+    <string name="label_gallery_selected_size">已选%s张</string>
 </resources>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,6 +61,9 @@ public class MainActivity extends Activity
     //底部导航栏的工具类
     private NavHelper<Integer> helper;
 
+
+    private Fragment mCurrentFragment;
+
     /**
      * 显示的入口
      *
@@ -77,6 +81,12 @@ public class MainActivity extends Activity
     @Override
     protected void initWidget() {
         super.initWidget();
+        //测试用
+        mCurrentFragment = new DeviceFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.lay_container, mCurrentFragment)
+                .commit();
         //初始化工具类
         helper = new NavHelper<>(this,getSupportFragmentManager(),
                 R.id.lay_container,this);
@@ -161,5 +171,10 @@ public class MainActivity extends Activity
                 //时间
                 .setDuration(480)
                 .start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mCurrentFragment.onActivityResult(requestCode, resultCode, data);
     }
 }

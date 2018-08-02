@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.wdl.common.common.widget.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="1dp"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/app_name" />
+
+    <!--选中时的遮罩-->
+    <View
+        tools:visibility="visible"
+        android:id="@+id/iv_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_alpha_112"
+        android:visibility="gone" />
+
+    <CheckBox
+        tools:visibility="visible"
+        android:visibility="gone"
+        android:id="@+id/cb_selected"
+        android:padding="0dp"
+        android:clickable="false"
+        android:enabled="false"
+        android:button="@drawable/sel_cb_circle"
+        app:buttonTint="@color/cb_gallery"
+        android:drawablePadding="0dp"
+        android:layout_margin="@dimen/len_2"
+        android:layout_gravity="end"
+        android:layout_width="22dp"
+        android:layout_height="22dp" />
+
+</com.wdl.common.common.widget.SquareLayout>

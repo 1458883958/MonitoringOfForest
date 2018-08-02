@@ -5,12 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".fragments.main.DeviceFragment">
 
-
     <com.wdl.common.common.widget.PortraitView
         android:id="@+id/mPortrait"
         android:layout_gravity="center"
         android:src="@drawable/default_portrait"
-        android:layout_width="@dimen/portraitSize"
-        android:layout_height="@dimen/portraitSize" />
+        android:layout_width="@dimen/portraitMaxSize"
+        android:layout_height="@dimen/portraitMaxSize" />
 
 </FrameLayout>
