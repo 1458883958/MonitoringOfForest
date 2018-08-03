@@ -1,11 +1,13 @@
 package com.wdl.factory.data.data.helper;
 
+import com.wdl.factory.Factory;
 import com.wdl.factory.R;
 import com.wdl.factory.model.api.account.LoginModel;
 import com.wdl.factory.model.api.account.RspModel;
 import com.wdl.factory.model.db.User;
 import com.wdl.factory.net.Network;
 import com.wdl.factory.net.RemoteService;
+
 import factory.data.DataSource;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,17 +36,22 @@ public class AccountHelper {
             @Override
             public void onResponse(Call<RspModel<User>> call, Response<RspModel<User>> response) {
                 RspModel<User> rspModel = response.body();
-                if (rspModel.getStatus()==200){
-                    User user = rspModel.getData();
-                    LogUtils.e(user.toString());
-                    if (callback!=null)
-                        callback.onLoaded(user);
+                if (rspModel == null) {
+                    return;
+                } else {
+                    LogUtils.e(rspModel.toString());
+                    if (rspModel.getStatus() == 200) {
+                        User user = rspModel.getData();
+                        LogUtils.e(user.toString());
+                        if (callback != null)
+                            callback.onLoaded(user);
+                    } else Factory.decodeRsp(rspModel, callback);
                 }
             }
 
             @Override
             public void onFailure(Call<RspModel<User>> call, Throwable t) {
-                if (callback!=null)
+                if (callback != null)
                     callback.onNotAvailable(R.string.data_net_error);
             }
         });

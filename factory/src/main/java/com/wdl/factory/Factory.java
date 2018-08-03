@@ -3,10 +3,14 @@ package com.wdl.factory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wdl.common.common.app.Application;
+import com.wdl.factory.model.api.account.RspModel;
+import com.wdl.factory.model.db.User;
 import com.wdl.factory.utils.DBFlowExclusionStrategies;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import factory.data.DataSource;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -60,5 +64,12 @@ public class Factory {
      */
     public static Gson getGson() {
         return instance.gson;
+    }
+
+    /**
+     * @param model RspModel
+     * @param callback  DataSource.Callback
+     */
+    public static void decodeRsp(RspModel model, DataSource.Callback callback) {
     }
 }

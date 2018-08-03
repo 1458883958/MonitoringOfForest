@@ -9,9 +9,12 @@ import com.wdl.common.common.app.PresenterFragment;
 import com.wdl.factory.presenter.account.LoginContract;
 import com.wdl.factory.presenter.account.LoginPresenter;
 import com.wdl.monitoringofforest.R;
+import com.wdl.monitoringofforest.activities.MainActivity;
 
 import net.qiujuer.genius.ui.widget.Button;
 import net.qiujuer.genius.ui.widget.Loading;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -31,8 +34,6 @@ public class LoginFragment extends PresenterFragment<LoginContract.Presenter> im
     EditText mPassword;
     @BindView(R.id.loading)
     Loading mLoading;
-    @BindView(R.id.submit)
-    Button submit;
     @BindView(R.id.btn_login_qq)
     Button loginByQQ;
 
@@ -70,12 +71,14 @@ public class LoginFragment extends PresenterFragment<LoginContract.Presenter> im
 
     @OnClick(R.id.submit)
     void submit() {
-        mPresenter.login(mPhone.getText().toString().trim(),
-                mPassword.getText().toString().trim());
+        String phone = mPhone.getText().toString().trim();
+        String password = mPassword.getText().toString().trim();
+        LogUtils.e(phone+"-- --"+password);
+        mPresenter.login(phone, password);
     }
 
     @Override
     public void loginSucceed() {
-        LogUtils.e("Login succeed");
+        MainActivity.show(Objects.requireNonNull(getContext()));
     }
 }

@@ -13,7 +13,7 @@ public class BasePresenter<T extends BaseContract.View> implements BaseContract.
     private T view;
 
     public BasePresenter(T view) {
-        this.view = view;
+        setView(view);
     }
 
     /**
