@@ -50,4 +50,11 @@ ext{
     easyPMVersion = '0.3.0'
     ucropVersion = '2.2.1-native'
     ossVersion = '2.3.0'
+    retrofitVersion = '2.4.0'
+    okhttpVersion = '3.10.0'
+    dbflowVersion = "4.0.0-beta7"
+    okhttpVersion = '3.10.0'
+    gsonVersion = '2.8.4'
+    okioVersion = '1.14.0'
+    converterGsonVersion = '2.3.0'
 }
