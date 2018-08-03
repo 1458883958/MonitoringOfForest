@@ -2,6 +2,7 @@
 <resources>
 
     <string name="data_login_account_invalid_parameter">账户名密码不能为空！</string>
+    <string name="data_net_error">网络错误！</string>
 
 
 </resources>

@@ -164,4 +164,27 @@ public class User {
     public void setuLastlogintime(Date uLastlogintime) {
         this.uLastlogintime = uLastlogintime;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uId=" + uId +
+                ", uUsername='" + uUsername + '\'' +
+                ", uPassword='" + uPassword + '\'' +
+                ", uFullname='" + uFullname + '\'' +
+                ", uRealmname='" + uRealmname + '\'' +
+                ", uTelephone='" + uTelephone + '\'' +
+                ", uEmail='" + uEmail + '\'' +
+                ", uAboutme='" + uAboutme + '\'' +
+                ", uMoney=" + uMoney +
+                ", uImagepath='" + uImagepath + '\'' +
+                ", uLongitude=" + uLongitude +
+                ", uLatitude=" + uLatitude +
+                ", uIpaddress='" + uIpaddress + '\'' +
+                ", uBelogin=" + uBelogin +
+                ", uBeemail=" + uBeemail +
+                ", uRegtime=" + uRegtime +
+                ", uLastlogintime=" + uLastlogintime +
+                '}';
+    }
 }

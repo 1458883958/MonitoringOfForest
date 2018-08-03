@@ -37,6 +37,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
             view.showError(R.string.data_login_account_invalid_parameter);
         //构建请求model
         LoginModel model = new LoginModel(phone,password);
+        //请求
         AccountHelper.login(model,this);
     }
 

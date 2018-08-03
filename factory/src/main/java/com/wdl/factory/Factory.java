@@ -1,6 +1,9 @@
 package com.wdl.factory;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.wdl.common.common.app.Application;
+import com.wdl.factory.utils.DBFlowExclusionStrategies;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -17,6 +20,7 @@ public class Factory {
     //单例模式
     private static final Factory instance;
     private final Executor executor;
+    private final Gson gson;
 
     static {
         instance = new Factory();
@@ -25,6 +29,11 @@ public class Factory {
     private Factory() {
         //初始化一个4个线程的线程池
         executor = Executors.newFixedThreadPool(4);
+        gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+                //设置过滤器,数据库级别的model不进行json转换
+                .setExclusionStrategies(new DBFlowExclusionStrategies())
+                .create();
     }
 
     /**
@@ -43,5 +52,13 @@ public class Factory {
      */
     public static Application application() {
         return Application.getInstance();
+    }
+
+    /**
+     * 获取全局gson
+     * @return Gson
+     */
+    public static Gson getGson() {
+        return instance.gson;
     }
 }

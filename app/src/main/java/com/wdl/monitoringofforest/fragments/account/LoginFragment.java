@@ -68,8 +68,14 @@ public class LoginFragment extends PresenterFragment<LoginContract.Presenter> im
         accountTrigger.triggerView();
     }
 
+    @OnClick(R.id.submit)
+    void submit() {
+        mPresenter.login(mPhone.getText().toString().trim(),
+                mPassword.getText().toString().trim());
+    }
+
     @Override
     public void loginSucceed() {
-        LogUtils.e("succeed");
+        LogUtils.e("Login succeed");
     }
 }
