@@ -117,9 +117,11 @@ public class AccountHelper {
             @Override
             public void onResponse(Call<RspModel<String>> call, Response<RspModel<String>> response) {
                 RspModel<String> rspModel = response.body();
-                if (rspModel!=null&&rspModel.getStatus() == 200) {
-                    if (callback!=null)
-                        callback.onLoaded(rspModel.getData());
+                if (rspModel!=null) {
+                    if(rspModel.getStatus() == 200) {
+                        if (callback != null)
+                            callback.onLoaded(rspModel.getData());
+                    }
                 }else {
                     LogUtils.e("rsp:"+"空");
                 }

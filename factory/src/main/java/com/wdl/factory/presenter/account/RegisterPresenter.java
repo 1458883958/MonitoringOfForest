@@ -6,6 +6,8 @@ import com.wdl.factory.data.data.helper.AccountHelper;
 import com.wdl.factory.model.api.account.RegisterModel;
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
+
+import java.util.Objects;
 import java.util.regex.Pattern;
 import factory.data.DataSource;
 import factory.presenter.BasePresenter;
@@ -27,17 +29,22 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View>
      * 注册
      *
      * @param phone    用户名
-     * @param password 密码
+     * @param passwordA 密码
+     * @param passwordB 密码
      * @param name     姓名
      * @param code     验证码
      */
     @Override
-    public void register(String phone, String password, String name, String code) {
+    public void register(String phone, String passwordA, String passwordB,String name, String code) {
         start();
         final RegisterContract.View view = getView();
         if (checkPhone(phone)) {
-            RegisterModel model = new RegisterModel(phone, password, code);
-            AccountHelper.register(model, this);
+            if (checkPassword(passwordA,passwordB)) {
+                RegisterModel model = new RegisterModel(phone, passwordA, code);
+                AccountHelper.register(model, this);
+            }else {
+                view.showError(R.string.data_inconsistencies_in_input_passwords);
+            }
         } else {
             view.showError(R.string.data_phone_invalid_parameter);
         }
@@ -68,6 +75,16 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View>
     @Override
     public boolean checkPhone(String phone) {
         return Pattern.matches(Common.Constance.REGEX_PHONE, phone);
+    }
+
+    /**
+     * @param passwordA 密码
+     * @param passwordB 密码
+     * @return  boolean
+     */
+    @Override
+    public boolean checkPassword(String passwordA, String passwordB) {
+        return Objects.equals(passwordA,passwordB);
     }
 
     @Override

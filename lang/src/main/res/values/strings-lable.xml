@@ -24,6 +24,8 @@
     <string name="label_code">验证码</string>
     <string name="label_third_party">QQ</string>
     <string name="label_get_the_verifying_code">获取验证码</string>
+    <string name="label_re_get_the_verifying_code">重新获取</string>
+    <string name="label_the_verifying_code">%s秒后</string>
     <string name="label_go_register">没有账户？去注册</string>
     <string name="label_go_login">已有账户？去登录</string>
 

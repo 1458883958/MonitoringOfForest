@@ -30,11 +30,12 @@ public interface RegisterContract {
 
         /**
          * @param phone    用户名
-         * @param password 密码
+         * @param passwordA 密码
+         * @param passwordB 密码
          * @param name     姓名
          * @param code     验证码
          */
-        void register(String phone, String password, String name, String code);
+        void register(String phone, String passwordA,String passwordB, String name, String code);
 
         /**
          * 获取验证码
@@ -48,5 +49,14 @@ public interface RegisterContract {
          * @return 格式是否正确
          */
         boolean checkPhone(String phone);
+
+        /**
+         * 检测两次输入的密码是否一致
+         *
+         * @param passwordA 密码
+         * @param passwordB 密码
+         * @return 密码是否一致
+         */
+        boolean checkPassword(String passwordA, String passwordB);
     }
 }
