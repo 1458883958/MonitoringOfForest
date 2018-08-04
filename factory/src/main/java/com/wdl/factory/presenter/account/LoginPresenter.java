@@ -39,6 +39,10 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
         LoginModel model = new LoginModel(phone,password);
         //请求
         AccountHelper.login(model,this);
+
+        //
+        //TestModel model = new TestModel(phone);
+        //AccountHelper.loginTest(model,this);
     }
 
     @Override

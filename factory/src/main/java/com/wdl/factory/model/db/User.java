@@ -11,6 +11,7 @@ import java.util.Date;
  */
 @SuppressWarnings("unused")
 public class User {
+
     private Integer uId;
     private String uUsername;
     private String uPassword;

@@ -17,5 +17,7 @@ public class Common {
 
         //String API_URL = "http://www.xmhhs.top/api/";
         String API_URL = "http://119.23.168.140/api/";
+        //String API_URL = "http://192.168.1.118:80/api/";
+        //String API_URL = "http://192.168.1.100:8080/springboot/";
     }
 }

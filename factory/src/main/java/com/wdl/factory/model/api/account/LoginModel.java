@@ -24,6 +24,14 @@ public class LoginModel {
         this.uPushId = uPushId;
     }
 
+    public String getuPushId() {
+        return uPushId;
+    }
+
+    public void setuPushId(String uPushId) {
+        this.uPushId = uPushId;
+    }
+
     public String getuTelephone() {
         return uTelephone;
     }
@@ -40,11 +48,4 @@ public class LoginModel {
         this.uPassword = uPassword;
     }
 
-    public String getuPushId() {
-        return uPushId;
-    }
-
-    public void setuPushId(String uPushId) {
-        this.uPushId = uPushId;
-    }
 }

@@ -39,17 +39,18 @@ public class Network {
         //获取一个client
         OkHttpClient client = new OkHttpClient
                 .Builder()
-                //添加一个拦截器
+               //添加一个拦截器
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request original = chain.request();
                         Request.Builder builder = original.newBuilder();
                         //添加一个请求头
-                        builder.addHeader("Content-Type", "application/json");
+                        builder.addHeader("Content-Type", "application/json;charset=UTF-8");
                         return chain.proceed(builder.build());
                     }
-                }).build();
+                })
+                .build();
         Retrofit.Builder builder = new Retrofit.Builder();
         instance.retrofit = builder
                 .baseUrl(Common.Constance.API_URL)

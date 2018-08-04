@@ -8,12 +8,12 @@ package com.wdl.factory.model.api.account;
  * 描述：    返回的model
  */
 @SuppressWarnings("unused")
-public class RspModel<T> {
-    private Integer status;
+public class RspModel<Object> {
+    private int status;
     private String msg;
-    private T data;
+    private Object data;
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
@@ -29,11 +29,11 @@ public class RspModel<T> {
         this.msg = msg;
     }
 
-    public T getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(Object data) {
         this.data = data;
     }
 

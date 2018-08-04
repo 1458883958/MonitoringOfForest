@@ -34,7 +34,7 @@ public class Factory {
         //初始化一个4个线程的线程池
         executor = Executors.newFixedThreadPool(4);
         gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
                 //设置过滤器,数据库级别的model不进行json转换
                 .setExclusionStrategies(new DBFlowExclusionStrategies())
                 .create();
