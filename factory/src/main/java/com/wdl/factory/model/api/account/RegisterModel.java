@@ -13,14 +13,14 @@ public class RegisterModel {
     private String uPassword;
     private String code;
 
+
     public RegisterModel(String uTelephone, String uPassword, String code) {
         this.uTelephone = uTelephone;
         this.uPassword = uPassword;
         this.code = code;
     }
 
-    public RegisterModel(String uTelephone) {
-        this.uTelephone = uTelephone;
+    public RegisterModel() {
     }
 
     public String getuTelephone() {

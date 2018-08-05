@@ -2,13 +2,10 @@ package com.wdl.monitoringofforest.fragments.account;
 
 
 import android.content.Context;
-import android.os.CountDownTimer;
-import android.os.SystemClock;
 import android.widget.EditText;
 
 import com.wdl.common.common.app.Fragment;
 import com.wdl.common.common.app.PresenterFragment;
-import com.wdl.factory.model.db.User;
 import com.wdl.factory.presenter.account.RegisterContract;
 import com.wdl.factory.presenter.account.RegisterPresenter;
 import com.wdl.monitoringofforest.R;
@@ -19,7 +16,6 @@ import net.qiujuer.genius.ui.widget.Loading;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import factory.data.DataSource;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -105,6 +101,32 @@ public class RegisterFragment extends PresenterFragment<RegisterContract.Present
 
     }
 
+    @Override
+    public void showLoading() {
+        super.showLoading();
+        //正在登录时,控件不可操作
+        mLoading.start();
+        setStatus(false);
+    }
+
+    @Override
+    public void showError(int res) {
+        super.showError(res);
+        mLoading.stop();
+        setStatus(true);
+    }
+
+    private void setStatus(boolean flag) {
+        //输入框是否可编辑
+        mPhone.setEnabled(flag);
+        mPassword.setEnabled(flag);
+        mPasswordB.setEnabled(flag);
+        mCode.setEnabled(flag);
+        mName.setEnabled(flag);
+        //按钮是否可点击
+        submit.setEnabled(flag);
+    }
+
 
     @Override
     public void registerSucceed() {
@@ -114,6 +136,7 @@ public class RegisterFragment extends PresenterFragment<RegisterContract.Present
     @Override
     public void setCode(String code) {
         mCode.setText(code);
+
     }
 
 

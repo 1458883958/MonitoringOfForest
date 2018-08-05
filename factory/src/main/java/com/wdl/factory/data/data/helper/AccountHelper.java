@@ -1,19 +1,18 @@
 package com.wdl.factory.data.data.helper;
 
 import com.wdl.factory.Factory;
-import com.wdl.factory.R;
 import com.wdl.factory.model.api.CallbackImpl;
 import com.wdl.factory.model.api.account.LoginModel;
 import com.wdl.factory.model.api.account.RegisterModel;
 import com.wdl.factory.model.api.account.RspModel;
-import com.wdl.factory.model.db.User;
+import com.wdl.factory.model.card.User;
+import com.wdl.factory.model.db.UserDb;
 import com.wdl.factory.net.Network;
 import com.wdl.factory.net.RemoteService;
+import com.wdl.factory.persistence.Account;
 
 import factory.data.DataSource;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import utils.LogUtils;
 
 /**
@@ -38,43 +37,23 @@ public class AccountHelper {
             @Override
             protected void failed(String msg) {
                 if (callback!=null) {
-                    //callback.onNotAvailable();
+                    Factory.decodeRspCode(msg,callback);
                 }
             }
 
             @Override
             protected void succeed(User user) {
+                //保存数据库
+                UserDb userDb = new UserDb().getUserDb(user);
+                LogUtils.e(userDb.toString());
+                userDb.save();
+                //同步至XML文件
+                Account.saveUserInfo(user);
                 if (callback!=null) {
                     callback.onLoaded(user);
                 }
             }
         });
-        //LogUtils.e(model.toString());
-//        call.enqueue(new Callback<RspModel<User>>(callback) {
-//            @Override
-//            public void onResponse(Call<RspModel<User>> call, Response<RspModel<User>> response) {
-//                RspModel<User> rspModel = response.body();
-//                if (rspModel == null) {
-//                    LogUtils.e("rsp为空");
-//                    return;
-//                } else {
-//                    LogUtils.e(rspModel.toString());
-//                    if (rspModel.getStatus() == 200) {
-//                        User user = rspModel.getData();
-//                        LogUtils.e("//" + user.toString());
-//                        if (callback != null)
-//                            callback.onLoaded(user);
-//                    } else Factory.decodeRsp(rspModel, callback);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<RspModel<User>> call, Throwable t) {
-//                LogUtils.e(t.getMessage());
-//                if (callback != null)
-//                    callback.onNotAvailable(R.string.data_net_error);
-//            }
-//        });
     }
 
     /**
@@ -86,17 +65,19 @@ public class AccountHelper {
     public static void register(RegisterModel model, final DataSource.Callback<String> callback) {
         RemoteService service = Network.remoteService();
         Call<RspModel<String>> call = service.register(model);
+        LogUtils.e("c"+model.toString());
         call.enqueue(new CallbackImpl<String>() {
             @Override
             protected void failed(String msg) {
                 if (callback!=null) {
-                    //callback.onNotAvailable()
+                    Factory.decodeRspCode(msg,callback);
                 }
             }
 
             @Override
             protected void succeed(String msg) {
                 if (callback!=null) {
+                    LogUtils.e("succeed:"+msg);
                     callback.onLoaded(msg);
                 }
             }
@@ -108,28 +89,23 @@ public class AccountHelper {
     /**
      * 获取验证码
      *
-     * @param phone String
+     * @param user User
      */
-    public static void getCode(String phone,final DataSource.Callback<String> callback) {
+    public static void getCode(User user,final DataSource.Callback<String> callback) {
         RemoteService service = Network.remoteService();
-        Call<RspModel<String>> call = service.getSmsCode(phone);
-        call.enqueue(new Callback<RspModel<String>>() {
+        final Call<RspModel<String>> call = service.getSmsCode(user);
+        call.enqueue(new CallbackImpl<String>() {
             @Override
-            public void onResponse(Call<RspModel<String>> call, Response<RspModel<String>> response) {
-                RspModel<String> rspModel = response.body();
-                if (rspModel!=null) {
-                    if(rspModel.getStatus() == 200) {
-                        if (callback != null)
-                            callback.onLoaded(rspModel.getData());
-                    }
-                }else {
-                    LogUtils.e("rsp:"+"空");
+            protected void failed(String msg) {
+                if (callback!=null) {
+                    Factory.decodeRspCode(msg,callback);
                 }
-
             }
+
             @Override
-            public void onFailure(Call<RspModel<String>> call, Throwable t) {
-                LogUtils.e(t.getMessage());
+            protected void succeed(String data) {
+                if (callback!=null)
+                    callback.onLoaded(data);
             }
         });
     }

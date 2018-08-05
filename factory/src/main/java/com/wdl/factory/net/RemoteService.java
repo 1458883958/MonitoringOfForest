@@ -3,7 +3,8 @@ package com.wdl.factory.net;
 import com.wdl.factory.model.api.account.LoginModel;
 import com.wdl.factory.model.api.account.RegisterModel;
 import com.wdl.factory.model.api.account.RspModel;
-import com.wdl.factory.model.db.User;
+import com.wdl.factory.model.card.User;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -20,20 +21,11 @@ public interface RemoteService {
     /**
      * 获取短信验证码
      *
-     * @param uTelephone 用户名
+     * @param model 用户名
      * @return RspModel<String>
      */
     @POST("sendSmsCode")
-    Call<RspModel<String>> getSmsCode(@Body String uTelephone);
-
-    /**
-     * 用户登陆
-     *
-     * @param model LoginModel
-     * @return RspModel<User>
-     */
-    @POST("user/select")
-    Call<RspModel<User>> login(@Body LoginModel model);
+    Call<RspModel<String>> getSmsCode(@Body User model);
 
     /**
      * 用户注册
@@ -44,5 +36,13 @@ public interface RemoteService {
     @POST("userReg")
     Call<RspModel<String>> register(@Body RegisterModel model);
 
+    /**
+     * 用户登陆
+     *
+     * @param model LoginModel
+     * @return RspModel<User>
+     */
+    @POST("user/select")
+    Call<RspModel<User>> login(@Body LoginModel model);
 
 }

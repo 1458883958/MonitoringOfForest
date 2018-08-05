@@ -1,9 +1,7 @@
 package com.wdl.factory.model.api;
 
-import com.wdl.factory.R;
 import com.wdl.factory.model.api.account.RspModel;
 
-import factory.data.DataSource;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,13 +19,16 @@ public abstract class CallbackImpl<T> implements Callback<RspModel<T>> {
     @Override
     public void onResponse(Call<RspModel<T>> call, Response<RspModel<T>> response) {
         RspModel<T> rspModel = response.body();
-        assert rspModel != null;
-        if (rspModel.getStatus() == 200) {
-            T data = rspModel.getData();
-            succeed(data);
-        } else {
-            String msg = rspModel.getMsg();
-            failed(msg);
+        if (rspModel!=null) {
+            if (rspModel.getStatus() == 200) {
+                T data = rspModel.getData();
+                succeed(data);
+            } else if (rspModel.getStatus() == 500){
+                String msg = rspModel.getMsg();
+                failed(msg);
+            }
+        }else {
+            failed("返回数据为空");
         }
     }
 

@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/D:/AndroidStudio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_code_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/D:/AndroidStudio/plugins/android/lib/android.jar!/images/material_design_icons/places/ic_ac_unit_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,8 +28,12 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_code" />
+                            <entry key="color" value="196684" />
+                            <entry key="height" value="269" />
+                            <entry key="outputName" value="ic_launch_logo" />
+                            <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="C:\Users\wdl" />
+                            <entry key="width" value="512" />
                           </map>
                         </option>
                       </PersistentState>

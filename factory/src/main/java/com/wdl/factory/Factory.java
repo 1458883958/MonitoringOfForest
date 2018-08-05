@@ -2,9 +2,10 @@ package com.wdl.factory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.wdl.common.common.app.Application;
-import com.wdl.factory.model.api.account.RspModel;
-import com.wdl.factory.model.db.User;
+import com.wdl.factory.persistence.Account;
 import com.wdl.factory.utils.DBFlowExclusionStrategies;
 
 import java.util.concurrent.Executor;
@@ -66,10 +67,44 @@ public class Factory {
         return instance.gson;
     }
 
+
     /**
-     * @param model RspModel
-     * @param callback  DataSource.Callback
+     * 将返回的code进行解析
+     *
+     * @param str    String
+     * @param callback FailedCallback
      */
-    public static void decodeRsp(RspModel model, DataSource.Callback callback) {
+    public static void decodeRspCode(String str, DataSource.FailedCallback callback) {
+        switch (str) {
+            case "电话号码已被注册，如忘记密码请找回!":
+                decodeRspCoded(R.string.data_rsp_error_parameters_exist_account, callback);
+                break;
+            case "验证码错误!":
+                decodeRspCoded(R.string.data_rsp_error_verification_code, callback);
+                break;
+            default:
+                decodeRspCoded(R.string.data_rsp_error_unknown, callback);
+                break;
+        }
+    }
+
+    private static void decodeRspCoded(final int resId, DataSource.FailedCallback callback) {
+        if (callback != null)
+            callback.onNotAvailable(resId);
+    }
+
+    /**
+     * Factory app初始化
+     */
+    public static void setUp(){
+        //初始化数据库
+        FlowManager.init(new FlowConfig
+                .Builder(application())
+                .openDatabasesOnInit(true)
+                .build());
+        //持久化数据的初始化
+        Account.load(application());
     }
 }
+
+

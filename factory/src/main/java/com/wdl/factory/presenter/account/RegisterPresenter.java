@@ -4,6 +4,8 @@ import com.wdl.common.common.Common;
 import com.wdl.factory.R;
 import com.wdl.factory.data.data.helper.AccountHelper;
 import com.wdl.factory.model.api.account.RegisterModel;
+import com.wdl.factory.model.card.User;
+
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
 
@@ -57,10 +59,11 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View>
      */
     @Override
     public void getSms(String phone) {
-        start();
         final RegisterContract.View view = getView();
         if (checkPhone(phone)) {
-            AccountHelper.getCode(phone, this);
+            User user = new User();
+            user.setuTelephone(phone);
+            AccountHelper.getCode(user, this);
         } else {
             view.showError(R.string.data_phone_invalid_parameter);
         }

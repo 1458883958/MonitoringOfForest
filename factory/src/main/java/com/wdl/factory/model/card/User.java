@@ -1,4 +1,4 @@
-package com.wdl.factory.model.db;
+package com.wdl.factory.model.card;
 
 import java.util.Date;
 
@@ -29,6 +29,9 @@ public class User {
     private Integer uBeemail;
     private Date uRegtime;
     private Date uLastlogintime;
+
+    public User() {
+    }
 
     public Integer getuId() {
         return uId;

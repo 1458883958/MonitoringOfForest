@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.wdl.factory.R;
 import com.wdl.factory.data.data.helper.AccountHelper;
 import com.wdl.factory.model.api.account.LoginModel;
-import com.wdl.factory.model.db.User;
+import com.wdl.factory.model.card.User;
 
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
@@ -40,9 +40,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
         //请求
         AccountHelper.login(model,this);
 
-        //
-        //TestModel model = new TestModel(phone);
-        //AccountHelper.loginTest(model,this);
     }
 
     @Override

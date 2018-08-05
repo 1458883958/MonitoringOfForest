@@ -2,6 +2,7 @@ package com.wdl.monitoringofforest;
 
 
 import com.wdl.common.common.app.Application;
+import com.wdl.factory.Factory;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -15,5 +16,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //初始化Factory
+        Factory.setUp();
     }
 }

@@ -5,6 +5,11 @@
     <string name="data_phone_invalid_parameter">手机格式不正确</string>
     <string name="data_inconsistencies_in_input_passwords">输入的密码不一致</string>
     <string name="data_net_error">网络错误！</string>
+    <string name="data_empty">返回数据为空</string>
+
+    <string name="data_rsp_error_parameters_exist_account">已有该账户! ★~★</string>
+    <string name="data_rsp_error_unknown">未知错误(ρ_・).。</string>
+    <string name="data_rsp_error_verification_code">验证码错误!</string>
 
 
 </resources>

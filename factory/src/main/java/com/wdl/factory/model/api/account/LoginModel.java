@@ -13,6 +13,10 @@ public class LoginModel {
    private String uPassword;
    private String uPushId;
 
+    public LoginModel(String uTelephone) {
+        this.uTelephone = uTelephone;
+    }
+
     public LoginModel(String uTelephone, String uPassword) {
         this.uTelephone = uTelephone;
         this.uPassword = uPassword;
