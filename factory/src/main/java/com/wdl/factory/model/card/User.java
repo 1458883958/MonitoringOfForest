@@ -7,11 +7,10 @@ import java.util.Date;
  * 包名：    com.wdl.factory.model.db
  * 创建者：   wdl
  * 创建时间： 2018/8/3 15:14
- * 描述：    TODO
+ * 描述：    用户实体类
  */
 @SuppressWarnings("unused")
 public class User {
-
     private Integer uId;
     private String uUsername;
     private String uPassword;

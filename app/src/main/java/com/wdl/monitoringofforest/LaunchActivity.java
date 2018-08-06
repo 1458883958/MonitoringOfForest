@@ -48,10 +48,10 @@ public class LaunchActivity extends Activity {
      */
     private void receiverPushID() {
         //如果登陆
-        if (Account.isLogin()){
+        if (Account.isLogin()) {
             skip();
             return;
-        }else {
+        } else {
             skip();
         }
         //循环等待
@@ -78,7 +78,7 @@ public class LaunchActivity extends Activity {
         //获取根布局
         View root = findViewById(R.id.activity_launch);
         //获取颜色
-        int color = UiCompat.getColor(getResources(),R.color.colorPrimary);
+        int color = UiCompat.getColor(getResources(), R.color.colorPrimary);
         ColorDrawable drawable = new ColorDrawable(color);
         //给根布局设置drawable
         root.setBackground(drawable);
@@ -91,13 +91,13 @@ public class LaunchActivity extends Activity {
      */
     private void toApp() {
         //已获取全部权限
-        if (PermissionsFragment.haveAllPermission(this,getSupportFragmentManager())){
+        if (PermissionsFragment.haveAllPermission(this, getSupportFragmentManager())) {
             if (Account.isLogin())
                 MainActivity.show(this);
             else
                 AccountActivity.show(this);
             finish();
-        }else {
+        } else {
             Application.showToast("-----");
         }
     }

@@ -62,8 +62,6 @@ public class MainActivity extends Activity
     private NavHelper<Integer> helper;
 
 
-    private Fragment mCurrentFragment;
-
     /**
      * 显示的入口
      *
@@ -81,12 +79,6 @@ public class MainActivity extends Activity
     @Override
     protected void initWidget() {
         super.initWidget();
-        //测试用
-        mCurrentFragment = new DeviceFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.lay_container, mCurrentFragment)
-                .commit();
         //初始化工具类
         helper = new NavHelper<>(this,getSupportFragmentManager(),
                 R.id.lay_container,this);
@@ -171,10 +163,5 @@ public class MainActivity extends Activity
                 //时间
                 .setDuration(480)
                 .start();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mCurrentFragment.onActivityResult(requestCode, resultCode, data);
     }
 }

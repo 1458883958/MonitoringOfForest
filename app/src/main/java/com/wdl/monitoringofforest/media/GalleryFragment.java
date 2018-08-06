@@ -1,4 +1,4 @@
-package com.wdl.monitoringofforest.fragments.media;
+package com.wdl.monitoringofforest.media;
 
 
 import android.app.Dialog;

@@ -2,6 +2,8 @@ package factory.presenter;
 
 import android.support.annotation.StringRes;
 
+import com.wdl.common.common.widget.recycler.RecyclerAdapter;
+
 /**
  * 项目名：  MonitoringOfForest
  * 包名：    factory.presenter
@@ -53,5 +55,25 @@ public interface BaseContract {
          * 销毁触发
          */
         void destroy();
+    }
+
+    /**
+     * 基本列表view的职责
+     *
+     * @param <ViewModel> 要绑定的数据模型
+     * @param <T>         Presenter
+     */
+    interface RecyclerView<ViewModel, T extends BaseContract.Presenter> extends View<T> {
+        /**
+         * 获取适配器,自主进行刷新
+         *
+         * @return RecyclerAdapter<ViewModel>
+         */
+        RecyclerAdapter<ViewModel> getRecyclerAdapter();
+
+        /**
+         * 当适配器数据更改时触发
+         */
+        void adapterDataChanged();
     }
 }
