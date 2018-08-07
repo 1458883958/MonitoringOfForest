@@ -7,11 +7,12 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.drawable.ColorDrawable;
+import android.text.TextUtils;
 import android.util.Property;
 import android.view.View;
 
-import com.wdl.common.common.app.Activity;
-import com.wdl.common.common.app.Application;
+import com.wdl.common.app.Activity;
+import com.wdl.common.app.Application;
 import com.wdl.factory.persistence.Account;
 import com.wdl.monitoringofforest.activities.AccountActivity;
 import com.wdl.monitoringofforest.activities.MainActivity;
@@ -52,7 +53,10 @@ public class LaunchActivity extends Activity {
             skip();
             return;
         } else {
-            skip();
+            if (!TextUtils.isEmpty(Account.getPushId())) {
+                skip();
+                return;
+            }
         }
         //循环等待
         getWindow().getDecorView().postDelayed(new Runnable() {

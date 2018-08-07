@@ -1,5 +1,7 @@
 package com.wdl.factory.model.card;
 
+import com.wdl.factory.model.db.UserDb;
+
 import java.util.Date;
 
 /**
@@ -30,6 +32,24 @@ public class User {
     private Date uLastlogintime;
 
     public User() {
+    }
+
+    private transient UserDb userDb;
+    public UserDb build(){
+        if (userDb==null){
+            UserDb db = new UserDb();
+            db.setId(uId);
+            db.setUsername(uUsername);
+            db.setAlias(uFullname);
+            db.setPhone(uTelephone);
+            db.setMail(uEmail);
+            db.setAbout(uAboutme);
+            db.setMoney(uMoney);
+            db.setImage(uImagepath);
+            db.setAddress(uIpaddress);
+            this.userDb = db;
+        }
+        return userDb;
     }
 
     public Integer getuId() {

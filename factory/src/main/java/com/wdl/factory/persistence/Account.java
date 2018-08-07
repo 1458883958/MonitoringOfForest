@@ -32,6 +32,15 @@ public class Account {
     //用户id
     private static Integer userId;
 
+    public static String getPushId() {
+        return pushId;
+    }
+
+    public static void setPushId(String pushId) {
+        Account.pushId = pushId;
+        Account.save(Factory.application());
+    }
+
     /**
      * @return 登录的账号
      */
@@ -88,6 +97,7 @@ public class Account {
         sp.edit()
                 .putInt(KEY_USER_ID, userId)
                 .putString(KEY_ACCOUNT, account)
+                .putString(KEY_PUSH_ID, pushId)
                 .apply();
     }
 
@@ -101,6 +111,7 @@ public class Account {
                 Context.MODE_PRIVATE);
         userId = sp.getInt(KEY_USER_ID, -1);
         account = sp.getString(KEY_ACCOUNT, "");
+        pushId = sp.getString(KEY_PUSH_ID,"");
     }
 
     /**

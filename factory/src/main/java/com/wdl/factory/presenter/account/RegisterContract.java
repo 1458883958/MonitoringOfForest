@@ -1,6 +1,6 @@
 package com.wdl.factory.presenter.account;
 
-import factory.presenter.BaseContract;
+import com.wdl.factory.presenter.BaseContract;
 
 /**
  * 项目名：  MonitoringOfForest

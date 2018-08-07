@@ -10,8 +10,8 @@ import com.wdl.factory.model.card.User;
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
 
-import factory.data.DataSource;
-import factory.presenter.BasePresenter;
+import com.wdl.factory.data.DataSource;
+import com.wdl.factory.presenter.BasePresenter;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -39,6 +39,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
         LoginModel model = new LoginModel(phone,password);
         //请求
         AccountHelper.login(model,this);
+        //测试
+        //AccountHelper.notice();
 
     }
 

@@ -4,8 +4,8 @@ package com.wdl.monitoringofforest.fragments.account;
 import android.content.Context;
 import android.widget.EditText;
 
-import com.wdl.common.common.app.Fragment;
-import com.wdl.common.common.app.PresenterFragment;
+import com.wdl.common.app.Fragment;
+import com.wdl.common.app.PresenterFragment;
 import com.wdl.factory.presenter.account.RegisterContract;
 import com.wdl.factory.presenter.account.RegisterPresenter;
 import com.wdl.monitoringofforest.R;

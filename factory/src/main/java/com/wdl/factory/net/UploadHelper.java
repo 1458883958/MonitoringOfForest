@@ -8,13 +8,13 @@ import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
-import com.wdl.factory.Factory;
 
 import java.io.File;
 import java.util.Date;
 
-import utils.HashUtil;
-import utils.LogUtils;
+import com.wdl.factory.Factory;
+import com.wdl.utils.HashUtil;
+import com.wdl.utils.LogUtils;
 
 /**
  * 项目名：  MonitoringOfForest

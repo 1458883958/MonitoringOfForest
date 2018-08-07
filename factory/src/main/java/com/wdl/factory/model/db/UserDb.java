@@ -5,8 +5,10 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.wdl.factory.model.card.User;
+import com.wdl.factory.utils.DiffUiDataCallback;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -17,7 +19,7 @@ import java.io.Serializable;
  */
 @SuppressWarnings({"unused"})
 @Table(database = AppDatabase.class)
-public class UserDb extends BaseModel implements Serializable{
+public class UserDb extends BaseDbModel<UserDb> implements Serializable {
     @PrimaryKey
     private Integer id;
     @Column
@@ -37,20 +39,7 @@ public class UserDb extends BaseModel implements Serializable{
     @Column
     private String address;
 
-    public UserDb(){
-    }
-
-    public UserDb getUserDb(User user){
-        this.id = user.getuId();
-        this.username = user.getuUsername();
-        this.alias = user.getuFullname();
-        this.phone = user.getuTelephone();
-        this.mail = user.getuEmail();
-        this.about = user.getuAboutme();
-        this.money = user.getuMoney();
-        this.image = user.getuImagepath();
-        this.address = user.getuIpaddress();
-        return this;
+    public UserDb() {
     }
 
     public Integer getId() {
@@ -138,5 +127,32 @@ public class UserDb extends BaseModel implements Serializable{
                 ", image='" + image + '\'' +
                 ", address='" + address + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDb userDb = (UserDb) o;
+        return Objects.equals(username, userDb.username) &&
+                Objects.equals(about, userDb.about) &&
+                Objects.equals(image, userDb.image);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean isSame(UserDb old) {
+        return this == old || Objects.equals(id, old.id);
+    }
+
+    @Override
+    public boolean isUiContentSame(UserDb old) {
+        return this == old || (Objects.equals(username, old.username) &&
+                Objects.equals(about, old.about) &&
+                Objects.equals(image, old.image));
     }
 }

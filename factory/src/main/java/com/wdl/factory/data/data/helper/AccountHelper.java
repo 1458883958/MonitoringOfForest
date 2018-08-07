@@ -1,5 +1,6 @@
 package com.wdl.factory.data.data.helper;
 
+
 import com.wdl.factory.Factory;
 import com.wdl.factory.model.api.CallbackImpl;
 import com.wdl.factory.model.api.account.LoginModel;
@@ -10,10 +11,9 @@ import com.wdl.factory.model.db.UserDb;
 import com.wdl.factory.net.Network;
 import com.wdl.factory.net.RemoteService;
 import com.wdl.factory.persistence.Account;
-
-import factory.data.DataSource;
+import com.wdl.factory.data.DataSource;
 import retrofit2.Call;
-import utils.LogUtils;
+import com.wdl.utils.LogUtils;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -36,6 +36,7 @@ public class AccountHelper {
         call.enqueue(new CallbackImpl<User>() {
             @Override
             protected void failed(String msg) {
+                LogUtils.e(msg);
                 if (callback!=null) {
                     Factory.decodeRspCode(msg,callback);
                 }
@@ -43,10 +44,8 @@ public class AccountHelper {
 
             @Override
             protected void succeed(User user) {
-                //保存数据库
-                UserDb userDb = new UserDb().getUserDb(user);
-                LogUtils.e(userDb.toString());
-                userDb.save();
+                //保存数据库并通知界面
+                DbHelper.save(UserDb.class,user.build());
                 //同步至XML文件
                 Account.saveUserInfo(user);
                 if (callback!=null) {
@@ -109,4 +108,5 @@ public class AccountHelper {
             }
         });
     }
+
 }

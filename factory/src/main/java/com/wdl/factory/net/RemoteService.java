@@ -3,7 +3,11 @@ package com.wdl.factory.net;
 import com.wdl.factory.model.api.account.LoginModel;
 import com.wdl.factory.model.api.account.RegisterModel;
 import com.wdl.factory.model.api.account.RspModel;
+import com.wdl.factory.model.card.Notice;
+import com.wdl.factory.model.card.Pi;
 import com.wdl.factory.model.card.User;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -44,5 +48,26 @@ public interface RemoteService {
      */
     @POST("user/select")
     Call<RspModel<User>> login(@Body LoginModel model);
+
+    /*---------------------------------------------------------------------------------------------------------*/
+
+    /**
+     * 查询所有公告
+     *
+     * @return RspModel<List < Notice>>
+     */
+    @POST("notice/selectAll")
+    Call<RspModel<List<Notice>>> notice();
+
+    /*---------------------------------------------------------------------------------------------------------*/
+
+    /**
+     * 查看已绑定设备列表
+     *
+     * @param user User
+     * @return RspModel<List<Pi>>
+     */
+    @POST("pi/select")
+    Call<RspModel<List<Pi>>> selectAllPi(@Body User user);
 
 }

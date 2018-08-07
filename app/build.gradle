@@ -8,6 +8,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //个推相关参数
+        manifestPlaceholders = [
+                GETUI_APP_ID    : "7YWYNn7nSu9zxvahXSRKF1",
+                GETUI_APP_KEY   : "RqoodSTwGE6drMTQM2gev9",
+                GETUI_APP_SECRET: "B2Vdrgh0ni9L2n8yWqMbm2",
+                PACKAGE_NAME    : applicationId
+        ]
     }
     buildTypes {
         release {
@@ -36,6 +43,7 @@ dependencies {
     implementation "de.hdodenhof:circleimageview:$rootProject.ext.circleimageviewVersion"
     implementation "pub.devrel:easypermissions:$rootProject.ext.easyPMVersion"
     implementation "com.github.yalantis:ucrop:$rootProject.ext.ucropVersion"
+    implementation "com.getui:sdk:$rootProject.ext.getuiVersion"
     implementation project(':common')
     api project(':factory')
 }

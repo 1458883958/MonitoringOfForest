@@ -4,14 +4,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
-import com.wdl.common.common.app.Application;
+import com.wdl.common.app.Application;
+import com.wdl.factory.data.data.pi.PiCenter;
+import com.wdl.factory.data.data.pi.PiDispatcher;
+import com.wdl.factory.data.data.user.UserCenter;
 import com.wdl.factory.persistence.Account;
 import com.wdl.factory.utils.DBFlowExclusionStrategies;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import factory.data.DataSource;
+import com.wdl.factory.data.DataSource;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -61,6 +64,7 @@ public class Factory {
 
     /**
      * 获取全局gson
+     *
      * @return Gson
      */
     public static Gson getGson() {
@@ -71,7 +75,7 @@ public class Factory {
     /**
      * 将返回的code进行解析
      *
-     * @param str    String
+     * @param str      String
      * @param callback FailedCallback
      */
     public static void decodeRspCode(String str, DataSource.FailedCallback callback) {
@@ -96,7 +100,7 @@ public class Factory {
     /**
      * Factory app初始化
      */
-    public static void setUp(){
+    public static void setUp() {
         //初始化数据库
         FlowManager.init(new FlowConfig
                 .Builder(application())
@@ -104,6 +108,32 @@ public class Factory {
                 .build());
         //持久化数据的初始化
         Account.load(application());
+    }
+
+    /**
+     * 处理推送来的消息
+     *
+     * @param message 消息
+     */
+    public static void dispatchMessage(String message) {
+    }
+
+    /**
+     * 获取设备中心,规范
+     *
+     * @return 设备中心实现类
+     */
+    public static PiCenter getPiCenter() {
+        return PiDispatcher.getPiCenter();
+    }
+
+    /**
+     * 获取用户中心,规范
+     *
+     * @return 用户中心实现类
+     */
+    public static UserCenter getUserCenter() {
+        return null;
     }
 }
 

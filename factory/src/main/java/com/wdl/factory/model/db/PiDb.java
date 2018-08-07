@@ -5,8 +5,10 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.wdl.factory.model.card.Pi;
+import com.wdl.factory.utils.DiffUiDataCallback;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -17,7 +19,7 @@ import java.io.Serializable;
  */
 @SuppressWarnings("unused")
 @Table(database = AppDatabase.class)
-public class PiDb extends BaseModel implements Serializable {
+public class PiDb extends BaseDbModel<PiDb> implements Serializable {
     @PrimaryKey
     private Integer id;
     @Column
@@ -37,18 +39,9 @@ public class PiDb extends BaseModel implements Serializable {
     @Column
     private Integer bootState;
 
-    public PiDb getPi(Pi pi){
-        this.id = pi.getpId();
-        this.name = pi.getpName();
-        this.remark = pi.getpRemark();
-        this.address = pi.getpIpaddress();
-        this.password = pi.getpPassword();
-        this.threshold = pi.getpThreshold();
-        this.delayed = pi.getpDelayed();
-        this.switchState = pi.getpSwitchstate();
-        this.bootState = pi.getpBootstate();
-        return this;
+    public PiDb() {
     }
+
     public Integer getId() {
         return id;
     }
@@ -134,5 +127,40 @@ public class PiDb extends BaseModel implements Serializable {
                 ", switchState=" + switchState +
                 ", bootState=" + bootState +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PiDb piDb = (PiDb) o;
+        return Objects.equals(name, piDb.name) &&
+                Objects.equals(remark, piDb.remark) &&
+                Objects.equals(address, piDb.address) &&
+                Objects.equals(threshold, piDb.threshold) &&
+                Objects.equals(delayed, piDb.delayed) &&
+                Objects.equals(switchState, piDb.switchState) &&
+                Objects.equals(bootState, piDb.bootState);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean isSame(PiDb old) {
+        return this==old || Objects.equals(id,old.id) ;
+    }
+
+    @Override
+    public boolean isUiContentSame(PiDb old) {
+        return this==old||(Objects.equals(name, old.name) &&
+                Objects.equals(remark, old.remark) &&
+                Objects.equals(address, old.address) &&
+                Objects.equals(threshold, old.threshold) &&
+                Objects.equals(delayed, old.delayed) &&
+                Objects.equals(switchState, old.switchState) &&
+                Objects.equals(bootState, old.bootState));
     }
 }

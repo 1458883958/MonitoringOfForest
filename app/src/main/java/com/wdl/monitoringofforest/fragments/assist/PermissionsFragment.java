@@ -13,8 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.wdl.common.common.app.Application;
-import com.wdl.common.common.widget.TransStateBottomSheetDialog;
+import com.wdl.common.app.Application;
+import com.wdl.common.widget.TransStateBottomSheetDialog;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.fragments.main.PersonalFragment;
 

@@ -1,5 +1,7 @@
 package com.wdl.factory.model.card;
 
+import com.wdl.factory.model.db.PiDb;
+
 import java.util.Date;
 
 /**
@@ -26,7 +28,27 @@ public class Pi {
     private Date pStarttime;
     private Date pLivetime;
 
+
     public Pi() {
+    }
+
+    private transient PiDb piDb;
+
+    public PiDb build() {
+        if (piDb == null) {
+            PiDb db = new PiDb();
+            db.setId(pId);
+            db.setName(pName);
+            db.setRemark(pRemark);
+            db.setAddress(pIpaddress);
+            db.setPassword(pPassword);
+            db.setThreshold(pThreshold);
+            db.setDelayed(pDelayed);
+            db.setSwitchState(pSwitchstate);
+            db.setBootState(pBootstate);
+            this.piDb = db;
+        }
+        return piDb;
     }
 
     public Integer getpId() {

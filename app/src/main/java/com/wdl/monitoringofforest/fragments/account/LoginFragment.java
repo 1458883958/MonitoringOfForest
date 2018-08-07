@@ -4,8 +4,8 @@ package com.wdl.monitoringofforest.fragments.account;
 import android.content.Context;
 import android.widget.EditText;
 
-import com.wdl.common.common.app.Fragment;
-import com.wdl.common.common.app.PresenterFragment;
+import com.wdl.common.app.Fragment;
+import com.wdl.common.app.PresenterFragment;
 import com.wdl.factory.presenter.account.LoginContract;
 import com.wdl.factory.presenter.account.LoginPresenter;
 import com.wdl.monitoringofforest.R;
@@ -18,7 +18,6 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import utils.LogUtils;
 
 /**
  * A simple {@link Fragment} subclass.

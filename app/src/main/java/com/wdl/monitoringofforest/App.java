@@ -1,7 +1,8 @@
 package com.wdl.monitoringofforest;
 
 
-import com.wdl.common.common.app.Application;
+import com.igexin.sdk.PushManager;
+import com.wdl.common.app.Application;
 import com.wdl.factory.Factory;
 
 /**
@@ -18,5 +19,8 @@ public class App extends Application {
         super.onCreate();
         //初始化Factory
         Factory.setUp();
+        //初始化个推
+        PushManager.getInstance().initialize(this);
+
     }
 }

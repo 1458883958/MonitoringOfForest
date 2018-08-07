@@ -1,6 +1,6 @@
 package com.wdl.monitoringofforest.fragments.main;
 
-import com.wdl.common.common.app.Fragment;
+import com.wdl.common.app.Fragment;
 import com.wdl.monitoringofforest.R;
 
 /**

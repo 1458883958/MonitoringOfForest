@@ -2,7 +2,8 @@ package com.wdl.factory.presenter.pi;
 
 import com.wdl.factory.model.card.Pi;
 
-import factory.presenter.BaseContract;
+import com.wdl.factory.model.db.PiDb;
+import com.wdl.factory.presenter.BaseContract;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -17,7 +18,7 @@ public interface PiContract {
     /**
      * 进行数据刷新等操作
      */
-    interface View extends BaseContract.RecyclerView<Pi,Presenter>{
+    interface View extends BaseContract.RecyclerView<PiDb,Presenter>{
 
     }
 
@@ -25,6 +26,5 @@ public interface PiContract {
      * start()直接进行数据加载
      */
     interface Presenter extends BaseContract.Presenter{
-
     }
 }

@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.wdl.common.common.widget.GalleryView;
-import com.wdl.common.common.widget.TransStateBottomSheetDialog;
+import com.wdl.common.widget.GalleryView;
+import com.wdl.common.widget.TransStateBottomSheetDialog;
 import com.wdl.monitoringofforest.R;
 
 import java.util.Objects;
