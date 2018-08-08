@@ -19,14 +19,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.wdl.common.app.Activity;
 import com.wdl.common.widget.PortraitView;
+import com.wdl.factory.persistence.Account;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.fragments.main.ContactFragment;
 import com.wdl.monitoringofforest.fragments.main.DealFragment;
 import com.wdl.monitoringofforest.fragments.main.DeviceFragment;
 import com.wdl.monitoringofforest.fragments.main.PersonalFragment;
 import com.wdl.monitoringofforest.helper.NavHelper;
+import com.wdl.utils.LogUtils;
 
 import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.widget.FloatActionButton;
@@ -34,6 +38,7 @@ import net.qiujuer.genius.ui.widget.FloatActionButton;
 import java.util.Objects;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
 /**
@@ -61,6 +66,32 @@ public class MainActivity extends Activity
     //底部导航栏的工具类
     private NavHelper<Integer> helper;
 
+
+    @OnClick(R.id.mSearch)
+    void search(){
+//        IntentIntegrator integrator = new IntentIntegrator(this);
+//        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+//        integrator.setCaptureActivity(ScanActivity.class);
+//        integrator.setPrompt("Scan a barcode");//底部的提示文字，设为""可以置空
+//        integrator.setCameraId(0);   //前置或者后置摄像头
+//        integrator.setBeepEnabled(false);//扫描成功的「哔哔」声，默认开启
+//        integrator.setBarcodeImageEnabled(true);
+//        integrator.initiateScan();
+    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+//        if(result != null) {
+//            if(result.getContents() == null) {
+//                LogUtils.e("result.getContents()");
+//            } else {
+//                LogUtils.e(""+result.getContents());
+//            }
+//        } else {
+//            super.onActivityResult(requestCode, resultCode, data);
+//        }
+//    }
 
     /**
      * 显示的入口
@@ -110,6 +141,9 @@ public class MainActivity extends Activity
         //首次启动触发，会执行onNavigationItemSelected方法
         menu.performIdentifierAction(R.id.action_device,0);
 
+        //初始化头像
+        mPortrait.setUp(Glide.with(this), Account.getUserDb());
+
     }
 
     @Override
@@ -147,11 +181,12 @@ public class MainActivity extends Activity
             //旋转角度
             rotation = -360;
             mFab.setImageResource(R.drawable.ic_audio);
+            mSearch.setImageResource(R.drawable.ic_add_device);
         } else {
             //transY默认为0则显示
             //主界面时隐藏
             transY = Ui.dipToPx(getResources(), 76);
-
+            mSearch.setImageResource(R.drawable.ic_search);
         }
         mFab.animate()
                 //旋转

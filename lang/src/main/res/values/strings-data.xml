@@ -9,6 +9,7 @@
 
     <string name="data_rsp_error_parameters_exist_account">已有该账户! ★~★</string>
     <string name="data_rsp_error_unknown">未知错误(ρ_・).。</string>
+    <string name="data_account_error_un_login">用户未登录(ρ_・).。</string>
     <string name="data_rsp_error_verification_code">验证码错误!</string>
 
 

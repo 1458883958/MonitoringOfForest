@@ -1,6 +1,8 @@
 package com.wdl.factory.data.data.helper;
 
+import com.wdl.common.app.Application;
 import com.wdl.factory.Factory;
+import com.wdl.factory.R;
 import com.wdl.factory.data.DataSource;
 import com.wdl.factory.model.api.CallbackImpl;
 import com.wdl.factory.model.api.account.RspModel;
@@ -9,6 +11,7 @@ import com.wdl.factory.model.card.User;
 import com.wdl.factory.net.Network;
 import com.wdl.factory.net.RemoteService;
 import com.wdl.factory.persistence.Account;
+import com.wdl.utils.LogUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +33,11 @@ public class PiHelper {
      */
     public static void select() {
         RemoteService service = Network.remoteService();
-        if (Account.getUserId()==null)return;
+        LogUtils.e(Account.getUserId()+"");
+        if (Account.getUserId()==-1) {
+            Application.showToast(R.string.data_account_error_un_login);
+            return;
+        }
         User user = new User();
         user.setuId(Account.getUserId());
         Call<RspModel<List<Pi>>> call = service.selectAllPi(user);

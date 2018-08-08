@@ -4,6 +4,7 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.wdl.factory.model.Author;
 import com.wdl.factory.model.card.User;
 import com.wdl.factory.utils.DiffUiDataCallback;
 
@@ -19,7 +20,7 @@ import java.util.Objects;
  */
 @SuppressWarnings({"unused"})
 @Table(database = AppDatabase.class)
-public class UserDb extends BaseDbModel<UserDb> implements Serializable {
+public class UserDb extends BaseDbModel<UserDb> implements Author,Serializable {
     @PrimaryKey
     private Integer id;
     @Column

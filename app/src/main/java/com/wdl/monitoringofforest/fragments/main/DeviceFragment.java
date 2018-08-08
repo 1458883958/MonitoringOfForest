@@ -1,19 +1,29 @@
 package com.wdl.monitoringofforest.fragments.main;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.wdl.common.app.Application;
 import com.wdl.common.app.Fragment;
 import com.wdl.common.app.PresenterFragment;
 import com.wdl.common.widget.EmptyView;
 import com.wdl.common.widget.recycler.RecyclerAdapter;
 import com.wdl.factory.model.card.Pi;
+import com.wdl.factory.model.db.PiDb;
 import com.wdl.factory.presenter.pi.PiContract;
 import com.wdl.factory.presenter.pi.PiPresenter;
 import com.wdl.monitoringofforest.R;
+import com.wdl.monitoringofforest.activities.ScanActivity;
+import com.wdl.utils.LogUtils;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 
@@ -34,24 +44,64 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
         // Required empty public constructor
     }
 
+    /**
+     * 第一次加载
+     */
     @Override
     protected void onFirstInit() {
         super.onFirstInit();
+        //进行数据库查询以及网络查询
         mPresenter.start();
+    }
+
+    /**
+     * @param requestCode 请求码
+     * @param resultCode 结果码
+     * @param data  Intent
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+                LogUtils.e("result.getContents()");
+                Application.showToast("扫描结果为空。。");
+            } else {
+                LogUtils.e(""+result.getContents());
+                //获取扫描结果
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
     protected void initWidget(View root) {
         super.initWidget(root);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter = new RecyclerAdapter<Pi>() {
+        //找到add按钮
+        ImageView add = Objects.requireNonNull(getActivity()).findViewById(R.id.mSearch);
+        //实现监听
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
-            protected int getItemViewType(int position, Pi pi) {
+            public void onClick(View v) {
+                //进行二维码扫描
+                IntentIntegrator
+                        .forSupportFragment(DeviceFragment.this)
+                        .setCaptureActivity(ScanActivity.class)
+                        .initiateScan();
+            }
+        });
+
+        //recyclerView设置
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter = new RecyclerAdapter<PiDb>() {
+            @Override
+            protected int getItemViewType(int position, PiDb pi) {
                 return R.layout.cell_pi_list;
             }
 
             @Override
-            protected ViewHolder<Pi> onCreateViewHolder(View root, int viewType) {
+            protected ViewHolder<PiDb> onCreateViewHolder(View root, int viewType) {
                 return new DeviceFragment.ViewHolder(root);
             }
         });
@@ -74,16 +124,20 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
     }
 
     @Override
-    public RecyclerAdapter<Pi> getRecyclerAdapter() {
+    public RecyclerAdapter<PiDb> getRecyclerAdapter() {
         return adapter;
     }
 
+    /**
+     * 刷新界面
+     * 判断是否显示占位布局
+     */
     @Override
     public void adapterDataChanged() {
         placeHolderView.triggerOkOrEmpty(adapter.getItemCount()>0);
     }
 
-    class ViewHolder extends RecyclerAdapter.ViewHolder<Pi>{
+    class ViewHolder extends RecyclerAdapter.ViewHolder<PiDb>{
 
         @BindView(R.id.pName)
         TextView pName;
@@ -95,9 +149,9 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
         }
 
         @Override
-        protected void onBind(Pi pi) {
-            pName.setText(pi.getpName());
-            pSwitch.setChecked(pi.getpSwitchstate() == 0);
+        protected void onBind(PiDb pi) {
+            pName.setText(pi.getName());
+            pSwitch.setChecked(pi.getSwitchState() == 0);
         }
     }
 

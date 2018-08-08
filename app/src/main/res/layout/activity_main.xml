@@ -28,7 +28,7 @@
             android:layout_marginRight="@dimen/len_4"
             android:layout_marginTop="@dimen/statusBarSize">
 
-            <com.wdl.common.common.widget.PortraitView
+            <com.wdl.common.widget.PortraitView
                 android:id="@+id/mPortrait"
                 android:layout_width="@dimen/portraitSize"
                 android:layout_height="@dimen/portraitSize"

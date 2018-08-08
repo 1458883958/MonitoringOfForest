@@ -17,7 +17,7 @@
         android:elevation="1dp"
         android:outlineProvider="bounds"
         tools:targetApi="lollipop" />
-    <com.example.common.common.widget.EmptyView
+    <com.wdl.common.widget.EmptyView
         android:id="@+id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
