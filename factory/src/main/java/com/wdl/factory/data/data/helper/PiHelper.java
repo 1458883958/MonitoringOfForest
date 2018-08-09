@@ -61,19 +61,52 @@ public class PiHelper {
         call.enqueue(new CallbackImpl<Pi>() {
             @Override
             protected void failed(String msg) {
-                LogUtils.e("msg:"+msg);
-                if (callback!=null) {
-                    Factory.decodeRspCode(msg,callback);
+                LogUtils.e("msg:" + msg);
+                if (callback != null) {
+                    Factory.decodeRspCode(msg, callback);
                 }
             }
 
             @Override
             protected void succeed(Pi data) {
-                LogUtils.e("xx:"+data.toString());
+                LogUtils.e("xx:" + data.toString());
                 //通知并保存
                 Factory.getPiCenter().dispatch(data);
-                if (callback!=null)
+                if (callback != null)
                     callback.onLoaded(data);
+            }
+        });
+    }
+
+    /**
+     * 拍照开关
+     *
+     * @param model PiModel
+     * @param piDb  PiDb
+     */
+    public static void change(PiModel model, final PiDb piDb) {
+        RemoteService service = Network.remoteService();
+        Call<RspModel<String>> call = service.changedState(model);
+        call.enqueue(new CallbackImpl<String>() {
+            @Override
+            protected void failed(String msg) {
+
+            }
+
+            @Override
+            protected void succeed(String data) {
+
+            }
+
+            @Override
+            protected void succeedMsg(String msg) {
+                if ("OK".equals(msg)) {
+                    if (piDb.getSwitchState() == 0)
+                        piDb.setSwitchState(1);
+                    else if (piDb.getSwitchState() == 1)
+                        piDb.setSwitchState(0);
+                    Factory.getPiCenter().dispatch(piDb);
+                }
             }
         });
     }

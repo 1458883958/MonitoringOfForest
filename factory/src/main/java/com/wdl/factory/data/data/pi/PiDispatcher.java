@@ -50,6 +50,13 @@ public class PiDispatcher implements PiCenter {
         executor.execute(new PiHandler(pis));
     }
 
+    @Override
+    public void dispatch(PiDb... piDbs) {
+        if (piDbs == null || piDbs.length == 0) return;
+        //丢到单线程池中
+        executor.execute(new PiDbHandler(piDbs));
+    }
+
     private class PiHandler implements Runnable {
         private final Pi[] pis;
 
@@ -68,6 +75,19 @@ public class PiDispatcher implements PiCenter {
             }
             //进行数据库存储并分发通知
             DbHelper.save(PiDb.class,dbs.toArray(new PiDb[0]));
+        }
+    }
+
+    private class PiDbHandler implements Runnable {
+        private final PiDb[] pis;
+
+        public PiDbHandler(PiDb[] pis) {
+            this.pis = pis;
+        }
+
+        @Override
+        public void run() {
+            DbHelper.update(PiDb.class,pis);
         }
     }
 }

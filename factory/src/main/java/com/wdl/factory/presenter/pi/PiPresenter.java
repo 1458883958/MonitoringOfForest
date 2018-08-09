@@ -1,28 +1,19 @@
 package com.wdl.factory.presenter.pi;
 
-import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
-
-import com.raizlabs.android.dbflow.sql.language.SQLite;
-import com.raizlabs.android.dbflow.structure.database.transaction.QueryTransaction;
-import com.wdl.common.app.Application;
 import com.wdl.common.widget.recycler.RecyclerAdapter;
 import com.wdl.factory.R;
-import com.wdl.factory.data.DataSource;
 import com.wdl.factory.data.data.helper.PiHelper;
 import com.wdl.factory.data.data.pi.PiDataSource;
 import com.wdl.factory.data.data.pi.PiRepository;
-import com.wdl.factory.model.card.Pi;
+import com.wdl.factory.model.api.pi.PiModel;
 import com.wdl.factory.model.card.User;
 import com.wdl.factory.model.db.PiDb;
 import com.wdl.factory.persistence.Account;
-import com.wdl.factory.presenter.BaseRecyclerPresenter;
 import com.wdl.factory.presenter.BaseSourcePresenter;
 import com.wdl.factory.utils.DiffUiDataCallback;
-import com.wdl.utils.CollectionUtil;
 import com.wdl.utils.LogUtils;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -33,10 +24,10 @@ import java.util.List;
  * 描述：    PI P层
  */
 @SuppressWarnings("unused")
-public class PiPresenter extends BaseSourcePresenter<PiDb,PiDb,PiDataSource,PiContract.View>
+public class PiPresenter extends BaseSourcePresenter<PiDb, PiDb, PiDataSource, PiContract.View>
         implements PiContract.Presenter{
     public PiPresenter(PiContract.View view) {
-        super(view,new PiRepository());
+        super(view, new PiRepository());
     }
 
     @Override
@@ -63,16 +54,16 @@ public class PiPresenter extends BaseSourcePresenter<PiDb,PiDb,PiDataSource,PiCo
     @Override
     public void onLoaded(List<PiDb> data) {
         final PiContract.View view = getView();
-        if (view==null)return;
+        if (view == null) return;
         RecyclerAdapter<PiDb> adapter = view.getRecyclerAdapter();
         //获取老数据
         List<PiDb> oldList = adapter.getItems();
         //进行差异化比较
-        DiffUtil.Callback callback = new DiffUiDataCallback<>(oldList,data);
+        DiffUtil.Callback callback = new DiffUiDataCallback<>(oldList, data);
         //差异结果集
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback);
         //调用基类刷新
-        refreshData(result,data);
+        refreshData(result, data);
 
     }
 
@@ -80,4 +71,18 @@ public class PiPresenter extends BaseSourcePresenter<PiDb,PiDb,PiDataSource,PiCo
     public void destroy() {
         super.destroy();
     }
+
+    /**
+     * 改变拍照状态
+     *
+     * @param piDb          PiD
+     * */
+    @Override
+    public void changedSwitch(PiDb piDb) {
+        PiModel model = new PiModel();
+        model.setpId(piDb.getId());
+        model.setpSwitchstate(piDb.getSwitchState());
+        PiHelper.change(model,piDb);
+    }
+
 }

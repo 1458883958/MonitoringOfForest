@@ -106,6 +106,14 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
         placeHolderView.triggerOkOrEmpty(adapter.getItemCount()>0);
     }
 
+    /**
+     * 设备状态更新成功
+     */
+    @Override
+    public void changedSucceed() {
+
+    }
+
     class ViewHolder extends RecyclerAdapter.ViewHolder<PiDb>{
 
         @BindView(R.id.pName)
@@ -120,14 +128,21 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
         EditText pDelayed;
         @BindView(R.id.boot_state)
         ImageView bootState;
+        @BindView(R.id.setting)
+        ImageView setting;
 
         /**
          * 开关机
          */
         @OnClick(R.id.pSwitch)
         void changedPi(){
-            data.setSwitchState(pSwitch.isChecked()?1:0);
-            pSwitch.setChecked(data.getSwitchState() == 1);
+            mPresenter.changedSwitch(data);
+        }
+
+        @OnClick(R.id.setting)
+        void setting(){
+            LogUtils.e("setting");
+
         }
 
         public ViewHolder(View itemView) {
@@ -140,7 +155,7 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
             pRemark.setText(pi.getRemark());
             pThreshold.setText(String.valueOf(pi.getThreshold()));
             pDelayed.setText(String.valueOf(pi.getDelayed()));
-            bootState.setImageResource(pi.getBootState()==0?
+            bootState.setImageResource(pi.getBootState()==1?
                    R.drawable.ic_circle:R.drawable.ic_circle_off);
         }
     }

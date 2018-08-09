@@ -1,6 +1,7 @@
 package com.wdl.factory.data.data.pi;
 
 import com.wdl.factory.model.card.Pi;
+import com.wdl.factory.model.db.PiDb;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -18,4 +19,5 @@ public interface PiCenter {
      * @param pis 设备列表
      */
     void dispatch(Pi... pis);
+    void dispatch(PiDb... piDbs);
 }

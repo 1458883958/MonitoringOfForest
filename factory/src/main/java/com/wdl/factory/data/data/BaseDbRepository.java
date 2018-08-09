@@ -145,7 +145,7 @@ public abstract class BaseDbRepository<Data extends BaseDbModel<Data>> implement
      * @param datum 数据
      */
     private void update(int index, Data datum) {
-        dataList.remove(datum);
+        dataList.remove(index);
         dataList.add(index, datum);
     }
 

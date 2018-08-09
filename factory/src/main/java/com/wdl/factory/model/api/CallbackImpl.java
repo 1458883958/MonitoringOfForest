@@ -22,6 +22,10 @@ public abstract class CallbackImpl<T> implements Callback<RspModel<T>> {
         if (rspModel!=null) {
             if (rspModel.getStatus() == 200) {
                 T data = rspModel.getData();
+                if (data==null){
+                    String msg = rspModel.getMsg();
+                    succeedMsg(msg);
+                }
                 succeed(data);
             } else if (rspModel.getStatus() == 500){
                 String msg = rspModel.getMsg();
@@ -41,6 +45,10 @@ public abstract class CallbackImpl<T> implements Callback<RspModel<T>> {
     protected abstract void failed(String msg);
 
     protected abstract void succeed(T data);
+
+    protected void succeedMsg(String msg){
+
+    }
 
 
 }

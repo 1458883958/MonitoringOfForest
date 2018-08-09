@@ -19,12 +19,16 @@ public interface PiContract {
      * 进行数据刷新等操作
      */
     interface View extends BaseContract.RecyclerView<PiDb,Presenter>{
-
+        void changedSucceed();
     }
 
     /**
      * start()直接进行数据加载
      */
     interface Presenter extends BaseContract.Presenter{
+        /**
+         * 改变设备拍照状态
+         */
+        void changedSwitch(PiDb piDb);
     }
 }

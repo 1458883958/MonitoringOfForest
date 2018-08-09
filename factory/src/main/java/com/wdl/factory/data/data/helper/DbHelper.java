@@ -119,6 +119,24 @@ public class DbHelper {
         }).build().execute();
     }
 
+
+    public static <Model extends BaseModel> void update(final Class<Model> tlx, final Model... models) {
+        if (models == null || models.length == 0) return;
+        //当前数据库管理者
+        DatabaseDefinition databaseDefinition = FlowManager.getDatabase(AppDatabase.class);
+        //提交一个事物
+        databaseDefinition.beginTransactionAsync(new ITransaction() {
+            @Override
+            public void execute(DatabaseWrapper databaseWrapper) {
+                ModelAdapter<Model> adapter = FlowManager.getModelAdapter(tlx);
+                //保存
+                adapter.updateAll(Arrays.asList(models));
+                //唤起通知,告知界面数据库有数据更改
+                instance.notifySaveOrUpdate(tlx, models);
+            }
+        }).build().execute();
+    }
+
     /**
      * 数据库删除的统一封装
      *
