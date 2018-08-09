@@ -6,8 +6,10 @@ import com.wdl.factory.R;
 import com.wdl.factory.data.DataSource;
 import com.wdl.factory.model.api.CallbackImpl;
 import com.wdl.factory.model.api.account.RspModel;
+import com.wdl.factory.model.api.pi.PiModel;
 import com.wdl.factory.model.card.Pi;
 import com.wdl.factory.model.card.User;
+import com.wdl.factory.model.db.PiDb;
 import com.wdl.factory.net.Network;
 import com.wdl.factory.net.RemoteService;
 import com.wdl.factory.persistence.Account;
@@ -31,15 +33,8 @@ public class PiHelper {
     /**
      * 查看已绑定设备
      */
-    public static void select() {
+    public static void select(User user) {
         RemoteService service = Network.remoteService();
-        LogUtils.e(Account.getUserId()+"");
-        if (Account.getUserId()==-1) {
-            Application.showToast(R.string.data_account_error_un_login);
-            return;
-        }
-        User user = new User();
-        user.setuId(Account.getUserId());
         Call<RspModel<List<Pi>>> call = service.selectAllPi(user);
         call.enqueue(new CallbackImpl<List<Pi>>() {
             @Override
@@ -48,9 +43,37 @@ public class PiHelper {
 
             @Override
             protected void succeed(List<Pi> data) {
-                if (data==null||data.size()==0)return;
+                if (data == null || data.size() == 0) return;
                 //唤起进行数据存储
                 Factory.getPiCenter().dispatch(data.toArray(new Pi[0]));
+            }
+        });
+    }
+
+    /**
+     * 绑定pi
+     *
+     * @param model PiModel
+     */
+    public static void bind(PiModel model, final DataSource.Callback<Pi> callback) {
+        RemoteService service = Network.remoteService();
+        final Call<RspModel<Pi>> call = service.addPi(model);
+        call.enqueue(new CallbackImpl<Pi>() {
+            @Override
+            protected void failed(String msg) {
+                LogUtils.e("msg:"+msg);
+                if (callback!=null) {
+                    Factory.decodeRspCode(msg,callback);
+                }
+            }
+
+            @Override
+            protected void succeed(Pi data) {
+                LogUtils.e("xx:"+data.toString());
+                //通知并保存
+                Factory.getPiCenter().dispatch(data);
+                if (callback!=null)
+                    callback.onLoaded(data);
             }
         });
     }

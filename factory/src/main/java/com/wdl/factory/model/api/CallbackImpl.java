@@ -29,6 +29,7 @@ public abstract class CallbackImpl<T> implements Callback<RspModel<T>> {
             }
         }else {
             failed("返回数据为空");
+            return;
         }
     }
 

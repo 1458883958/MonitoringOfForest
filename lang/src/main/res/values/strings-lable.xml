@@ -36,7 +36,17 @@
     <string name="label_qr_code">请扫描二维码</string>
 
 
+    <string name="label_remark">备注:</string>
+    <string name="label_threshold">阈值:</string>
+    <string name="label_delayed">延时:</string>
+    <string name="label_hint_remark">remark</string>
+    <string name="label_hint_threshold">threshold</string>
+    <string name="label_hint_delayed">delayed</string>
+    <string name="label_boot_state">设备状态:</string>
 
+
+    <string name="label_switch_on">on</string>
+    <string name="label_switch_off">off</string>
     <string name="label_gallery_select_max_size">至多选择%s张</string>
     <string name="label_gallery_selected_size">已选%s张</string>
 </resources>

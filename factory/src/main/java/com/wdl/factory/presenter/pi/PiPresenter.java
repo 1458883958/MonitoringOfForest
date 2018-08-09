@@ -5,17 +5,22 @@ import android.support.v7.util.DiffUtil;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.database.transaction.QueryTransaction;
+import com.wdl.common.app.Application;
 import com.wdl.common.widget.recycler.RecyclerAdapter;
+import com.wdl.factory.R;
 import com.wdl.factory.data.DataSource;
 import com.wdl.factory.data.data.helper.PiHelper;
 import com.wdl.factory.data.data.pi.PiDataSource;
 import com.wdl.factory.data.data.pi.PiRepository;
 import com.wdl.factory.model.card.Pi;
+import com.wdl.factory.model.card.User;
 import com.wdl.factory.model.db.PiDb;
+import com.wdl.factory.persistence.Account;
 import com.wdl.factory.presenter.BaseRecyclerPresenter;
 import com.wdl.factory.presenter.BaseSourcePresenter;
 import com.wdl.factory.utils.DiffUiDataCallback;
 import com.wdl.utils.CollectionUtil;
+import com.wdl.utils.LogUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -37,8 +42,16 @@ public class PiPresenter extends BaseSourcePresenter<PiDb,PiDb,PiDataSource,PiCo
     @Override
     public void start() {
         super.start();
+        final PiContract.View view = getView();
+        LogUtils.e(Account.getUserId() + "");
+        if (Account.getUserId() == -1) {
+            view.showError(R.string.data_account_error_un_login);
+            return;
+        }
+        User user = new User();
+        user.setuId(Account.getUserId());
         //网络查询
-        PiHelper.select();
+        PiHelper.select(user);
     }
 
 

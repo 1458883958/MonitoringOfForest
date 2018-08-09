@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import com.wdl.utils.LogUtils;
 import java.util.Objects;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 设备模块
@@ -110,15 +112,36 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
         TextView pName;
         @BindView(R.id.pSwitch)
         SwitchCompat pSwitch;
+        @BindView(R.id.et_remark)
+        EditText pRemark;
+        @BindView(R.id.et_threshold)
+        EditText pThreshold;
+        @BindView(R.id.et_delayed)
+        EditText pDelayed;
+        @BindView(R.id.boot_state)
+        ImageView bootState;
+
+        /**
+         * 开关机
+         */
+        @OnClick(R.id.pSwitch)
+        void changedPi(){
+            data.setSwitchState(pSwitch.isChecked()?1:0);
+            pSwitch.setChecked(data.getSwitchState() == 1);
+        }
 
         public ViewHolder(View itemView) {
             super(itemView);
         }
-
         @Override
         protected void onBind(PiDb pi) {
             pName.setText(pi.getName());
             pSwitch.setChecked(pi.getSwitchState() == 0);
+            pRemark.setText(pi.getRemark());
+            pThreshold.setText(String.valueOf(pi.getThreshold()));
+            pDelayed.setText(String.valueOf(pi.getDelayed()));
+            bootState.setImageResource(pi.getBootState()==0?
+                   R.drawable.ic_circle:R.drawable.ic_circle_off);
         }
     }
 
