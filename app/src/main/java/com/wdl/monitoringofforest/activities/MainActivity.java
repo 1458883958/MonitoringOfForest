@@ -67,31 +67,16 @@ public class MainActivity extends Activity
     private NavHelper<Integer> helper;
 
 
+    /**
+     * 导航栏搜索按钮点击事件
+     */
     @OnClick(R.id.mSearch)
-    void search(){
-//        IntentIntegrator integrator = new IntentIntegrator(this);
-//        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-//        integrator.setCaptureActivity(ScanActivity.class);
-//        integrator.setPrompt("Scan a barcode");//底部的提示文字，设为""可以置空
-//        integrator.setCameraId(0);   //前置或者后置摄像头
-//        integrator.setBeepEnabled(false);//扫描成功的「哔哔」声，默认开启
-//        integrator.setBarcodeImageEnabled(true);
-//        integrator.initiateScan();
+    void search() {
+        int type = Objects.equals(helper.getCurrentTab().extra, R.string.title_device) ?
+                SearchActivity.TYPE_SCAN : SearchActivity.TYPE_FOLLOW;
+        LogUtils.e("type:"+type+" helper.getCurrentTab().extra:"+helper.getCurrentTab().extra);
+        SearchActivity.show(this, type);
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-//        if(result != null) {
-//            if(result.getContents() == null) {
-//                LogUtils.e("result.getContents()");
-//            } else {
-//                LogUtils.e(""+result.getContents());
-//            }
-//        } else {
-//            super.onActivityResult(requestCode, resultCode, data);
-//        }
-//    }
 
     /**
      * 显示的入口
@@ -111,20 +96,20 @@ public class MainActivity extends Activity
     protected void initWidget() {
         super.initWidget();
         //初始化工具类
-        helper = new NavHelper<>(this,getSupportFragmentManager(),
-                R.id.lay_container,this);
+        helper = new NavHelper<>(this, getSupportFragmentManager(),
+                R.id.lay_container, this);
         //添加素有子项
-        helper.addTab(R.id.action_device,new NavHelper.Tab<>(DeviceFragment.class,R.string.title_device))
-            .addTab(R.id.action_deal,new NavHelper.Tab<>(DealFragment.class,R.string.title_deal))
-            .addTab(R.id.action_contact,new NavHelper.Tab<>(ContactFragment.class,R.string.title_contact))
-            .addTab(R.id.action_personal,new NavHelper.Tab<>(PersonalFragment.class,R.string.title_personal));
+        helper.addTab(R.id.action_device, new NavHelper.Tab<>(DeviceFragment.class, R.string.title_device))
+                .addTab(R.id.action_deal, new NavHelper.Tab<>(DealFragment.class, R.string.title_deal))
+                .addTab(R.id.action_contact, new NavHelper.Tab<>(ContactFragment.class, R.string.title_contact))
+                .addTab(R.id.action_personal, new NavHelper.Tab<>(PersonalFragment.class, R.string.title_personal));
         //添加底部按钮点击监听
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         //加载背景
         Glide.with(this)
                 .load(R.drawable.bg_src_city)
                 .centerCrop()
-                .into(new ViewTarget<View,GlideDrawable>(appBar) {
+                .into(new ViewTarget<View, GlideDrawable>(appBar) {
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
                         //this.view ==== appBar
@@ -139,7 +124,7 @@ public class MainActivity extends Activity
         //从底部导航中接管menu,手动触发第一次点击
         Menu menu = bottomNavigationView.getMenu();
         //首次启动触发，会执行onNavigationItemSelected方法
-        menu.performIdentifierAction(R.id.action_device,0);
+        menu.performIdentifierAction(R.id.action_device, 0);
 
         //初始化头像
         mPortrait.setUp(Glide.with(this), Account.getUserDb());

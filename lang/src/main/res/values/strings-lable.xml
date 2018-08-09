@@ -22,6 +22,9 @@
     <string name="label_register_welcome">欢迎您!</string>
     <string name="label_register">注册</string>
     <string name="label_password">密码</string>
+    <string name="label_init_password">初始密码为1245sd</string>
+    <string name="label_add">绑定</string>
+    <string name="label_device_id">设备id</string>
     <string name="label_name">名字</string>
     <string name="label_code">验证码</string>
     <string name="label_third_party">QQ</string>
@@ -30,6 +33,7 @@
     <string name="label_the_verifying_code">%s秒后</string>
     <string name="label_go_register">没有账户？去注册</string>
     <string name="label_go_login">已有账户？去登录</string>
+    <string name="label_qr_code">请扫描二维码</string>
 
 
 

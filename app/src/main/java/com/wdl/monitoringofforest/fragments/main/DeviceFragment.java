@@ -54,43 +54,10 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
         mPresenter.start();
     }
 
-    /**
-     * @param requestCode 请求码
-     * @param resultCode 结果码
-     * @param data  Intent
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null) {
-            if(result.getContents() == null) {
-                LogUtils.e("result.getContents()");
-                Application.showToast("扫描结果为空。。");
-            } else {
-                LogUtils.e(""+result.getContents());
-                //获取扫描结果
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
 
     @Override
     protected void initWidget(View root) {
         super.initWidget(root);
-        //找到add按钮
-        ImageView add = Objects.requireNonNull(getActivity()).findViewById(R.id.mSearch);
-        //实现监听
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //进行二维码扫描
-                IntentIntegrator
-                        .forSupportFragment(DeviceFragment.this)
-                        .setCaptureActivity(ScanActivity.class)
-                        .initiateScan();
-            }
-        });
 
         //recyclerView设置
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

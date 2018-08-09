@@ -46,6 +46,8 @@ public abstract class Activity extends AppCompatActivity {
             initBefore();
             //初始化控件
             initWidget();
+            //二维码扫描专用
+            init(savedInstanceState);
             //初始化数据
             initData();
         } else finish();
@@ -62,6 +64,9 @@ public abstract class Activity extends AppCompatActivity {
      */
     protected void initWidget() {
         ButterKnife.bind(this);
+    }
+
+    protected void init(Bundle savedInstanceState) {
     }
 
     /**
