@@ -65,9 +65,10 @@
             android:theme="@style/AppTheme.TransStatusBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
+            android:name=".activities.SearchActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.TransStatusBar"
-            android:name=".activities.SearchActivity"/>
+            android:theme="@style/AppTheme.TransStatusBar" />
+        <activity android:name=".activities.PersonalActivity"></activity>
     </application>
 
 </manifest>

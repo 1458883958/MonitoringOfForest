@@ -15,6 +15,7 @@ import com.wdl.factory.utils.DiffUiDataCallback;
 import com.wdl.utils.LogUtils;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -83,6 +84,29 @@ public class PiPresenter extends BaseSourcePresenter<PiDb, PiDb, PiDataSource, P
         model.setpId(piDb.getId());
         model.setpSwitchstate(piDb.getSwitchState());
         PiHelper.change(model,piDb);
+    }
+
+    /**
+     * @param remark    备注
+     * @param threshold 阈值
+     * @param delayed   延时
+     */
+    @Override
+    public void update(String remark, Integer threshold, Integer delayed,String password) {
+        final PiContract.View view = getView();
+        //LogUtils.e(Account.getUserId() + "");
+        int userId = Account.getUserId();
+        if (userId==-1) {
+            view.showError(R.string.data_account_error_un_login);
+            return;
+        }
+        PiModel model = new PiModel();
+        model.setuId(userId);
+        model.setpDelayed(delayed);
+        model.setpRemark(remark);
+        model.setpThreshold(threshold);
+        model.setpPassword(password);
+        PiHelper.update(model);
     }
 
 }

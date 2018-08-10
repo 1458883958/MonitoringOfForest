@@ -28,7 +28,6 @@ public class Pi {
     private Date pStarttime;
     private Date pLivetime;
 
-
     public Pi() {
     }
 

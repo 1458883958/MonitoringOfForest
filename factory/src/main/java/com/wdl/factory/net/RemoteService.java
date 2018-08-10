@@ -12,8 +12,11 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -51,12 +54,22 @@ public interface RemoteService {
     @POST("user/select")
     Call<RspModel<User>> login(@Body LoginModel model);
 
+
+    /**
+     * 获取用户信息
+     *
+     * @param id uId
+     * @return RspModel<User>
+     */
+    @GET("user/getUserInfo/{uId}")
+    Call<RspModel<User>> getUserInfo(@Path("uId") int id);
+
     /*---------------------------------------------------------------------------------------------------------*/
 
     /**
      * 查询所有公告
      *
-     * @return RspModel<List       <       Notice>>
+     * @return RspModel<List<Notice>>
      */
     @POST("notice/selectAll")
     Call<RspModel<List<Notice>>> notice();
@@ -67,7 +80,7 @@ public interface RemoteService {
      * 查看已绑定设备列表
      *
      * @param user User
-     * @return RspModel<List   <   Pi>>
+     * @return RspModel<List<Pi>>
      */
     @POST("pi/select")
     Call<RspModel<List<Pi>>> selectAllPi(@Body User user);
@@ -89,6 +102,16 @@ public interface RemoteService {
      */
     @POST("pi/changeSwitchState")
     Call<RspModel<String>> changedState(@Body PiModel model);
+
+
+    /**
+     * 更新设备信息,uId
+     *
+     * @param model PiModel
+     * @return RspModel<Pi>
+     */
+    @POST("pi/update")
+    Call<RspModel<Pi>> update(@Body PiModel model);
 
 
 }

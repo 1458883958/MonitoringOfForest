@@ -110,4 +110,25 @@ public class PiHelper {
             }
         });
     }
+
+    /**
+     * 更新设备信息
+     *
+     * @param model PiModel
+     */
+    public static void update(PiModel model) {
+        RemoteService service = Network.remoteService();
+        Call<RspModel<Pi>> call = service.update(model);
+        call.enqueue(new CallbackImpl<Pi>() {
+            @Override
+            protected void failed(String msg) {
+
+            }
+
+            @Override
+            protected void succeed(Pi data) {
+
+            }
+        });
+    }
 }

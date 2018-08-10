@@ -44,7 +44,9 @@ dependencies {
     implementation "pub.devrel:easypermissions:$rootProject.ext.easyPMVersion"
     implementation "com.github.yalantis:ucrop:$rootProject.ext.ucropVersion"
     implementation "com.getui:sdk:$rootProject.ext.getuiVersion"
-    implementation("com.journeyapps:zxing-android-embedded:$rootProject.ext.embeddedVersion") { transitive = false }
+    implementation("com.journeyapps:zxing-android-embedded:$rootProject.ext.embeddedVersion") {
+        transitive = false
+    }
     implementation "com.google.zxing:core:$rootProject.ext.zxingCoreVersion"
 
     implementation project(':common')

@@ -18,17 +18,26 @@ public interface PiContract {
     /**
      * 进行数据刷新等操作
      */
-    interface View extends BaseContract.RecyclerView<PiDb,Presenter>{
+    interface View extends BaseContract.RecyclerView<PiDb, Presenter> {
         void changedSucceed();
     }
 
     /**
      * start()直接进行数据加载
      */
-    interface Presenter extends BaseContract.Presenter{
+    interface Presenter extends BaseContract.Presenter {
         /**
          * 改变设备拍照状态
          */
         void changedSwitch(PiDb piDb);
+
+        /**
+         * 更新设备
+         *
+         * @param remark    备注
+         * @param threshold 阈值
+         * @param delayed   延时
+         */
+        void update(String remark, Integer threshold, Integer delayed,String password);
     }
 }

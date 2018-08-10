@@ -78,6 +78,12 @@ public class MainActivity extends Activity
         SearchActivity.show(this, type);
     }
 
+    @OnClick(R.id.mPortrait)
+    void portraitClick(){
+        PersonalActivity.show(this,Account.getUserId());
+    }
+
+
     /**
      * 显示的入口
      *

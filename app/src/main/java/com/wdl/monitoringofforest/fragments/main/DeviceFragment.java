@@ -130,6 +130,10 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
         ImageView bootState;
         @BindView(R.id.setting)
         ImageView setting;
+        @BindView(R.id.submit)
+        ImageView submit;
+        @BindView(R.id.et_password)
+        EditText pPassword;
 
         /**
          * 开关机
@@ -142,7 +146,27 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
         @OnClick(R.id.setting)
         void setting(){
             LogUtils.e("setting");
+            setState(true);
 
+        }
+
+        @OnClick(R.id.submit)
+        void submit(){
+            String remark = pRemark.getText().toString().trim();
+            String threshold = pThreshold.getText().toString().trim();
+            String delayed = pDelayed.getText().toString().trim();
+            String password = pPassword.getText().toString().trim();
+            mPresenter.update(remark,Integer.valueOf(threshold),Integer.valueOf(delayed),password);
+            setState(false);
+        }
+
+        private void setState(boolean b) {
+            pRemark.setEnabled(b);
+            pThreshold.setEnabled(b);
+            pDelayed.setEnabled(b);
+            pPassword.setEnabled(b);
+            submit.setVisibility(b?View.VISIBLE:View.INVISIBLE);
+            setting.setVisibility(b?View.INVISIBLE:View.VISIBLE);
         }
 
         public ViewHolder(View itemView) {
@@ -153,11 +177,14 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
             pName.setText(pi.getName());
             pSwitch.setChecked(pi.getSwitchState() == 0);
             pRemark.setText(pi.getRemark());
+            pPassword.setText(pi.getPassword());
             pThreshold.setText(String.valueOf(pi.getThreshold()));
             pDelayed.setText(String.valueOf(pi.getDelayed()));
             bootState.setImageResource(pi.getBootState()==1?
                    R.drawable.ic_circle:R.drawable.ic_circle_off);
         }
     }
+
+
 
 }
