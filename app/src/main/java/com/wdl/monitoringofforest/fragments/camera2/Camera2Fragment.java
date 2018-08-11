@@ -63,7 +63,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.wdl.common.widget.AutoFitTextureView;
+import com.wdl.factory.Factory;
 import com.wdl.monitoringofforest.R;
+import com.wdl.utils.BitmapUtil;
+import com.wdl.utils.LogUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -83,7 +86,9 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 public class Camera2Fragment extends Fragment
-        implements View.OnClickListener, ActivityCompat.OnRequestPermissionsResultCallback {
+        implements View.OnClickListener
+        , ActivityCompat.OnRequestPermissionsResultCallback
+        ,BitmapUtil.Progress{
 
     /**
      * Conversion from screen rotation to JPEG orientation.
@@ -520,7 +525,7 @@ public class Camera2Fragment extends Fragment
         imageView = view.findViewById(R.id.iv_pre);
         ll = view.findViewById(R.id.l_l);
         frameLayout = view.findViewById(R.id.control);
-
+        l_i = view.findViewById(R.id.l_i);
         button1 = view.findViewById(R.id.ic_c);
         button1.setOnClickListener(this);
         button2 = view.findViewById(R.id.ic_z);
@@ -1039,6 +1044,7 @@ public class Camera2Fragment extends Fragment
         }
     }
 
+    private LinearLayout l_i;
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -1049,11 +1055,57 @@ public class Camera2Fragment extends Fragment
             case R.id.ic_c: {
                 mTextureView.setVisibility(View.VISIBLE);
                 ll.setVisibility(View.INVISIBLE);
+                frameLayout.setVisibility(View.VISIBLE);
+                l_i.setVisibility(View.INVISIBLE);
+                break;
+            }
+            case R.id.ic_z: {
+                imageView.setDrawingCacheEnabled(true);
+                Bitmap bitmap = Bitmap.createBitmap(imageView.getDrawingCache());
+                LogUtils.e(bitmap.toString());
+                imageView.setDrawingCacheEnabled(false);
+                Factory.runOnAsy(new BitMapHandler(bitmap));
                 break;
             }
             default:break;
         }
     }
+
+    @Override
+    public void progress(int current, int total) {
+        Log.e(TAG, "progress: current:"+current+" total:"+total +" 百分比:"+
+                (double)current/total);
+    }
+
+    private class BitMapHandler implements Runnable{
+
+        private Bitmap bitmap;
+
+        public BitMapHandler(Bitmap bitmap) {
+            this.bitmap = bitmap;
+        }
+
+        @Override
+        public void run() {
+            //灰度
+            bitmap = BitmapUtil.bitmap2Gray(bitmap);
+            LogUtils.e(bitmap.toString());
+            //二值
+            bitmap = BitmapUtil.gray2Binary(bitmap, Camera2Fragment.this);
+            Message message = new Message();
+            message.obj = bitmap;
+            mHander.sendMessage(message);
+        }
+    }
+    private Handler mHander = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            Bitmap bitmap = (Bitmap) msg.obj;
+            imageView.setImageBitmap(bitmap);
+            showToast("灰度化成功");
+            return true;
+        }
+    });
 
     private void setAutoFlash(CaptureRequest.Builder requestBuilder) {
         if (mFlashSupported) {
@@ -1159,6 +1211,7 @@ public class Camera2Fragment extends Fragment
                     mTextureView.setVisibility(View.INVISIBLE);
                     frameLayout.setVisibility(View.INVISIBLE);
                     ll.setVisibility(View.VISIBLE);
+                    l_i.setVisibility(View.VISIBLE);
                     imageView.setImageBitmap(orc_bitmap);
                 }
 
@@ -1186,7 +1239,7 @@ public class Camera2Fragment extends Fragment
         try {
             fos = new FileOutputStream(imgFile);
             bos = new BufferedOutputStream(fos);
-            b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            b.compress(Bitmap.CompressFormat.JPEG, 80, fos);
         } catch (Exception error) {
             return null;
         } finally {
