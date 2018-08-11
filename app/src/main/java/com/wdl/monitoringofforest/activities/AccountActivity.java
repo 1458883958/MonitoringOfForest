@@ -61,7 +61,7 @@ public class AccountActivity extends Activity implements AccountTrigger{
 
         //初始化背景
         Glide.with(this)
-                .load(R.drawable.bg_src_city)
+                .load(R.drawable.bg_forest)
                 .centerCrop()
                 .into(new ViewTarget<ImageView, GlideDrawable>(mBg) {
                     @Override
@@ -71,8 +71,8 @@ public class AccountActivity extends Activity implements AccountTrigger{
                         //使用适配类进行包装
                         drawable = DrawableCompat.wrap(drawable);
                         //设置着色效果以及颜色   蒙板模式
-                        drawable.setColorFilter(UiCompat.getColor(getResources(), R.color.alertNormal),
-                                PorterDuff.Mode.SCREEN);
+//                        drawable.setColorFilter(UiCompat.getColor(getResources(), R.color.green_a400),
+//                                PorterDuff.Mode.SCREEN);
                         //设置进imageView
                         this.view.setImageDrawable(drawable);
                     }

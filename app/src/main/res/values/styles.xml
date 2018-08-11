@@ -11,6 +11,12 @@
         <item name="colorControlActivated">@color/textPrimary</item>
     </style>
 
+
+    <style name="BadgeText" parent="TextAppearance.AppCompat.Body2">
+
+        <item name="android:textSize">@dimen/font_12</item>
+    </style>
+
     <!--去除顶部状态栏-->
     <style name="AppTheme.TransStatusBar.Base" parent="AppTheme">
         <item name="android:windowTranslucentStatus">true</item>

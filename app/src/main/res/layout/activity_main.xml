@@ -90,6 +90,14 @@
         app:layout_anchor="@id/lay_container"
         app:layout_anchorGravity="end|bottom" />
 
+    <com.wdl.common.widget.PortraitView
+        android:id="@+id/pv_deal"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="52dp"
+        android:src="@drawable/default_portrait"
+        android:layout_width="@dimen/portraitSize"
+        android:layout_height="@dimen/portraitSize" />
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"

@@ -29,6 +29,7 @@ import com.wdl.monitoringofforest.fragments.main.ContactFragment;
 import com.wdl.monitoringofforest.fragments.main.DealFragment;
 import com.wdl.monitoringofforest.fragments.main.DeviceFragment;
 import com.wdl.monitoringofforest.fragments.main.PersonalFragment;
+import com.wdl.monitoringofforest.helper.BottomNavigationViewHelper;
 import com.wdl.monitoringofforest.helper.NavHelper;
 import com.wdl.utils.LogUtils;
 
@@ -67,6 +68,10 @@ public class MainActivity extends Activity
     private NavHelper<Integer> helper;
 
 
+    @OnClick(R.id.pv_deal)
+    void camera(){
+        Camera2Activity.show(this);
+    }
     /**
      * 导航栏搜索按钮点击事件
      */
@@ -111,9 +116,10 @@ public class MainActivity extends Activity
                 .addTab(R.id.action_personal, new NavHelper.Tab<>(PersonalFragment.class, R.string.title_personal));
         //添加底部按钮点击监听
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         //加载背景
         Glide.with(this)
-                .load(R.drawable.bg_src_city)
+                .load(R.drawable.bg_forest)
                 .centerCrop()
                 .into(new ViewTarget<View, GlideDrawable>(appBar) {
                     @Override

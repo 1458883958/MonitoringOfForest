@@ -59,12 +59,12 @@ public class LaunchActivity extends Activity {
             }
         }
         //循环等待
-        getWindow().getDecorView().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                receiverPushID();
-            }
-        }, 500);
+//        getWindow().getDecorView().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                receiverPushID();
+//            }
+//        }, 500);
     }
 
     private void skip() {

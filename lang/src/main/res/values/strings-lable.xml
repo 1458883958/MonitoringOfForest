@@ -14,7 +14,7 @@
     <string name="label_permission_camera_desc">用于拍照</string>
     <string name="label_permission_submit">授权</string>
     <string name="label_permission_ok">授权成功！</string>
-
+    <string name="picture">Picture</string>
     <string name="label_login_welcome">登录</string>
     <string name="label_submit">提交</string>
     <string name="label_login">登录</string>
