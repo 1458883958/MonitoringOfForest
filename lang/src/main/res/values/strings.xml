@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">lang</string>
+    <string name="app_name_zh">基于树莓派的深林郁闭度检测APP</string>
 </resources>

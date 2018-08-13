@@ -102,6 +102,19 @@ public class Account {
     }
 
     /**
+     * 清除sharedPreferences的内容
+     *
+     * @param context 上下文
+     */
+    public static void clear(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(Account.class.getName(),
+                Context.MODE_PRIVATE);
+        sp.edit()
+                .clear()
+                .apply();
+    }
+
+    /**
      * 加载用户信息
      *
      * @param context 上下文
@@ -111,7 +124,7 @@ public class Account {
                 Context.MODE_PRIVATE);
         userId = sp.getInt(KEY_USER_ID, -1);
         account = sp.getString(KEY_ACCOUNT, "");
-        pushId = sp.getString(KEY_PUSH_ID,"");
+        pushId = sp.getString(KEY_PUSH_ID, "");
     }
 
     /**

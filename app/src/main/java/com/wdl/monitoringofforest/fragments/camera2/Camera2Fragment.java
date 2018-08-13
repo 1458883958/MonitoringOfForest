@@ -48,6 +48,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -62,9 +63,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.wdl.common.widget.AutoFitTextureView;
 import com.wdl.factory.Factory;
 import com.wdl.monitoringofforest.R;
+import com.wdl.monitoringofforest.activities.Camera2Activity;
 import com.wdl.utils.BitmapUtil;
 import com.wdl.utils.LogUtils;
 
@@ -84,11 +87,10 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-
 public class Camera2Fragment extends Fragment
         implements View.OnClickListener
         , ActivityCompat.OnRequestPermissionsResultCallback
-        ,BitmapUtil.Progress{
+        , BitmapUtil.Progress {
 
     /**
      * Conversion from screen rotation to JPEG orientation.
@@ -1045,6 +1047,7 @@ public class Camera2Fragment extends Fragment
     }
 
     private LinearLayout l_i;
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -1067,17 +1070,18 @@ public class Camera2Fragment extends Fragment
                 Factory.runOnAsy(new BitMapHandler(bitmap));
                 break;
             }
-            default:break;
+            default:
+                break;
         }
     }
 
     @Override
     public void progress(int current, int total) {
-        Log.e(TAG, "progress: current:"+current+" total:"+total +" 百分比:"+
-                (double)current/total);
+        Log.e(TAG, "progress: current:" + current + " total:" + total + " 百分比:" +
+                (double) current / total);
     }
 
-    private class BitMapHandler implements Runnable{
+    private class BitMapHandler implements Runnable {
 
         private Bitmap bitmap;
 
@@ -1088,6 +1092,7 @@ public class Camera2Fragment extends Fragment
         @Override
         public void run() {
             //灰度
+            bitmap = BitmapUtil.compress(bitmap);
             bitmap = BitmapUtil.bitmap2Gray(bitmap);
             LogUtils.e(bitmap.toString());
             //二值
@@ -1097,6 +1102,7 @@ public class Camera2Fragment extends Fragment
             mHander.sendMessage(message);
         }
     }
+
     private Handler mHander = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -1142,7 +1148,17 @@ public class Camera2Fragment extends Fragment
             byte[] bytes = new byte[buffer.remaining()];
             buffer.get(bytes);
             imagePath = savePicture(bytes);
-            Log.e(TAG, "run: " + imagePath);
+//            try {
+//                File file =  Luban.with(getContext()).load(imagePath).get().get(0);
+//                Message message = new Message();
+//                message.obj = file;
+//                handler1.sendMessage(message);
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            Log.e(TAG, "run: " + imagePath);
+
             Message message = new Message();
             message.obj = imagePath;
             handler.sendMessage(message);
@@ -1167,14 +1183,30 @@ public class Camera2Fragment extends Fragment
 
     }
 
+//    private Handler handler1 = new Handler(new Handler.Callback() {
+//        @Override
+//        public boolean handleMessage(Message msg) {
+//            File file = (File) msg.obj;
+//            mTextureView.setVisibility(View.INVISIBLE);
+//            frameLayout.setVisibility(View.INVISIBLE);
+//            ll.setVisibility(View.VISIBLE);
+//            l_i.setVisibility(View.VISIBLE);
+//            Glide.with(getContext())
+//                    .load(file)
+//                    .into(imageView);
+//            return true;
+//        }
+//    });
     private LinearLayout ll;
 
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
+
             int digree = 0;
             String path = (String) msg.obj;
-            Bitmap orc_bitmap = BitmapFactory.decodeFile(path);
+            Bitmap bm = BitmapFactory.decodeFile(path);
+            //bm = Bitmap.createScaledBitmap(bm, 150, 150, true);
             ExifInterface exif;
             try {
                 exif = new ExifInterface(path);
@@ -1204,15 +1236,15 @@ public class Camera2Fragment extends Fragment
                     Matrix m = new Matrix();
                     //顺时针旋转90
                     m.postRotate(90);
-                    orc_bitmap = Bitmap.createBitmap(orc_bitmap, 0, 0, orc_bitmap.getWidth(),
-                            orc_bitmap.getHeight(), m, true);
+                    bm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(),
+                            bm.getHeight(), m, true);
                 }
-                if (orc_bitmap != null) {
+                if (bm != null) {
                     mTextureView.setVisibility(View.INVISIBLE);
                     frameLayout.setVisibility(View.INVISIBLE);
                     ll.setVisibility(View.VISIBLE);
                     l_i.setVisibility(View.VISIBLE);
-                    imageView.setImageBitmap(orc_bitmap);
+                    imageView.setImageBitmap(bm);
                 }
 
             } catch (IOException e) {

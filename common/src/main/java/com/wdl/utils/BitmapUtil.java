@@ -1,10 +1,13 @@
 package com.wdl.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.util.Log;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -65,13 +68,22 @@ public class BitmapUtil {
                 int newColor = alpha | (gray << 16) | (gray << 8) | gray;
                 //设置新图像的当前像素值
                 binarymap.setPixel(i, j, newColor);
-                if (progress!=null){
+                if (progress!=null&&i*j%1000==0){
                     progress.progress((i+1)*(j+1),total);
                 }
             }
         }
         return binarymap;
     }
+
+    public static Bitmap compress(Bitmap bitmap){
+        Matrix matrix = new Matrix();
+        matrix.setScale(0.5f, 0.5f);
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                bitmap.getHeight(), matrix, true);
+        return bitmap;
+    }
+
 
     public interface Progress{
         void progress(int current,int total);

@@ -1,4 +1,31 @@
 apply plugin: 'com.android.application'
+
+apply plugin: 'com.mob.sdk'
+MobSDK {
+    appKey "275640ab31920"
+    appSecret "985406bd4794babbf8f6c928a3f67d8f"
+    ShareSDK {
+        //平台配置信息
+        devInfo {
+            QQ {
+                appId "1106756795"
+                appKey "2CzK1ExBGgyXeBHw"
+            }
+            QZone {
+                appId "1106756795"
+                appKey "2CzK1ExBGgyXeBHw"
+            }
+            Wechat {
+                appId "wx71c9ad3cae5fd95c"
+                appSecret "ef0f967e8353cf63330fa2fc8c92a4c7"
+            }
+            WechatMoments {
+                appId "wx71c9ad3cae5fd95c"
+                appSecret "ef0f967e8353cf63330fa2fc8c92a4c7"
+            }
+        }
+    }
+}
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -48,6 +75,7 @@ dependencies {
         transitive = false
     }
     implementation "com.google.zxing:core:$rootProject.ext.zxingCoreVersion"
+
 
     implementation project(':common')
     api project(':factory')

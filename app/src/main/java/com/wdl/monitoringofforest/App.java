@@ -2,6 +2,7 @@ package com.wdl.monitoringofforest;
 
 
 import com.igexin.sdk.PushManager;
+import com.mob.MobSDK;
 import com.wdl.common.app.Application;
 import com.wdl.factory.Factory;
 
@@ -21,6 +22,7 @@ public class App extends Application {
         Factory.setUp();
         //初始化个推
         PushManager.getInstance().initialize(this);
+        MobSDK.init(this);
 
     }
 }

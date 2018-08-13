@@ -4,6 +4,8 @@ import com.wdl.factory.model.api.account.LoginModel;
 import com.wdl.factory.model.api.account.RegisterModel;
 import com.wdl.factory.model.api.account.RspModel;
 import com.wdl.factory.model.api.pi.PiModel;
+import com.wdl.factory.model.card.Feedback;
+import com.wdl.factory.model.card.Image;
 import com.wdl.factory.model.card.Notice;
 import com.wdl.factory.model.card.Pi;
 import com.wdl.factory.model.card.User;
@@ -54,6 +56,15 @@ public interface RemoteService {
     @POST("user/select")
     Call<RspModel<User>> login(@Body LoginModel model);
 
+    /**
+     * 更新用户信息
+     *
+     * @param user User
+     * @return RspModel<User>
+     */
+    @POST("user/update")
+    Call<RspModel<User>> update(@Body User user);
+
 
     /**
      * 获取用户信息
@@ -69,7 +80,7 @@ public interface RemoteService {
     /**
      * 查询所有公告
      *
-     * @return RspModel<List<Notice>>
+     * @return RspModel<List       <       Notice>>
      */
     @POST("notice/selectAll")
     Call<RspModel<List<Notice>>> notice();
@@ -113,5 +124,31 @@ public interface RemoteService {
     @POST("pi/update")
     Call<RspModel<Pi>> update(@Body PiModel model);
 
+    /**
+     * 添加反馈(需传uId、fSubject、fContent)
+     *
+     * @param feedback Feedback
+     * @return RspModel<Feedback>
+     */
+    @POST("feedback/insert")
+    Call<RspModel<Feedback>> insertFeedback(@Body Feedback feedback);
 
+    /**
+     * 查看所有反馈(需传uId)
+     *
+     * @param feedback Feedback
+     * @return RspModel<List < Feedback>>
+     */
+    @POST("feedback/selectByUid")
+    Call<RspModel<List<Feedback>>> selectFeedback(@Body Feedback feedback);
+
+
+    /**
+     * 获取设备的图片
+     *
+     * @param pId pId
+     * @return RspModel<List<Image>>
+     */
+    @POST("image/selectByPid")
+    Call<RspModel<List<Image>>> getPic(@Body Integer pId);
 }
