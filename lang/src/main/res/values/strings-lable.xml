@@ -24,6 +24,7 @@
     <string name="label_register">注册</string>
     <string name="label_password">密码</string>
     <string name="label_look_his">查看历史</string>
+    <string name="feed_back_succeed">反馈成功</string>
 
     <string name="label_init_password">初始密码为1245sd</string>
     <string name="label_go_start">请前往启动QQ</string>

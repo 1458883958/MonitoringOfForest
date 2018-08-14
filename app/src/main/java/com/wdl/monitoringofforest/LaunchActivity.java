@@ -49,7 +49,7 @@ public class LaunchActivity extends Activity {
      */
     private void receiverPushID() {
         //如果登陆
-        if (!Account.isLogin()) {
+        if (Account.isLogin()) {
             skip();
             return;
         } else {
@@ -96,7 +96,7 @@ public class LaunchActivity extends Activity {
     private void toApp() {
         //已获取全部权限
         if (PermissionsFragment.haveAllPermission(this, getSupportFragmentManager())) {
-            if (!Account.isLogin())
+            if (Account.isLogin())
                 MainActivity.show(this);
             else
                 AccountActivity.show(this);

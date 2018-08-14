@@ -8,6 +8,8 @@ import com.wdl.factory.model.card.Feedback;
 import com.wdl.factory.net.Network;
 import com.wdl.factory.net.RemoteService;
 
+import java.util.List;
+
 import retrofit2.Call;
 
 /**
@@ -35,8 +37,29 @@ public class FeedbackHelper {
             @Override
             protected void succeed(Feedback data) {
                 Factory.getFeedbackCenter().dispatch(data);
-                if (callback!=null)
+                if (callback != null)
                     callback.onLoaded(data);
+            }
+        });
+    }
+
+    /**
+     * 查询所有反馈
+     *
+     * @param feedback Feedback
+     */
+    public static void select(Feedback feedback) {
+        RemoteService service = Network.remoteService();
+        final Call<RspModel<List<Feedback>>> call = service.selectFeedback(feedback);
+        call.enqueue(new CallbackImpl<List<Feedback>>() {
+            @Override
+            protected void failed(String msg) {
+
+            }
+
+            @Override
+            protected void succeed(List<Feedback> data) {
+                Factory.getFeedbackCenter().dispatch(data.toArray(new Feedback[0]));
             }
         });
     }

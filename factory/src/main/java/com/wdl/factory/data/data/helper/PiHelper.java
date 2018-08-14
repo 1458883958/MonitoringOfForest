@@ -82,32 +82,22 @@ public class PiHelper {
      * 拍照开关
      *
      * @param model PiModel
-     * @param piDb  PiDb
      */
-    public static void change(PiModel model, final PiDb piDb) {
+    public static void change(PiModel model,final PiDb db) {
         RemoteService service = Network.remoteService();
-        Call<RspModel<String>> call = service.changedState(model);
-        call.enqueue(new CallbackImpl<String>() {
+        Call<RspModel<Pi>> call = service.changedState(model);
+        call.enqueue(new CallbackImpl<Pi>() {
             @Override
             protected void failed(String msg) {
 
             }
 
             @Override
-            protected void succeed(String data) {
-
+            protected void succeed(Pi data) {
+                db.setSwitchState(data.getpSwitchstate());
+                Factory.getPiCenter().dispatch(db);
             }
 
-            @Override
-            protected void succeedMsg(String msg) {
-                if ("OK".equals(msg)) {
-                    if (piDb.getSwitchState() == 0)
-                        piDb.setSwitchState(1);
-                    else if (piDb.getSwitchState() == 1)
-                        piDb.setSwitchState(0);
-                    Factory.getPiCenter().dispatch(piDb);
-                }
-            }
         });
     }
 
@@ -127,7 +117,7 @@ public class PiHelper {
 
             @Override
             protected void succeed(Pi data) {
-
+                Factory.getPiCenter().dispatch(data);
             }
         });
     }

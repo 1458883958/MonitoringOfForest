@@ -3,6 +3,9 @@ package com.wdl.monitoringofforest.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.wdl.common.app.Fragment;
 import com.wdl.common.app.ToolbarActivity;
@@ -40,6 +43,25 @@ public class FeedbackActivity extends ToolbarActivity implements FeedbackTrigger
                 .beginTransaction()
                 .replace(R.id.lay_container, mCurrentFragment)
                 .commit();
+    }
+
+    /**
+     * 初始化menu
+     * @param menu Menu
+     * @return true
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.feed_back,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==R.id.go_feedback)
+            triggerView();
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

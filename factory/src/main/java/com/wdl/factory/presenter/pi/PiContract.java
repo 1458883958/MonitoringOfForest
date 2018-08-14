@@ -29,7 +29,8 @@ public interface PiContract {
         /**
          * 改变设备拍照状态
          */
-        void changedSwitch(PiDb piDb);
+        void changedSwitch(int pId,int state);
+        void changedSwitch(PiDb db);
 
         /**
          * 更新设备

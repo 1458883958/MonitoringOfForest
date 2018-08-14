@@ -1,20 +1,18 @@
 package com.wdl.monitoringofforest.fragments.feedback;
 
 
-
-import android.content.Context;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.wdl.common.app.Application;
 import com.wdl.common.app.Fragment;
 import com.wdl.common.app.PresenterFragment;
 import com.wdl.factory.presenter.feedback.AddFeedbackContract;
 import com.wdl.factory.presenter.feedback.AddFeedbackPresenter;
 import com.wdl.monitoringofforest.R;
-import com.wdl.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,20 +35,6 @@ public class FeedbackFragment extends PresenterFragment<AddFeedbackContract.Pres
     private String subject;
     @BindView(R.id.feed_content)
     EditText mContent;
-    private FeedbackTrigger trigger;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.trigger = (FeedbackTrigger) context;
-
-    }
-
-    @OnClick(R.id.go_his_feedback)
-    void goHis(){
-        trigger.triggerView();
-    }
-
 
     @OnClick(R.id.submit)
     void submit(){
@@ -87,7 +71,6 @@ public class FeedbackFragment extends PresenterFragment<AddFeedbackContract.Pres
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         subject = adapter.getItem(position);
-        LogUtils.e("点击了："+subject);
     }
 
     @Override
@@ -99,8 +82,11 @@ public class FeedbackFragment extends PresenterFragment<AddFeedbackContract.Pres
         return new AddFeedbackPresenter(this);
     }
 
+    /**
+     * 反馈成功
+     */
     @Override
     public void insertSucceed() {
-        LogUtils.e("insert feedback succeed");
+        Application.showToast(R.string.feed_back_succeed);
     }
 }

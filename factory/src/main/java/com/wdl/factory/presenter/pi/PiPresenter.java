@@ -76,15 +76,30 @@ public class PiPresenter extends BaseSourcePresenter<PiDb, PiDb, PiDataSource, P
     /**
      * 改变拍照状态
      *
-     * @param piDb          PiD
+     * @param state      状态
      * */
     @Override
-    public void changedSwitch(PiDb piDb) {
+    public void changedSwitch(int pId,int state) {
         PiModel model = new PiModel();
-        model.setpId(piDb.getId());
-        model.setpSwitchstate(piDb.getSwitchState());
-        PiHelper.change(model,piDb);
+        model.setpId(pId);
+        model.setpSwitchstate(state);
+        //PiHelper.change(model);
     }
+
+    /**
+     * 改变拍照状态
+     *
+     * @param db      PiDb
+     * */
+    @Override
+    public void changedSwitch(PiDb db) {
+        PiModel model = new PiModel();
+        model.setpId(db.getId());
+        int state = db.getSwitchState()==0?1:0;
+        model.setpSwitchstate(state);
+        PiHelper.change(model,db);
+    }
+
 
     /**
      * @param remark    备注

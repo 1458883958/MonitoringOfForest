@@ -112,7 +112,7 @@ public interface RemoteService {
      * @return RspModel<String>
      */
     @POST("pi/changeSwitchState")
-    Call<RspModel<String>> changedState(@Body PiModel model);
+    Call<RspModel<Pi>> changedState(@Body PiModel model);
 
 
     /**
