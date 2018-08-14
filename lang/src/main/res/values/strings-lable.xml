@@ -23,6 +23,7 @@
     <string name="label_register_welcome">欢迎您!</string>
     <string name="label_register">注册</string>
     <string name="label_password">密码</string>
+    <string name="label_look_his">查看历史</string>
 
     <string name="label_init_password">初始密码为1245sd</string>
     <string name="label_go_start">请前往启动QQ</string>
@@ -52,6 +53,7 @@
     <string name="label_account_feedback">反馈</string>
     <string name="label_copyright">Copyright© 2018&#8211;2018 Smu. All Rights Reserved</string>
     <string name="label_privacy">隐私政策</string>
+    <string name="label_feedback_hint">请输入遇到的问题或建议</string>
 
 
 

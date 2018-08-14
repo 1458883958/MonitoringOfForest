@@ -5,9 +5,12 @@ import com.google.gson.GsonBuilder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.wdl.common.app.Application;
+import com.wdl.factory.data.data.feedback.FeedbackCenter;
+import com.wdl.factory.data.data.feedback.FeedbackDispatch;
 import com.wdl.factory.data.data.pi.PiCenter;
 import com.wdl.factory.data.data.pi.PiDispatcher;
 import com.wdl.factory.data.data.user.UserCenter;
+import com.wdl.factory.model.card.Feedback;
 import com.wdl.factory.persistence.Account;
 import com.wdl.factory.utils.DBFlowExclusionStrategies;
 
@@ -125,6 +128,15 @@ public class Factory {
      */
     public static PiCenter getPiCenter() {
         return PiDispatcher.getPiCenter();
+    }
+
+    /**
+     * 获取反馈中心,规范
+     *
+     * @return 实现类
+     */
+    public static FeedbackCenter getFeedbackCenter() {
+        return FeedbackDispatch.getFeedbackCenter();
     }
 
     /**

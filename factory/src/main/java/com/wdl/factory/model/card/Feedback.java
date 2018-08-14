@@ -1,5 +1,7 @@
 package com.wdl.factory.model.card;
 
+import com.wdl.factory.model.db.FeedbackDb;
+
 import java.util.Date;
 
 /**
@@ -19,6 +21,20 @@ public class Feedback {
     private String fContent;
 
     public Feedback() {
+    }
+
+    private transient FeedbackDb feedbackDb;
+    public FeedbackDb build(){
+        if (feedbackDb==null){
+            FeedbackDb db = new FeedbackDb();
+            db.setId(fId);
+            db.setContent(fContent);
+            db.setSubject(fSubject);
+            db.setBeread(fBeread);
+            db.setTime(fTime);
+            this.feedbackDb = db;
+        }
+        return feedbackDb;
     }
 
     public Integer getfId() {

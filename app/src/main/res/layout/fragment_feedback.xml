@@ -1,14 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.set_info.FeedbackFragment">
+    android:background="#f0f0f0"
+    android:orientation="vertical"
+    tools:context=".fragments.feedback.FeedbackFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
-</FrameLayout>
+        <EditText
+            android:background="@null"
+            android:id="@+id/feed_content"
+            android:layout_width="match_parent"
+            android:padding="@dimen/len_12"
+            android:layout_height="@dimen/len_156"
+            android:gravity="start|top"
+            android:hint="@string/label_feedback_hint"
+            android:maxHeight="@dimen/len_156"
+            android:minLines="5"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/textSecond"
+            android:inputType="text" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/len_28"
+        android:background="@color/white">
+
+        <Spinner
+            android:layout_marginStart="@dimen/len_14"
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/len_36"
+             />
+        <ImageView
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="@dimen/len_12"
+            android:src="@drawable/ic_direction_right"
+            android:tint="@color/textSecond"
+            android:layout_width="@dimen/len_12"
+            android:layout_height="@dimen/len_12"
+            android:contentDescription="@string/app_name" />
+    </FrameLayout>
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/go_his_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_look_his" />
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/len_12"
+        android:text="@string/label_submit" />
+
+
+</LinearLayout>

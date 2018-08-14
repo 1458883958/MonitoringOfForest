@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinner">
+        <item>黑屏卡顿问题</item>
+        <item>设备控制延时高</item>
+        <item>查看历史图片卡顿</item>
+        <item>其他</item>
+    </string-array>
+</resources>
