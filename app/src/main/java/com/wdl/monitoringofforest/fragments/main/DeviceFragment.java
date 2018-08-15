@@ -15,6 +15,7 @@ import com.wdl.factory.model.db.PiDb;
 import com.wdl.factory.presenter.pi.PiContract;
 import com.wdl.factory.presenter.pi.PiPresenter;
 import com.wdl.monitoringofforest.R;
+import com.wdl.monitoringofforest.activities.DeviceDataActivity;
 import com.wdl.utils.LogUtils;
 
 import butterknife.BindView;
@@ -67,6 +68,14 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
             }
         });
 
+        adapter.setListener(new RecyclerAdapter.AdapterListenerImpl<PiDb>() {
+            @Override
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, PiDb piDb) {
+                super.onItemClick(holder, piDb);
+                int pId = piDb.getId();
+                DeviceDataActivity.show(getContext(),pId);
+            }
+        });
 
         //绑定recycler
         emptyView.bind(recyclerView);
@@ -133,11 +142,6 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
         @OnClick(R.id.pSwitch)
         void changedPi() {
             mPresenter.changedSwitch(data);
-//            int pId = data.getId();
-//            if (data.getSwitchState() == 0)
-//                mPresenter.changedSwitch(pId,1);
-//            else
-//                mPresenter.changedSwitch(pId,0);
         }
 
         @OnClick(R.id.setting)

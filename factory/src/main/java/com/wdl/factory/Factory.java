@@ -92,6 +92,9 @@ public class Factory {
             case "密码验证错误，请重新输入密码。":
                 decodeRspCoded(R.string.data_rsp_account_invalid_password, callback);
                 break;
+            case "帐号或密码错误。":
+                decodeRspCoded(R.string.data_rsp_account_invalid,callback);
+                break;
             default:
                 decodeRspCoded(R.string.data_rsp_error_unknown, callback);
                 break;

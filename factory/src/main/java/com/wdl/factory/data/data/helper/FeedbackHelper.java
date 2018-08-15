@@ -7,6 +7,7 @@ import com.wdl.factory.model.api.account.RspModel;
 import com.wdl.factory.model.card.Feedback;
 import com.wdl.factory.net.Network;
 import com.wdl.factory.net.RemoteService;
+import com.wdl.factory.persistence.Account;
 
 import java.util.List;
 

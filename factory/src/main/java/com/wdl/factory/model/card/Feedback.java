@@ -27,6 +27,7 @@ public class Feedback {
     public FeedbackDb build(){
         if (feedbackDb==null){
             FeedbackDb db = new FeedbackDb();
+            db.setUserId(uId);
             db.setId(fId);
             db.setContent(fContent);
             db.setSubject(fSubject);

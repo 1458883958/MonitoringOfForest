@@ -97,6 +97,10 @@
             android:name=".activities.QQBindActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.TransStatusBar" />
+        <activity
+            android:name=".activities.DeviceDataActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.TransStatusBar" />
     </application>
 
 </manifest>

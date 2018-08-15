@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.wdl.factory.data.data.helper.DbHelper;
 import com.wdl.factory.model.card.Pi;
 import com.wdl.factory.model.db.PiDb;
+import com.wdl.factory.persistence.Account;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +72,10 @@ public class PiDispatcher implements PiCenter {
             for (Pi pi : pis) {
                 if (pi==null|| TextUtils.isEmpty(""+pi.getpId()))continue;
                 //添加
-                dbs.add(pi.build());
+                PiDb db = pi.build();
+                db.setUserId(Account.getUserId());
+                dbs.add(db);
+
             }
             //进行数据库存储并分发通知
             DbHelper.save(PiDb.class,dbs.toArray(new PiDb[0]));

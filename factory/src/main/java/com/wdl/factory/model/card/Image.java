@@ -1,5 +1,9 @@
 package com.wdl.factory.model.card;
 
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.wdl.factory.model.db.ImageDb;
+
+import java.security.PrivateKey;
 import java.util.Date;
 
 /**
@@ -18,6 +22,20 @@ public class Image {
     private Date iTime;
 
     public Image() {
+    }
+
+    private transient ImageDb imageDb;
+
+    public ImageDb build(){
+        if (imageDb==null){
+            ImageDb db = new ImageDb();
+            db.setId(iId);
+            db.setPiId(pId);
+            db.setDensity(iDensity);
+            db.setImagePath(iImagepath);
+            this.imageDb = db;
+        }
+        return imageDb;
     }
 
     public Integer getiId() {

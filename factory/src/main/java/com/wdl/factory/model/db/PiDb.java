@@ -1,10 +1,12 @@
 package com.wdl.factory.model.db;
 
 import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.wdl.factory.model.card.Pi;
+import com.wdl.factory.model.card.User;
 import com.wdl.factory.utils.DiffUiDataCallback;
 
 import java.io.Serializable;
@@ -38,8 +40,17 @@ public class PiDb extends BaseDbModel<PiDb> implements Serializable {
     private Integer switchState;
     @Column
     private Integer bootState;
-
+    @Column
+    private int userId;
     public PiDb() {
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public Integer getId() {

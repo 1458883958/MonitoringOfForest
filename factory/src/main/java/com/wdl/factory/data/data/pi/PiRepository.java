@@ -1,14 +1,12 @@
 package com.wdl.factory.data.data.pi;
 
-import android.support.annotation.NonNull;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import com.raizlabs.android.dbflow.structure.database.transaction.QueryTransaction;
 import com.wdl.factory.data.data.BaseDbRepository;
-import com.wdl.factory.data.data.helper.DbHelper;
 import com.wdl.factory.model.db.PiDb;
+import com.wdl.factory.model.db.PiDb_Table;
+import com.wdl.factory.persistence.Account;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -27,6 +25,7 @@ public class PiRepository extends BaseDbRepository<PiDb> implements PiDataSource
        //数据加载
        SQLite.select()
                .from(PiDb.class)
+               .where(PiDb_Table.userId.eq(Account.getUserId()))
                .limit(10)
                .async()
                //此方法起主导作用

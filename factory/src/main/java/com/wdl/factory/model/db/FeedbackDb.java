@@ -1,9 +1,11 @@
 package com.wdl.factory.model.db;
 
 import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.wdl.factory.model.card.User;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -29,10 +31,18 @@ public class FeedbackDb extends BaseDbModel<FeedbackDb> implements Serializable{
     private Date time;
     @Column
     private String content;
-
+    @Column
+    private int userId;
     public FeedbackDb() {
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public Integer getId() {
         return id;
@@ -81,7 +91,6 @@ public class FeedbackDb extends BaseDbModel<FeedbackDb> implements Serializable{
         FeedbackDb that = (FeedbackDb) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(subject, that.subject) &&
-                Objects.equals(beread, that.beread) &&
                 Objects.equals(time, that.time) &&
                 Objects.equals(content, that.content);
     }
