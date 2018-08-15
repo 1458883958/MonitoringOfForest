@@ -53,7 +53,7 @@ public class LaunchActivity extends Activity {
             skip();
             return;
         } else {
-            if (!TextUtils.isEmpty(Account.getPushId())) {
+            if (TextUtils.isEmpty(Account.getPushId())) {
                 skip();
                 return;
             }

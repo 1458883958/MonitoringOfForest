@@ -16,6 +16,13 @@ public interface LoginContract {
          * 登陆成功
          */
         void loginSucceed();
+
+        /**
+         * QQ登陆失败
+         */
+        void qqLoginDefault();
+
+
     }
 
     interface Presenter extends BaseContract.Presenter {
@@ -26,5 +33,15 @@ public interface LoginContract {
          * @param password 密码
          */
         void login(String phone, String password);
+
+        /**
+         * qq登录
+         *
+         * @param uUsername qq获取的userId
+         */
+        void qqLogin(String uUsername);
+
+        String getUserId();
+
     }
 }

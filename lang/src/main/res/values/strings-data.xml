@@ -8,12 +8,16 @@
     <string name="data_net_error">网络错误！</string>
     <string name="data_empty">返回数据为空</string>
     <string name="data_phone_number">15080560559</string>
+    <string name="data_oss_defeat">授权登陆失败</string>
+    <string name="data_oss_cancel">授权登陆取消</string>
+    <string name="data_account_unbind_qq">此账户未绑定(ρ_・).。</string>
 
     <string name="data_rsp_error_parameters_exist_account">已有该账户! ★~★</string>
     <string name="data_rsp_error_unknown">未知错误(ρ_・).。</string>
     <string name="data_account_error_un_login">用户未登录(ρ_・).。</string>
     <string name="data_rsp_error_verification_code">验证码错误!</string>
     <string name="data_feedback_invalid_parameter">标题和内容不能为空</string>
+    <string name="data_rsp_account_invalid_password">密码错误,请输入正确的密码</string>
 
 
 </resources>

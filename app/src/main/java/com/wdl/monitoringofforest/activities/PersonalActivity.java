@@ -155,4 +155,9 @@ public class PersonalActivity extends PresenterToolbarActivity<PersonalContract.
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void showToast(int res) {
+
+    }
 }

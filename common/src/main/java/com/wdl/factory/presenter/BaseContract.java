@@ -27,6 +27,8 @@ public interface BaseContract {
          */
         void showLoading();
 
+        void showToast(@StringRes int res);
+
         /**
          * 显示错误信息
          *

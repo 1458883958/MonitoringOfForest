@@ -45,6 +45,14 @@ public abstract class PresenterFragment<Presenter extends BaseContract.Presenter
             Application.showToast(res);
     }
 
+    @Override
+    public void showToast(int res) {
+        if (placeHolderView != null) {
+            placeHolderView.triggerError(res);
+        } else
+            Application.showToast(res);
+    }
+
     /**
      * 设置presenter
      *

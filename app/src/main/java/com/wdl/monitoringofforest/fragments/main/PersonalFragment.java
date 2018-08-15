@@ -14,6 +14,7 @@ import com.wdl.factory.Factory;
 import com.wdl.factory.persistence.Account;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.activities.AboutAppActivity;
+import com.wdl.monitoringofforest.activities.AccountActivity;
 import com.wdl.monitoringofforest.activities.ShareActivity;
 
 import java.util.Objects;
@@ -69,6 +70,7 @@ public class PersonalFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                         Account.clear(Factory.application());
+                        AccountActivity.show(getContext());
                         Objects.requireNonNull(getActivity()).finish();
                     }
                 })

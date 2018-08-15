@@ -29,6 +29,9 @@
     <string name="label_init_password">初始密码为1245sd</string>
     <string name="label_go_start">请前往启动QQ</string>
     <string name="label_add">绑定</string>
+    <string name="label_bind_ok">绑定成功</string>
+    <string name="label_have_account_go_bind">已有账号,去绑定?</string>
+    <string name="label_not_account_go_reg">去注册?</string>
     <string name="label_device_id">设备id</string>
     <string name="label_name">名字</string>
     <string name="label_code">验证码</string>

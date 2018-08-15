@@ -12,7 +12,14 @@ public class RegisterModel {
     private String uTelephone;
     private String uPassword;
     private String code;
+    private String uUsername;
 
+    public RegisterModel(String uUsername,String uTelephone, String uPassword, String code) {
+        this.uTelephone = uTelephone;
+        this.uPassword = uPassword;
+        this.code = code;
+        this.uUsername = uUsername;
+    }
 
     public RegisterModel(String uTelephone, String uPassword, String code) {
         this.uTelephone = uTelephone;
@@ -21,6 +28,14 @@ public class RegisterModel {
     }
 
     public RegisterModel() {
+    }
+
+    public String getuUsername() {
+        return uUsername;
+    }
+
+    public void setuUsername(String uUsername) {
+        this.uUsername = uUsername;
     }
 
     public String getuTelephone() {

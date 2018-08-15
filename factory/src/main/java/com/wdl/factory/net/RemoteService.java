@@ -80,7 +80,7 @@ public interface RemoteService {
     /**
      * 查询所有公告
      *
-     * @return RspModel<List       <       Notice>>
+     * @return RspModel<List               <               Notice>>
      */
     @POST("notice/selectAll")
     Call<RspModel<List<Notice>>> notice();
@@ -91,7 +91,7 @@ public interface RemoteService {
      * 查看已绑定设备列表
      *
      * @param user User
-     * @return RspModel<List<Pi>>
+     * @return RspModel<List < Pi>>
      */
     @POST("pi/select")
     Call<RspModel<List<Pi>>> selectAllPi(@Body User user);
@@ -137,7 +137,7 @@ public interface RemoteService {
      * 查看所有反馈(需传uId)
      *
      * @param feedback Feedback
-     * @return RspModel<List < Feedback>>
+     * @return RspModel<List   <   Feedback>>
      */
     @POST("feedback/selectByUid")
     Call<RspModel<List<Feedback>>> selectFeedback(@Body Feedback feedback);
@@ -147,8 +147,36 @@ public interface RemoteService {
      * 获取设备的图片
      *
      * @param pId pId
-     * @return RspModel<List<Image>>
+     * @return RspModel<List < Image>>
      */
     @POST("image/selectByPid")
     Call<RspModel<List<Image>>> getPic(@Body Integer pId);
+
+
+    /**
+     * QQ绑定
+     *
+     * @param user User(uUsername,uTelephone,uPassword)
+     * @return RspModel<User>
+     */
+    @POST("user/qqbind")
+    Call<RspModel<User>> bindQQ(@Body RegisterModel user);
+
+    /**
+     * QQ注册绑定
+     *
+     * @param user User(uUsername,uTelephone,uPassword,code)
+     * @return RspModel<User>
+     */
+    @POST("user/qqreg")
+    Call<RspModel<User>> regQQ(@Body RegisterModel user);
+
+    /**
+     * QQ登陆
+     *
+     * @param user User(uUsername)
+     * @return RspModel<User>
+     */
+    @POST("user/qqlogin")
+    Call<RspModel<User>> loginQQ(@Body User user);
 }

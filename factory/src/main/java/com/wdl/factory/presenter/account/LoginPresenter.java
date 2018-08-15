@@ -2,6 +2,7 @@ package com.wdl.factory.presenter.account;
 
 import android.text.TextUtils;
 
+import com.wdl.common.app.Application;
 import com.wdl.factory.R;
 import com.wdl.factory.data.data.helper.AccountHelper;
 import com.wdl.factory.model.api.account.LoginModel;
@@ -12,6 +13,7 @@ import net.qiujuer.genius.kit.handler.runable.Action;
 
 import com.wdl.factory.data.DataSource;
 import com.wdl.factory.presenter.BasePresenter;
+
 
 /**
  * 项目名：  MonitoringOfForest
@@ -28,6 +30,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
         super(view);
     }
 
+    private String userId;
     @Override
     public void login(String phone, String password) {
         start();
@@ -42,6 +45,21 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
         //测试
         //AccountHelper.notice();
 
+    }
+
+    @Override
+    public void qqLogin(String uUsername) {
+        start();
+        this.userId = uUsername;
+        final LoginContract.View view = getView();
+        User user = new User();
+        user.setuUsername(uUsername);
+        AccountHelper.qqLogin(user,this);
+    }
+
+    @Override
+    public String getUserId() {
+        return userId;
     }
 
     @Override
@@ -63,6 +81,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
         Run.onUiAsync(new Action() {
             @Override
             public void call() {
+                view.qqLoginDefault();
                 view.showError(res);
             }
         });

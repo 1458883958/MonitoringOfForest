@@ -4,7 +4,13 @@ package com.wdl.monitoringofforest.fragments.account;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wdl.common.app.Application;
 import com.wdl.common.app.Fragment;
@@ -14,6 +20,7 @@ import com.wdl.factory.presenter.account.LoginContract;
 import com.wdl.factory.presenter.account.LoginPresenter;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.activities.MainActivity;
+import com.wdl.monitoringofforest.activities.QQBindActivity;
 import com.wdl.utils.LogUtils;
 
 import net.qiujuer.genius.ui.widget.Button;
@@ -23,6 +30,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -34,7 +42,7 @@ import cn.sharesdk.tencent.qq.QQ;
  */
 @SuppressWarnings("unused")
 public class LoginFragment extends PresenterFragment<LoginContract.Presenter>
-        implements LoginContract.View ,PlatformActionListener{
+        implements LoginContract.View, PlatformActionListener, View.OnClickListener {
 
     private AccountTrigger accountTrigger;
     @BindView(R.id.et_phone)
@@ -48,6 +56,7 @@ public class LoginFragment extends PresenterFragment<LoginContract.Presenter>
     @BindView(R.id.btn_login_qq)
     Button loginByQQ;
 
+    private AlertDialog dialog;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -88,23 +97,22 @@ public class LoginFragment extends PresenterFragment<LoginContract.Presenter>
     }
 
     @OnClick(R.id.btn_login_qq)
-    void loginByQQ(){
+    void loginByQQ() {
         Platform platform = ShareSDK.getPlatform(QQ.NAME);
         platform.setPlatformActionListener(this);
         platform.SSOSetting(false);
-        if (!platform.isAuthValid()){
-            Application.showToast(R.string.label_go_start);
+        if (!platform.isAuthValid()) {
+            showError(R.string.label_go_start);
         }
         authorize(platform);
     }
 
     private void authorize(Platform platform) {
-        if (platform==null)return;
+        if (platform == null) return;
         if (platform.isAuthValid())
             platform.removeAccount(true);
         platform.showUser(null);
     }
-
 
     @Override
     public void showError(int res) {
@@ -137,33 +145,83 @@ public class LoginFragment extends PresenterFragment<LoginContract.Presenter>
         Objects.requireNonNull(getActivity()).finish();
     }
 
+
+    //跳转绑定页面
     @Override
-    public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-        Message message = Message.obtain();
-        message.obj = platform;
-        handler.sendMessage(message);
+    public void qqLoginDefault() {
+        dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()))
+                .create();
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+        dialog.show();
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_layout, null);
+        dialog.setContentView(view);
+        Objects.requireNonNull(dialog.getWindow()).setGravity(Gravity.CENTER);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.__picker_bg_dialog);
+        view.findViewById(R.id.go_bind).setOnClickListener(this);
+        view.findViewById(R.id.go_reg).setOnClickListener(this);
     }
+
+
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            Platform platform = (Platform) msg.obj;
-            String userId = platform.getDb().getUserId();//获取用户账号
-            String userName = platform.getDb().getUserName();//获取用户名字
-            String userIcon = platform.getDb().getUserIcon();//获取用户头像
-            String userGender = platform.getDb().getUserGender();
-            //获取用户性别，m = 男, f = 女，如果微信没有设置性别,默认返回null
-            LogUtils.e(""+userId+"\n"+userName+"\n"+userIcon);
+            switch (msg.what) {
+                case 1:
+                    Platform platform = (Platform) msg.obj;
+                    String userId = platform.getDb().getUserId();//获取用户账号
+                    mPresenter.qqLogin(userId);
+                    break;
+                case 2:
+                    showError(R.string.data_oss_cancel);
+                    break;
+                case 3:
+                    showError(R.string.data_oss_defeat);
+                    break;
+                default:
+                    break;
+            }
             return true;
         }
     });
 
     @Override
-    public void onError(Platform platform, int i, Throwable throwable) {
-
+    public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+        Message message = Message.obtain();
+        message.what = 1;
+        message.obj = platform;
+        handler.sendMessage(message);
     }
 
     @Override
     public void onCancel(Platform platform, int i) {
+        Message message = Message.obtain();
+        message.what = 2;
+        message.obj = platform;
+        handler.sendMessage(message);
+    }
 
+    @Override
+    public void onError(Platform platform, int i, Throwable throwable) {
+        Message message = Message.obtain();
+        message.what = 3;
+        message.obj = platform;
+        handler.sendMessage(message);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.go_bind:
+                QQBindActivity.show(getContext(),1,mPresenter.getUserId());
+                dialog.cancel();
+                break;
+            case R.id.go_reg:
+                QQBindActivity.show(getContext(),2,mPresenter.getUserId());
+                dialog.cancel();
+                break;
+            default:
+                break;
+        }
     }
 }
