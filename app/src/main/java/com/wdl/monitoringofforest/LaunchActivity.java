@@ -53,10 +53,11 @@ public class LaunchActivity extends Activity {
             skip();
             return;
         } else {
-            if (!TextUtils.isEmpty(Account.getPushId())) {
-                skip();
-                return;
-            }
+//            if (!TextUtils.isEmpty(Account.getPushId())) {
+//                skip();
+//                return;
+//            }
+            skip();return;
         }
         //循环等待
 //        getWindow().getDecorView().postDelayed(new Runnable() {

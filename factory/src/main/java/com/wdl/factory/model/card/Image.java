@@ -1,9 +1,8 @@
 package com.wdl.factory.model.card;
 
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.wdl.common.common.Common;
 import com.wdl.factory.model.db.ImageDb;
 
-import java.security.PrivateKey;
 import java.util.Date;
 
 /**
@@ -26,16 +25,26 @@ public class Image {
 
     private transient ImageDb imageDb;
 
-    public ImageDb build(){
-        if (imageDb==null){
+    public ImageDb build() {
+        if (imageDb == null) {
             ImageDb db = new ImageDb();
             db.setId(iId);
             db.setPiId(pId);
             db.setDensity(iDensity);
             db.setImagePath(iImagepath);
+            db.setTime(iTime);
+            //拼接图片url
+            db = montage(db);
             this.imageDb = db;
         }
         return imageDb;
+    }
+
+    private ImageDb montage(ImageDb db) {
+        if (db == null) return null;
+        db.setOriginalPath(Common.Constance.URL + iImagepath + ".jpg");
+        db.setTargetPath(Common.Constance.URL + iImagepath + "-" + iDensity + ".jpg");
+        return db;
     }
 
     public Integer getiId() {

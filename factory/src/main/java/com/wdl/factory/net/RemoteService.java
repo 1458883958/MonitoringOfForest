@@ -150,7 +150,7 @@ public interface RemoteService {
      * @return RspModel<List < Image>>
      */
     @POST("image/selectByPid")
-    Call<RspModel<List<Image>>> getPic(@Body Integer pId);
+    Call<RspModel<List<Image>>> getPic(@Body Pi pId);
 
 
     /**

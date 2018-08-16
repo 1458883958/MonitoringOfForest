@@ -24,12 +24,34 @@ public class ImageDb extends BaseDbModel<ImageDb> implements Serializable {
     private Integer piId;
     @Column
     private String imagePath;
+    //原图
+    @Column
+    private String originalPath;
+    //处理图
+    @Column
+    private String targetPath;
     @Column
     private Double density;
     @Column
     private Date time;
 
     public ImageDb() {
+    }
+
+    public String getOriginalPath() {
+        return originalPath;
+    }
+
+    public void setOriginalPath(String originalPath) {
+        this.originalPath = originalPath;
+    }
+
+    public String getTargetPath() {
+        return targetPath;
+    }
+
+    public void setTargetPath(String targetPath) {
+        this.targetPath = targetPath;
     }
 
     public Integer getId() {

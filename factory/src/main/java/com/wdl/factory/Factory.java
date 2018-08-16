@@ -3,8 +3,11 @@ package com.wdl.factory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowLog;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.wdl.common.app.Application;
+import com.wdl.factory.data.data.devicedata.DataCenter;
+import com.wdl.factory.data.data.devicedata.DataDispatch;
 import com.wdl.factory.data.data.feedback.FeedbackCenter;
 import com.wdl.factory.data.data.feedback.FeedbackDispatch;
 import com.wdl.factory.data.data.pi.PiCenter;
@@ -115,6 +118,7 @@ public class Factory {
                 .Builder(application())
                 .openDatabasesOnInit(true)
                 .build());
+        FlowLog.setMinimumLoggingLevel(FlowLog.Level.V);
         //持久化数据的初始化
         Account.load(application());
     }
@@ -152,6 +156,15 @@ public class Factory {
      */
     public static UserCenter getUserCenter() {
         return null;
+    }
+
+    /**
+     * 获取设备数据中心,规范
+     *
+     * @return 设备数据中心实现类
+     */
+    public static DataCenter getDataCenter() {
+        return DataDispatch.getDataCenter();
     }
 }
 

@@ -23,7 +23,7 @@ import butterknife.BindView;
 @SuppressWarnings("unused")
 public class DeviceDataActivity extends ToolbarActivity {
 
-    private static final String P_ID = "P_ID";
+    public static final String P_ID = "P_ID";
     private List<String> mTitle;
     private List<Fragment> fragmentList;
     private int pId;
@@ -95,6 +95,9 @@ public class DeviceDataActivity extends ToolbarActivity {
         mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(P_ID,pId);
+                fragmentList.get(position).setArguments(bundle);
                 return fragmentList.get(position);
             }
 
