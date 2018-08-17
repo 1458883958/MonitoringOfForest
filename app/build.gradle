@@ -41,6 +41,10 @@ android {
                 GETUI_APP_SECRET: "B2Vdrgh0ni9L2n8yWqMbm2",
                 PACKAGE_NAME    : applicationId
         ]
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        }
     }
     buildTypes {
         release {
@@ -49,7 +53,6 @@ android {
         }
     }
 }
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:support-v4:$rootProject.ext.supportVersion"
@@ -71,12 +74,13 @@ dependencies {
     implementation "pub.devrel:easypermissions:$rootProject.ext.easyPMVersion"
     implementation "com.github.yalantis:ucrop:$rootProject.ext.ucropVersion"
     implementation "com.getui:sdk:$rootProject.ext.getuiVersion"
+    implementation "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
     implementation("com.journeyapps:zxing-android-embedded:$rootProject.ext.embeddedVersion") {
         transitive = false
     }
     implementation "com.google.zxing:core:$rootProject.ext.zxingCoreVersion"
-
-
     implementation project(':common')
     api project(':factory')
+    implementation files('libs/Msc.jar')
+    implementation files('libs/Sunflower.jar')
 }

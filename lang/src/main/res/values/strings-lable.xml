@@ -57,7 +57,11 @@
     <string name="label_account_feedback">反馈</string>
     <string name="label_copyright">Copyright© 2018&#8211;2018 Smu. All Rights Reserved</string>
     <string name="label_privacy">隐私政策</string>
+    <string name="label_clean_cache">清理缓存</string>
+    <string name="label_clean_db">清理数据库缓存</string>
     <string name="label_feedback_hint">请输入遇到的问题或建议</string>
+    <string name="label_cache_kb">%sKB</string>
+    <string name="label_cache_mb">%sMB</string>
 
 
 

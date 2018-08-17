@@ -15,6 +15,7 @@ import com.wdl.factory.persistence.Account;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.activities.AboutAppActivity;
 import com.wdl.monitoringofforest.activities.AccountActivity;
+import com.wdl.monitoringofforest.activities.SettingActivity;
 import com.wdl.monitoringofforest.activities.ShareActivity;
 
 import java.util.Objects;
@@ -35,6 +36,11 @@ public class PersonalFragment extends Fragment {
     @OnClick(R.id.share)
     void share() {
         ShareActivity.show(Objects.requireNonNull(getContext()));
+    }
+
+    @OnClick(R.id.setting)
+    void setting() {
+        SettingActivity.show(Objects.requireNonNull(getContext()));
     }
 
     @OnClick(R.id.call)

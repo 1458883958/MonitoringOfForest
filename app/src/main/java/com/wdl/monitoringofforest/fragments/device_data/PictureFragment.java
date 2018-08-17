@@ -131,12 +131,14 @@ public class PictureFragment extends PresenterFragment<DataContract.Presenter>
             Glide.with(getContext())
                     .load(imageDb.getOriginalPath())
                     .fitCenter()
+                    .placeholder(R.drawable.ic_placeholder)
                     .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imOr);
             Glide.with(getContext())
                     .load(imageDb.getTargetPath())
                     .fitCenter()
+                    .placeholder(R.drawable.ic_placeholder)
                     .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imDe);

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,10 +20,19 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.iflytek.cloud.RecognizerResult;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.ui.RecognizerDialog;
+import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.wdl.common.app.Activity;
 import com.wdl.common.widget.PortraitView;
+import com.wdl.factory.Factory;
+import com.wdl.factory.model.card.DictationResult;
 import com.wdl.factory.persistence.Account;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.fragments.main.ContactFragment;
@@ -36,6 +46,8 @@ import com.wdl.utils.LogUtils;
 import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.widget.FloatActionButton;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -49,7 +61,6 @@ import butterknife.OnClick;
 public class MainActivity extends Activity
         implements BottomNavigationView.OnNavigationItemSelectedListener,
         NavHelper.OnTabChangedListener<Integer> {
-
     @BindView(R.id.appBar)
     View appBar;
     @BindView(R.id.mPortrait)
@@ -66,6 +77,12 @@ public class MainActivity extends Activity
     BottomNavigationView bottomNavigationView;
     //底部导航栏的工具类
     private NavHelper<Integer> helper;
+
+    @OnClick(R.id.fab_action)
+    void tts(){
+    }
+
+
 
 
     @OnClick(R.id.pv_deal)

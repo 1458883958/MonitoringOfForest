@@ -8,15 +8,28 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.iflytek.cloud.RecognizerResult;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.ui.RecognizerDialog;
+import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.wdl.common.app.PresenterFragment;
 import com.wdl.common.widget.EmptyView;
 import com.wdl.common.widget.recycler.RecyclerAdapter;
+import com.wdl.factory.model.card.DictationResult;
 import com.wdl.factory.model.db.PiDb;
 import com.wdl.factory.presenter.pi.PiContract;
 import com.wdl.factory.presenter.pi.PiPresenter;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.activities.DeviceDataActivity;
+import com.wdl.monitoringofforest.activities.MainActivity;
 import com.wdl.utils.LogUtils;
+
+import net.qiujuer.genius.ui.widget.FloatActionButton;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -25,7 +38,8 @@ import butterknife.OnClick;
  * 设备模块
  */
 @SuppressWarnings({"unused", "unchecked"})
-public class DeviceFragment extends PresenterFragment<PiContract.Presenter> implements PiContract.View {
+public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
+        implements PiContract.View {
 
     @BindView(R.id.recycler)
     RecyclerView recyclerView;
@@ -34,6 +48,7 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
     EmptyView emptyView;
 
     private RecyclerAdapter adapter;
+    private FloatActionButton fab;
 
     public DeviceFragment() {
         // Required empty public constructor
@@ -49,11 +64,57 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
         mPresenter.start();
     }
 
+    private void tts() {
+        //创建语音识别对话框
+        RecognizerDialog rd = new RecognizerDialog(Objects.requireNonNull(getContext()), null);
+        //设置参数accent,language等参数
+        rd.setParameter(SpeechConstant.LANGUAGE, "zh_cn");//中文
+        rd.setParameter(SpeechConstant.ACCENT, "mandarin");//普通话
+        //设置回调接口
+        rd.setListener(new RecognizerDialogListener() {
+            @Override
+            public void onResult(RecognizerResult arg0, boolean arg1) {
+                // TODO Auto-generated method stub
+                String result = arg0.getResultString();
+                LogUtils.e(result);
+                //解析语音识别后返回的json格式的结果
+                if (arg1) {//回话结束
+                    String voice = parseJson(result);
+                    LogUtils.e("voice:" + voice);
+                }
+            }
+
+            @Override
+            public void onError(SpeechError arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+        //显示对话框
+        rd.show();
+    }
+
+    private String parseJson(String result) {
+        StringBuffer buff = new StringBuffer();
+        Gson gson = new Gson();
+        DictationResult dictationResult = gson.fromJson(result, DictationResult.class);
+        ArrayList<DictationResult.Words> ws = (ArrayList<DictationResult.Words>) dictationResult.getWs();
+        for (DictationResult.Words w : ws) {
+            String info = w.getCw().get(0).getW();
+            buff.append(info);
+        }
+        return buff.toString();
+    }
 
     @Override
     protected void initWidget(View root) {
         super.initWidget(root);
-
+        fab = Objects.requireNonNull(getActivity()).findViewById(R.id.fab_action);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tts();
+            }
+        });
         //recyclerView设置
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter = new RecyclerAdapter<PiDb>() {
@@ -73,7 +134,7 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter> impl
             public void onItemClick(RecyclerAdapter.ViewHolder holder, PiDb piDb) {
                 super.onItemClick(holder, piDb);
                 int pId = piDb.getId();
-                DeviceDataActivity.show(getContext(),pId);
+                DeviceDataActivity.show(getContext(), pId);
             }
         });
 

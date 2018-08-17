@@ -30,7 +30,6 @@ public class DataRepository extends BaseDbRepository<ImageDb> implements DeviceD
         SQLite.select()
                 .from(ImageDb.class)
                 .where(ImageDb_Table.id.eq(pId))
-                .orderBy(ImageDb_Table.time,true)
                 .async()
                 //此方法起主导作用
                 .queryListResultCallback(this)

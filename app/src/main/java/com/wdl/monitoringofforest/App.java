@@ -1,6 +1,8 @@
 package com.wdl.monitoringofforest;
 
 
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
 import com.igexin.sdk.PushManager;
 import com.mob.MobSDK;
 import com.wdl.common.app.Application;
@@ -23,6 +25,10 @@ public class App extends Application {
         //初始化个推
         PushManager.getInstance().initialize(this);
         MobSDK.init(this);
+        //TTS语音听写
+        SpeechUtility
+                .createUtility(getApplicationContext(),
+                        SpeechConstant.APPID +"="+"5b75848b");
 
     }
 }
