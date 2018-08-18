@@ -83,4 +83,5 @@ dependencies {
     api project(':factory')
     implementation files('libs/Msc.jar')
     implementation files('libs/Sunflower.jar')
+    implementation files('libs/BaiduLBS_Android.jar')
 }

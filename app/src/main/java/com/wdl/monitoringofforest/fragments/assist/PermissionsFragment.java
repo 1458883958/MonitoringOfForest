@@ -66,7 +66,9 @@ public class PermissionsFragment extends BottomSheetDialogFragment
                 && haveCameraPermission(context)
                 && haveReadAudioPermission(context)
                 && haveReadPermission(context)
-                && haveWritePermission(context);
+                && haveWritePermission(context)
+                && havePhoneStatePermission(context)
+                && haveLocationPermission(context);
         if (!haveAll) {
             //跳转申请权限的fragment--PermissionFragment
             show(fragmentManager);
@@ -108,6 +110,8 @@ public class PermissionsFragment extends BottomSheetDialogFragment
         String[] perms = new String[]{
                 Manifest.permission.CAMERA,
                 Manifest.permission.INTERNET,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_NETWORK_STATE,
                 Manifest.permission.ACCESS_WIFI_STATE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -146,6 +150,10 @@ public class PermissionsFragment extends BottomSheetDialogFragment
                 .setVisibility(haveReadAudioPermission(context) ? View.VISIBLE : View.GONE);
         view.findViewById(R.id.iv_state_permission_camera)
                 .setVisibility(haveCameraPermission(context) ? View.VISIBLE : View.GONE);
+        view.findViewById(R.id.iv_state_permission_phone_state)
+                .setVisibility(havePhoneStatePermission(context) ? View.VISIBLE : View.GONE);
+        view.findViewById(R.id.iv_state_permission_location)
+                .setVisibility(haveLocationPermission(context) ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -198,6 +206,32 @@ public class PermissionsFragment extends BottomSheetDialogFragment
     private static boolean haveReadAudioPermission(Context context) {
         String[] perms = new String[]{
                 Manifest.permission.RECORD_AUDIO
+        };
+        return EasyPermissions.hasPermissions(context, perms);
+    }
+
+    /**
+     * 判断是否获取手机状态权限
+     *
+     * @param context 上下文
+     * @return true:以获取
+     */
+    private static boolean havePhoneStatePermission(Context context) {
+        String[] perms = new String[]{
+                Manifest.permission.READ_PHONE_STATE
+        };
+        return EasyPermissions.hasPermissions(context, perms);
+    }
+
+    /**
+     * 判断是否获取定位权限
+     *
+     * @param context 上下文
+     * @return true:以获取
+     */
+    private static boolean haveLocationPermission(Context context) {
+        String[] perms = new String[]{
+                Manifest.permission.ACCESS_FINE_LOCATION
         };
         return EasyPermissions.hasPermissions(context, perms);
     }
