@@ -154,10 +154,13 @@ public class MainActivity extends Activity
         Menu menu = bottomNavigationView.getMenu();
         //首次启动触发，会执行onNavigationItemSelected方法
         menu.performIdentifierAction(R.id.action_device, 0);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         //初始化头像
         mPortrait.setUp(Glide.with(this), Account.getUserDb());
-
     }
 
     @Override

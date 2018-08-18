@@ -190,4 +190,31 @@ public class AccountHelper {
         });
 
     }
+
+    public static void update(final int type, User user, final DataSource.Callback<User> callback) {
+        RemoteService service = Network.remoteService();
+        final Call<RspModel<User>> call = service.update(user);
+        call.enqueue(new CallbackImpl<User>() {
+            @Override
+            protected void failed(String msg) {
+                if (callback!=null)
+                    Factory.decodeRspCode(msg,callback);
+            }
+
+            @Override
+            protected void succeed(User data) {
+                //保存数据库并通知界面
+                UserDb db = Account.getUserDb();
+                if (db==null)return;
+                if (type==1)db.setAlias(data.getuFullname());
+                if (type==2)db.setMail(data.getuEmail());
+                if (type==4)db.setImage(data.getuImagepath());
+                if (type==5)db.setAddress(data.getuIpaddress());
+                DbHelper.update(UserDb.class, db);
+                if (callback!=null){
+                    callback.onLoaded(data);
+                }
+            }
+        });
+    }
 }

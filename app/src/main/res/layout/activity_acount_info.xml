@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/linear"
+    android:background="#f0f0f0"
+    tools:context=".activities.SearchActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarWithStatusBarSize"
+        android:background="@color/colorPrimary"
+        android:paddingTop="@dimen/statusBarSize" />
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/len_28"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f0f0f0"
+        android:orientation="vertical"
+        tools:context=".fragments.main.PersonalFragment">
+        <RelativeLayout
+            android:id="@+id/update_portrait"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/len_36"
+            android:layout_marginTop="@dimen/len_14"
+            android:background="#fff"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/len_16"
+                android:text="@string/label_account_portrait"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/textPrimary"
+                tools:ignore="RelativeOverlap" />
+
+            <com.wdl.common.widget.PortraitView
+                android:id="@+id/mPortrait"
+                android:src="@drawable/default_portrait"
+                android:layout_toStartOf="@+id/dir_a"
+                android:layout_marginEnd="@dimen/len_12"
+                android:layout_width="@dimen/len_20"
+                android:layout_height="@dimen/len_20" />
+
+            <ImageView
+                android:id="@+id/dir_a"
+                android:layout_width="@dimen/len_12"
+                android:layout_height="@dimen/len_12"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/len_12"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_direction_right"
+                android:tint="@color/textSecond" />
+
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        <RelativeLayout
+            android:id="@+id/update_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/len_36"
+            android:background="#fff"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/len_16"
+                android:text="@string/label_account_name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/textPrimary"
+                tools:ignore="RelativeOverlap" />
+
+            <TextView
+                android:id="@+id/mName"
+                android:textSize="@dimen/len_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/len_12"
+                android:layout_toStartOf="@+id/dir_b"
+                android:layout_marginStart="@dimen/len_16"
+                android:text="@string/label_account_name"
+                android:textColor="@color/textSecond"
+                tools:ignore="RelativeOverlap" />
+            <ImageView
+                android:id="@+id/dir_b"
+                android:layout_width="@dimen/len_12"
+                android:layout_height="@dimen/len_12"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/len_12"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_direction_right"
+                android:tint="@color/textSecond" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/update_mail"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/len_36"
+            android:layout_marginTop="@dimen/len_14"
+            android:background="#fff"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/len_16"
+                android:text="@string/label_account_mail"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/textPrimary"
+                tools:ignore="RelativeOverlap" />
+
+            <TextView
+                android:id="@+id/mMail"
+                android:textSize="@dimen/len_12"
+                android:layout_toStartOf="@+id/dir_c"
+                android:text="@string/label_bind_mail"
+                android:layout_marginEnd="@dimen/len_12"
+                android:textColor="@color/textAccent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="RelativeOverlap" />
+
+            <ImageView
+                android:id="@+id/dir_c"
+                android:layout_width="@dimen/len_12"
+                android:layout_height="@dimen/len_12"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/len_12"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_direction_right"
+                android:tint="@color/textSecond" />
+
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        <RelativeLayout
+            android:id="@+id/update_address"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/len_36"
+            android:background="#fff"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/len_16"
+                android:text="@string/label_account_address"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/textPrimary"
+                tools:ignore="RelativeOverlap" />
+            <TextView
+                android:id="@+id/mAddress"
+                android:textSize="@dimen/len_12"
+                android:layout_toStartOf="@+id/dir_d"
+                android:text="@string/label_bind_address"
+                android:layout_marginEnd="@dimen/len_12"
+                android:textColor="@color/textSecond"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="RelativeOverlap" />
+            <ImageView
+                android:id="@+id/dir_d"
+                android:layout_width="@dimen/len_12"
+                android:layout_height="@dimen/len_12"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/len_12"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_direction_right"
+                android:tint="@color/textSecond" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

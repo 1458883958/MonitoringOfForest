@@ -142,10 +142,10 @@ public class Account {
      * @return UserDb
      */
     public static UserDb getUserDb() {
-        return TextUtils.isEmpty(account) ? new UserDb() :
+        return userId == -1 ? new UserDb() :
                 SQLite.select()
                         .from(UserDb.class)
-                        .where(UserDb_Table.phone.eq(account))
+                        .where(UserDb_Table.id.eq(userId))
                         .querySingle();
     }
 }

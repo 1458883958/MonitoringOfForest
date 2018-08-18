@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f0f0"
+    android:orientation="vertical"
+    tools:context=".activities.SearchActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarWithStatusBarSize"
+        android:background="@color/colorPrimary"
+        android:paddingTop="@dimen/statusBarSize" />
+
+    <EditText
+        android:id="@+id/mInfo_1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/len_44"
+        android:layout_marginTop="@dimen/len_20"
+        android:background="#fff"
+        android:inputType="text"
+        android:paddingEnd="@dimen/len_12"
+        android:paddingStart="@dimen/len_12"
+        android:textColor="@color/textPrimary"
+        android:textColorHint="@color/textSecond"
+        tools:ignore="LabelFor" />
+
+    <View
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginEnd="@dimen/len_12"
+        android:layout_marginStart="@dimen/len_12"
+        android:background="@color/textSecond"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/mInfo_2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/len_44"
+        android:background="#fff"
+        android:inputType="text"
+        android:paddingEnd="@dimen/len_12"
+        android:paddingStart="@dimen/len_12"
+        android:textColor="@color/textPrimary"
+        android:textColorHint="@color/textSecond"
+        android:visibility="gone"
+        tools:ignore="LabelFor" />
+
+    <Space
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+    <Button
+        android:id="@+id/submit"
+        android:enabled="false"
+        android:clickable="false"
+        android:layout_marginBottom="@dimen/len_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/len_12"
+        android:text="@string/label_submit" />
+
+</LinearLayout>

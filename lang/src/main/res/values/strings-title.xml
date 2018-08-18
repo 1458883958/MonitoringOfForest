@@ -14,4 +14,8 @@
     <string name="title_history_feedback">历史反馈</string>
     <string name="title_picture">图片数据</string>
     <string name="title_data">设备数据</string>
+
+    <string name="title_update_name">修改昵称</string>
+    <string name="title_update_mail">修改邮箱</string>
+    <string name="title_update_password">修改密码</string>
 </resources>

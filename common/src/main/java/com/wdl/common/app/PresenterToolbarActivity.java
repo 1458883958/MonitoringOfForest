@@ -51,6 +51,14 @@ public abstract class PresenterToolbarActivity<Presenter extends BaseContract.Pr
     }
 
     @Override
+    public void showToast(int res) {
+        if (placeHolderView != null) {
+            placeHolderView.triggerError(res);
+        } else
+            Application.showToast(res);
+    }
+
+    @Override
     public void showError(int res) {
         if (placeHolderView != null) {
             placeHolderView.triggerError(res);

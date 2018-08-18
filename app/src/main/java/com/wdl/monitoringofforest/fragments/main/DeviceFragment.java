@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
@@ -29,6 +30,7 @@ import com.wdl.utils.LogUtils;
 import net.qiujuer.genius.ui.widget.FloatActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -49,7 +51,7 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
 
     private RecyclerAdapter adapter;
     private FloatActionButton fab;
-
+    private StringBuffer stringBuffer;
     public DeviceFragment() {
         // Required empty public constructor
     }
@@ -64,12 +66,14 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
         mPresenter.start();
     }
 
+
     private void tts() {
         //创建语音识别对话框
         RecognizerDialog rd = new RecognizerDialog(Objects.requireNonNull(getContext()), null);
         //设置参数accent,language等参数
         rd.setParameter(SpeechConstant.LANGUAGE, "zh_cn");//中文
         rd.setParameter(SpeechConstant.ACCENT, "mandarin");//普通话
+        stringBuffer = new StringBuffer();
         //设置回调接口
         rd.setListener(new RecognizerDialogListener() {
             @Override
@@ -77,10 +81,17 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
                 // TODO Auto-generated method stub
                 String result = arg0.getResultString();
                 LogUtils.e(result);
-                //解析语音识别后返回的json格式的结果
+                String voice = parseJson(result);
+                stringBuffer.append(voice);
                 if (arg1) {//回话结束
-                    String voice = parseJson(result);
-                    LogUtils.e("voice:" + voice);
+                    LogUtils.e("voice:" + stringBuffer.toString());
+                    String ints = stringBuffer.toString();
+                    //解析语音识别后返回的json格式的结果
+                    if (ints.contains("一号拍照")){
+                        mPresenter.changedSwitch((PiDb) adapter.getItems().get(0));
+                        
+                        //adapter.notifyDataSetChanged();
+                    }
                 }
             }
 
@@ -96,10 +107,13 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
     private String parseJson(String result) {
         StringBuffer buff = new StringBuffer();
         Gson gson = new Gson();
-        DictationResult dictationResult = gson.fromJson(result, DictationResult.class);
-        ArrayList<DictationResult.Words> ws = (ArrayList<DictationResult.Words>) dictationResult.getWs();
+        DictationResult dictationResult = gson.fromJson(result,
+                DictationResult.class);
+        ArrayList<DictationResult.Words> ws = (ArrayList<DictationResult.Words>)
+                dictationResult.getWs();
         for (DictationResult.Words w : ws) {
             String info = w.getCw().get(0).getW();
+            LogUtils.e("info:"+info);
             buff.append(info);
         }
         return buff.toString();
