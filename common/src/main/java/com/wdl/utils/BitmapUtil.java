@@ -7,6 +7,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.media.ThumbnailUtils;
 import android.util.Log;
 
 /**
@@ -76,6 +77,28 @@ public class BitmapUtil {
         return binarymap;
     }
 
+    public static double result(Bitmap binaryMap,Progress progress) {
+        //得到图形的宽度和长度
+        int width = binaryMap.getWidth();
+        int height = binaryMap.getHeight();
+        int total = width*height;
+        //创建二值化图像
+        int black = 0;
+        //依次循环，对图像的像素进行处理
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                //得到当前像素的值
+                int col = binaryMap.getPixel(i, j);
+                LogUtils.e("col: "+col);
+                if (col==-16777216){
+                    black++;
+                }
+            }
+        }
+        LogUtils.e("black:"+black+"total:"+total+" "+black/total);
+        return (double)black/total;
+    }
+
     public static Bitmap compress(Bitmap bitmap){
         Matrix matrix = new Matrix();
         matrix.setScale(0.5f, 0.5f);
@@ -84,6 +107,60 @@ public class BitmapUtil {
         return bitmap;
     }
 
+
+    /**
+     * 转为二值图像
+     *
+     * @param bmp
+     *            原图bitmap
+     * @return
+     */
+    public static Bitmap convertToBMW(Bitmap bmp, int tmp) {
+        int width = bmp.getWidth(); // 获取位图的宽
+        int height = bmp.getHeight(); // 获取位图的高
+        int[] pixels = new int[width * height]; // 通过位图的大小创建像素点数组
+        // 设定二值化的域值，默认值为100
+        bmp.getPixels(pixels, 0, width, 0, 0, width, height);
+        int alpha = 0xFF << 24;
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int grey = pixels[width * i + j];
+                // 分离三原色
+                alpha = ((grey & 0xFF000000) >> 24);
+                int red = ((grey & 0x00FF0000) >> 16);
+                int green = ((grey & 0x0000FF00) >> 8);
+                int blue = (grey & 0x000000FF);
+                if (red > tmp) {
+                    red = 255;
+                } else {
+                    red = 0;
+                }
+                if (blue > tmp) {
+                    blue = 255;
+                } else {
+                    blue = 0;
+                }
+                if (green > tmp) {
+                    green = 255;
+                } else {
+                    green = 0;
+                }
+                pixels[width * i + j] = alpha << 24 | red << 16 | green << 8
+                        | blue;
+                if (pixels[width * i + j] == -1) {
+                    pixels[width * i + j] = -1;
+                } else {
+                    pixels[width * i + j] = -16777216;
+                }
+            }
+        }
+        // 新建图片
+        Bitmap newBmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        // 设置图片数据
+        newBmp.setPixels(pixels, 0, width, 0, 0, width, height);
+        Bitmap resizeBmp = ThumbnailUtils.extractThumbnail(newBmp, width, height);
+        return resizeBmp;
+    }
 
     public interface Progress{
         void progress(int current,int total);
