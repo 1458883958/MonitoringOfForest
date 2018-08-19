@@ -89,6 +89,8 @@
     <string name="label_hint_threshold">threshold</string>
     <string name="label_hint_delayed">delayed</string>
     <string name="label_boot_state">设备状态:</string>
+    <string name="label_click_deal">点击进行处理</string>
+    <string name="label_deal_ok">处理完成</string>
 
 
     <string name="label_follows">Follows\n%s</string>

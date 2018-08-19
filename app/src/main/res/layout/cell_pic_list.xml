@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="@dimen/len_4"
@@ -16,13 +17,33 @@
         android:layout_marginStart="@dimen/len_8"
         android:background="@color/white"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/result"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/colorPrimary" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="@string/label_click_deal"
+                android:gravity="start"
+                android:id="@+id/deal_result"
+                android:layout_width="0dp"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/len_14"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/textAccent" />
+            <TextView
+                android:gravity="end"
+                android:layout_gravity="end"
+                android:id="@+id/result"
+                android:textSize="@dimen/len_14"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/colorPrimary" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -69,9 +69,6 @@ public class BitmapUtil {
                 int newColor = alpha | (gray << 16) | (gray << 8) | gray;
                 //设置新图像的当前像素值
                 binarymap.setPixel(i, j, newColor);
-                if (progress!=null&&i*j%1000==0){
-                    progress.progress((i+1)*(j+1),total);
-                }
             }
         }
         return binarymap;
@@ -84,18 +81,22 @@ public class BitmapUtil {
         int total = width*height;
         //创建二值化图像
         int black = 0;
+        int current = 0;
         //依次循环，对图像的像素进行处理
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 //得到当前像素的值
                 int col = binaryMap.getPixel(i, j);
-                LogUtils.e("col: "+col);
                 if (col==-16777216){
                     black++;
                 }
+                current++;
+                if (progress!=null&&current%100==0){
+                    progress.progress(current,total);
+                }
             }
         }
-        LogUtils.e("black:"+black+"total:"+total+" "+black/total);
+
         return (double)black/total;
     }
 
