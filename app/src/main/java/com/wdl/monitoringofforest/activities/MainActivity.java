@@ -29,6 +29,7 @@ import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.wdl.common.app.Activity;
 import com.wdl.common.widget.PortraitView;
 import com.wdl.factory.Factory;
@@ -154,6 +155,7 @@ public class MainActivity extends Activity
         Menu menu = bottomNavigationView.getMenu();
         //首次启动触发，会执行onNavigationItemSelected方法
         menu.performIdentifierAction(R.id.action_device, 0);
+        //CrashReport.testJavaCrash();
     }
 
     @Override

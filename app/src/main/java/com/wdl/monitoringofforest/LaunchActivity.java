@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.util.Property;
 import android.view.View;
+import android.widget.TextView;
 
 import com.wdl.common.app.Activity;
 import com.wdl.common.app.Application;
@@ -17,14 +18,19 @@ import com.wdl.factory.persistence.Account;
 import com.wdl.monitoringofforest.activities.AccountActivity;
 import com.wdl.monitoringofforest.activities.MainActivity;
 import com.wdl.monitoringofforest.fragments.assist.PermissionsFragment;
+import com.wdl.utils.ApkVersionCodeUtils;
 
 import net.qiujuer.genius.ui.compat.UiCompat;
+
+import butterknife.BindView;
 
 /**
  * 引导页面
  */
 public class LaunchActivity extends Activity {
 
+    @BindView(R.id.versionName)
+    TextView versionName;
     private ColorDrawable colorDrawable;
 
     @Override
@@ -88,6 +94,10 @@ public class LaunchActivity extends Activity {
         //给根布局设置drawable
         root.setBackground(drawable);
         colorDrawable = drawable;
+
+        //设置版本号
+        String verName = ApkVersionCodeUtils.getVersionName(this);
+        versionName.setText(verName);
 
     }
 

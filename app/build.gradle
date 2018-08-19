@@ -32,7 +32,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
-        versionName "1.0"
+        versionName "1.1.0(2018 - 8.9.234)"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //个推相关参数
         manifestPlaceholders = [
@@ -43,7 +43,7 @@ android {
         ]
         ndk {
             // 设置支持的SO库架构
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'//, 'x86', 'x86_64'
         }
     }
     buildTypes {
@@ -78,6 +78,7 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:$rootProject.ext.embeddedVersion") {
         transitive = false
     }
+    implementation "com.tencent.bugly:crashreport:$rootProject.ext.buglyVersion"
     implementation "com.google.zxing:core:$rootProject.ext.zxingCoreVersion"
     implementation project(':common')
     api project(':factory')

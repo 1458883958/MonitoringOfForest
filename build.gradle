@@ -62,4 +62,5 @@ ext{
     getuiVersion = '2.9.3.0'
     zxingCoreVersion = '3.3.0'
     embeddedVersion = '3.6.0'
+    buglyVersion = '2.6.6.1'
 }

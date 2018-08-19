@@ -37,3 +37,6 @@
 -dontwarn com.sina.**
 -dontwarn com.mob.**
 -dontwarn **.R$*
+
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}

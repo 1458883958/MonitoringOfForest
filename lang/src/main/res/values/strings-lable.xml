@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="label_version">1.2.0(4141 &#8211; 0.1.234)</string>
+    <string name="label_version">1.2.0(2018 &#8211; 8.9.234)</string>
     <string name="label_permission_network">网络访问</string>
     <string name="label_permission_network_desc">用于即时通讯传输</string>
     <string name="label_permission_read">读取文件</string>
@@ -91,6 +91,7 @@
     <string name="label_boot_state">设备状态:</string>
     <string name="label_click_deal">点击进行处理</string>
     <string name="label_deal_ok">处理完成</string>
+    <string name="label_update_loading">新版本正在更新,请稍等</string>
 
 
     <string name="label_follows">Follows\n%s</string>

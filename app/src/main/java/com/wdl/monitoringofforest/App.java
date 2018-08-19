@@ -5,6 +5,7 @@ import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.igexin.sdk.PushManager;
 import com.mob.MobSDK;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.wdl.common.app.Application;
 import com.wdl.factory.Factory;
 
@@ -30,5 +31,6 @@ public class App extends Application {
                 .createUtility(getApplicationContext(),
                         SpeechConstant.APPID +"="+"5b75848b");
 
+        CrashReport.initCrashReport(getApplicationContext(), "8ce40ccd28", true);
     }
 }
