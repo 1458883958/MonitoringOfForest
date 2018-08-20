@@ -7,8 +7,16 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
 import android.util.Log;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -38,11 +46,11 @@ public class BitmapUtil {
     }
 
     // 该函数实现对图像进行二值化处理
-    public static Bitmap gray2Binary(Bitmap graymap,Progress progress) {
+    public static Bitmap gray2Binary(Bitmap graymap, Progress progress) {
         //得到图形的宽度和长度
         int width = graymap.getWidth();
         int height = graymap.getHeight();
-        int total = width*height;
+        int total = width * height;
         //创建二值化图像
         Bitmap binarymap = null;
         binarymap = graymap.copy(Bitmap.Config.RGB_565, true);
@@ -74,11 +82,11 @@ public class BitmapUtil {
         return binarymap;
     }
 
-    public static double result(Bitmap binaryMap,Progress progress) {
+    public static double result(Bitmap binaryMap, Progress progress) {
         //得到图形的宽度和长度
         int width = binaryMap.getWidth();
         int height = binaryMap.getHeight();
-        int total = width*height;
+        int total = width * height;
         //创建二值化图像
         int black = 0;
         int current = 0;
@@ -87,20 +95,20 @@ public class BitmapUtil {
             for (int j = 0; j < height; j++) {
                 //得到当前像素的值
                 int col = binaryMap.getPixel(i, j);
-                if (col==-16777216){
+                if (col == -16777216) {
                     black++;
                 }
                 current++;
-                if (progress!=null&&current%100==0){
-                    progress.progress(current,total);
+                if (progress != null && current % 100 == 0) {
+                    progress.progress(current, total);
                 }
             }
         }
 
-        return (double)black/total;
+        return (double) black / total;
     }
 
-    public static Bitmap compress(Bitmap bitmap){
+    public static Bitmap compress(Bitmap bitmap) {
         Matrix matrix = new Matrix();
         matrix.setScale(0.5f, 0.5f);
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
@@ -112,8 +120,7 @@ public class BitmapUtil {
     /**
      * 转为二值图像
      *
-     * @param bmp
-     *            原图bitmap
+     * @param bmp 原图bitmap
      * @return
      */
     public static Bitmap convertToBMW(Bitmap bmp, int tmp) {
@@ -159,12 +166,108 @@ public class BitmapUtil {
         Bitmap newBmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
         // 设置图片数据
         newBmp.setPixels(pixels, 0, width, 0, 0, width, height);
-        Bitmap resizeBmp = ThumbnailUtils.extractThumbnail(newBmp, width, height);
+        Bitmap resizeBmp = null;
+        resizeBmp = ThumbnailUtils.extractThumbnail(newBmp, width, height);
+        if (resizeBmp==null)
+            resizeBmp = newBmp;
+        if (newBmp!=resizeBmp)
+            newBmp.recycle();
         return resizeBmp;
     }
 
-    public interface Progress{
-        void progress(int current,int total);
+    public interface Progress {
+        void progress(int current, int total);
+    }
+
+
+    /**
+     * 获取旋转角度
+     *
+     * @param path
+     * @return
+     */
+    public static int readPictureDegree(String path) {
+        int degree = 0;
+        try {
+            ExifInterface exifInterface = new ExifInterface(path);
+            int orientation = exifInterface.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                default:
+                    degree = 0;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return degree;
+    }
+
+    public static class VX{
+        Bitmap bitmap;
+        String path;
+
+        public VX(Bitmap bitmap, String path) {
+            this.bitmap = bitmap;
+            this.path = path;
+        }
+
+        public Bitmap getBitmap() {
+            return bitmap;
+        }
+
+        public void setBitmap(Bitmap bitmap) {
+            this.bitmap = bitmap;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
+        }
+    }
+
+    public static VX rotate(Bitmap bmp, String imagePath) {
+        Matrix matrix = new Matrix();
+        matrix.setRotate(90,bmp.getWidth()/2,bmp.getHeight()/2);
+        Bitmap bitmap = null;
+        File imgFile = new File(imagePath);
+        FileOutputStream fos = null;
+        BufferedOutputStream bos = null;
+        try {
+            fos = new FileOutputStream(imgFile);
+            bitmap = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally {
+            if (fos!=null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (bitmap==null){
+            bitmap = bmp;
+        }
+        if (bmp!=bitmap)
+            bmp.recycle();
+        return new VX(bitmap,imagePath);
     }
 
 }

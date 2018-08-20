@@ -19,6 +19,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,18 +38,14 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
-import android.media.ExifInterface;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -64,10 +61,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.wdl.common.app.Fragment;
 import com.wdl.common.widget.AutoFitTextureView;
 import com.wdl.factory.Factory;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.activities.Camera2Activity;
+import com.wdl.monitoringofforest.activities.PreviewActivity;
+import com.wdl.monitoringofforest.media.GalleryFragment;
 import com.wdl.utils.BitmapUtil;
 import com.wdl.utils.LogUtils;
 
@@ -87,9 +87,12 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+
+import butterknife.BindView;
+import butterknife.OnClick;
+
 public class Camera2Fragment extends Fragment
-        implements View.OnClickListener
-        , ActivityCompat.OnRequestPermissionsResultCallback
+        implements ActivityCompat.OnRequestPermissionsResultCallback
         , BitmapUtil.Progress {
 
     /**
@@ -186,12 +189,6 @@ public class Camera2Fragment extends Fragment
      * ID of the current {@link CameraDevice}.
      */
     private String mCameraId;
-
-    /**
-     * 预览使用的自定义TextureView控件
-     * An {@link AutoFitTextureView} for camera preview.
-     */
-    private AutoFitTextureView mTextureView;
 
 
     /**
@@ -507,16 +504,34 @@ public class Camera2Fragment extends Fragment
         return new Camera2Fragment();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_camera2, container, false);
+
+    @BindView(R.id.texture)
+    AutoFitTextureView mTextureView;
+
+    @OnClick(R.id.take_photo_button)
+    void take() {
+        takePicture();
     }
 
+    @OnClick(R.id.album_button)
+    void album() {
+        selectByGallery();
+    }
+
+    public void selectByGallery() {
+        new GalleryFragment()
+                .setListener(new GalleryFragment.OnSelectImageListener() {
+                    @Override
+                    public void onSelect(String path) {
+                        PreviewActivity.show(getContext(), path);
+                    }
+                }).show(getChildFragmentManager(), Camera2Fragment.class.getName());
+    }
+
+
     @Override
-    public void onViewCreated(final View view, Bundle savedInstanceState) {
-        view.findViewById(R.id.take_photo_button).setOnClickListener(this);
-        mTextureView = view.findViewById(R.id.texture);
+    protected int getContentLayoutId() {
+        return R.layout.fragment_camera2;
     }
 
 
@@ -1033,33 +1048,6 @@ public class Camera2Fragment extends Fragment
 
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.take_photo_button: {
-                takePicture();
-                break;
-            }
-//            case R.id.ic_c: {
-//                mTextureView.setVisibility(View.VISIBLE);
-//                ll.setVisibility(View.INVISIBLE);
-//                frameLayout.setVisibility(View.VISIBLE);
-//                l_i.setVisibility(View.INVISIBLE);
-//                break;
-//            }
-//            case R.id.ic_z: {
-//                imageView.setDrawingCacheEnabled(true);
-//                Bitmap bitmap = Bitmap.createBitmap(imageView.getDrawingCache());
-//                LogUtils.e(bitmap.toString());
-//                imageView.setDrawingCacheEnabled(false);
-//                Factory.runOnAsy(new BitMapHandler(bitmap));
-//                break;
-//            }
-            default:
-                break;
-        }
-    }
-
-    @Override
     public void progress(int current, int total) {
         Log.e(TAG, "progress: current:" + current + " total:" + total + " 百分比:" +
                 (double) current / total);
@@ -1132,8 +1120,8 @@ public class Camera2Fragment extends Fragment
             byte[] bytes = new byte[buffer.remaining()];
             buffer.get(bytes);
             imagePath = savePicture(bytes);
-            LogUtils.e("path:"+imagePath);
             mImage.close();
+            PreviewActivity.show(getContext(), imagePath);
         }
 
     }
