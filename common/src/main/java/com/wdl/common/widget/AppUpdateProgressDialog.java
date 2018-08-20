@@ -27,7 +27,6 @@ public class AppUpdateProgressDialog extends Dialog {
         Objects.requireNonNull(getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
         numberProgressBar = findViewById(R.id.number_progress);
         this.setCanceledOnTouchOutside(false);//点击dialog背景部分不消失
-//        this.setCancelable(false);//dialog出现时，点击back键不消失
     }
 
     public void setProgress(int mProgress) {

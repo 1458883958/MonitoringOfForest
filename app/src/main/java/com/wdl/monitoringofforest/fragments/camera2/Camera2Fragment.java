@@ -513,25 +513,10 @@ public class Camera2Fragment extends Fragment
         return inflater.inflate(R.layout.fragment_camera2, container, false);
     }
 
-    //拍照回显的imageView
-    private ImageView imageView;
-    //按钮
-    private ImageButton button1, button2;
-
-    private FrameLayout frameLayout;
-
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        view.findViewById(R.id.picture).setOnClickListener(this);
+        view.findViewById(R.id.take_photo_button).setOnClickListener(this);
         mTextureView = view.findViewById(R.id.texture);
-        imageView = view.findViewById(R.id.iv_pre);
-        ll = view.findViewById(R.id.l_l);
-        frameLayout = view.findViewById(R.id.control);
-        l_i = view.findViewById(R.id.l_i);
-        button1 = view.findViewById(R.id.ic_c);
-        button1.setOnClickListener(this);
-        button2 = view.findViewById(R.id.ic_z);
-        button2.setOnClickListener(this);
     }
 
 
@@ -1046,30 +1031,29 @@ public class Camera2Fragment extends Fragment
         }
     }
 
-    private LinearLayout l_i;
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.picture: {
+            case R.id.take_photo_button: {
                 takePicture();
                 break;
             }
-            case R.id.ic_c: {
-                mTextureView.setVisibility(View.VISIBLE);
-                ll.setVisibility(View.INVISIBLE);
-                frameLayout.setVisibility(View.VISIBLE);
-                l_i.setVisibility(View.INVISIBLE);
-                break;
-            }
-            case R.id.ic_z: {
-                imageView.setDrawingCacheEnabled(true);
-                Bitmap bitmap = Bitmap.createBitmap(imageView.getDrawingCache());
-                LogUtils.e(bitmap.toString());
-                imageView.setDrawingCacheEnabled(false);
-                Factory.runOnAsy(new BitMapHandler(bitmap));
-                break;
-            }
+//            case R.id.ic_c: {
+//                mTextureView.setVisibility(View.VISIBLE);
+//                ll.setVisibility(View.INVISIBLE);
+//                frameLayout.setVisibility(View.VISIBLE);
+//                l_i.setVisibility(View.INVISIBLE);
+//                break;
+//            }
+//            case R.id.ic_z: {
+//                imageView.setDrawingCacheEnabled(true);
+//                Bitmap bitmap = Bitmap.createBitmap(imageView.getDrawingCache());
+//                LogUtils.e(bitmap.toString());
+//                imageView.setDrawingCacheEnabled(false);
+//                Factory.runOnAsy(new BitMapHandler(bitmap));
+//                break;
+//            }
             default:
                 break;
         }
@@ -1081,37 +1065,37 @@ public class Camera2Fragment extends Fragment
                 (double) current / total);
     }
 
-    private class BitMapHandler implements Runnable {
+//    private class BitMapHandler implements Runnable {
+//
+//        private Bitmap bitmap;
+//
+//        public BitMapHandler(Bitmap bitmap) {
+//            this.bitmap = bitmap;
+//        }
+//
+//        @Override
+//        public void run() {
+//            //灰度
+//            bitmap = BitmapUtil.compress(bitmap);
+//            bitmap = BitmapUtil.bitmap2Gray(bitmap);
+//            LogUtils.e(bitmap.toString());
+//            //二值
+//            bitmap = BitmapUtil.gray2Binary(bitmap, Camera2Fragment.this);
+//            Message message = new Message();
+//            message.obj = bitmap;
+//            mHander.sendMessage(message);
+//        }
+//    }
 
-        private Bitmap bitmap;
-
-        public BitMapHandler(Bitmap bitmap) {
-            this.bitmap = bitmap;
-        }
-
-        @Override
-        public void run() {
-            //灰度
-            bitmap = BitmapUtil.compress(bitmap);
-            bitmap = BitmapUtil.bitmap2Gray(bitmap);
-            LogUtils.e(bitmap.toString());
-            //二值
-            bitmap = BitmapUtil.gray2Binary(bitmap, Camera2Fragment.this);
-            Message message = new Message();
-            message.obj = bitmap;
-            mHander.sendMessage(message);
-        }
-    }
-
-    private Handler mHander = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            Bitmap bitmap = (Bitmap) msg.obj;
-            imageView.setImageBitmap(bitmap);
-            showToast("灰度化成功");
-            return true;
-        }
-    });
+//    private Handler mHander = new Handler(new Handler.Callback() {
+//        @Override
+//        public boolean handleMessage(Message msg) {
+//            Bitmap bitmap = (Bitmap) msg.obj;
+//            imageView.setImageBitmap(bitmap);
+//            showToast("灰度化成功");
+//            return true;
+//        }
+//    });
 
     private void setAutoFlash(CaptureRequest.Builder requestBuilder) {
         if (mFlashSupported) {
@@ -1148,113 +1132,68 @@ public class Camera2Fragment extends Fragment
             byte[] bytes = new byte[buffer.remaining()];
             buffer.get(bytes);
             imagePath = savePicture(bytes);
-//            try {
-//                File file =  Luban.with(getContext()).load(imagePath).get().get(0);
-//                Message message = new Message();
-//                message.obj = file;
-//                handler1.sendMessage(message);
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            Log.e(TAG, "run: " + imagePath);
-
-            Message message = new Message();
-            message.obj = imagePath;
-            handler.sendMessage(message);
+            LogUtils.e("path:"+imagePath);
             mImage.close();
-//            FileOutputStream output = null;
-//            try {
-//                output = new FileOutputStream(mFile);
-//                output.write(bytes);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } finally {
-//                mImage.close();
-//                if (null != output) {
-//                    try {
-//                        output.close();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
         }
 
     }
 
-//    private Handler handler1 = new Handler(new Handler.Callback() {
+
+//    private Handler handler = new Handler(new Handler.Callback() {
 //        @Override
 //        public boolean handleMessage(Message msg) {
-//            File file = (File) msg.obj;
-//            mTextureView.setVisibility(View.INVISIBLE);
-//            frameLayout.setVisibility(View.INVISIBLE);
-//            ll.setVisibility(View.VISIBLE);
-//            l_i.setVisibility(View.VISIBLE);
-//            Glide.with(getContext())
-//                    .load(file)
-//                    .into(imageView);
+//
+//            int digree = 0;
+//            String path = (String) msg.obj;
+//            Bitmap bm = BitmapFactory.decodeFile(path);
+//            //bm = Bitmap.createScaledBitmap(bm, 150, 150, true);
+//            ExifInterface exif;
+//            try {
+//                exif = new ExifInterface(path);
+//                //获取相机方向
+//                int ori = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+//                //Log.e("wdl", "handleMessage: ori"+ori);
+//                // 计算旋转角度
+//                switch (ori) {
+//                    case ExifInterface.ORIENTATION_ROTATE_90:
+//                        digree = 90;
+//                        break;
+//                    case ExifInterface.ORIENTATION_ROTATE_180:
+//                        digree = 180;
+//                        break;
+//                    case ExifInterface.ORIENTATION_ROTATE_270:
+//                        digree = 270;
+//                        break;
+//                    default:
+//                        digree = 0;
+//                        break;
+//
+//                }
+//                Log.e("wdl", "handleMessage: " + digree);
+//                //如果图片为0
+//                if (digree == 0) {
+//                    // 旋转图片
+//                    Matrix m = new Matrix();
+//                    //顺时针旋转90
+//                    m.postRotate(90);
+//                    bm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(),
+//                            bm.getHeight(), m, true);
+//                }
+//                if (bm != null) {
+//                    mTextureView.setVisibility(View.INVISIBLE);
+//                    frameLayout.setVisibility(View.INVISIBLE);
+//                    l_i.setVisibility(View.VISIBLE);
+//                    imageView.setImageBitmap(bm);
+//                }
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                exif = null;
+//            }
+//
 //            return true;
 //        }
 //    });
-    private LinearLayout ll;
-
-    private Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-
-            int digree = 0;
-            String path = (String) msg.obj;
-            Bitmap bm = BitmapFactory.decodeFile(path);
-            //bm = Bitmap.createScaledBitmap(bm, 150, 150, true);
-            ExifInterface exif;
-            try {
-                exif = new ExifInterface(path);
-                //获取相机方向
-                int ori = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-                //Log.e("wdl", "handleMessage: ori"+ori);
-                // 计算旋转角度
-                switch (ori) {
-                    case ExifInterface.ORIENTATION_ROTATE_90:
-                        digree = 90;
-                        break;
-                    case ExifInterface.ORIENTATION_ROTATE_180:
-                        digree = 180;
-                        break;
-                    case ExifInterface.ORIENTATION_ROTATE_270:
-                        digree = 270;
-                        break;
-                    default:
-                        digree = 0;
-                        break;
-
-                }
-                Log.e("wdl", "handleMessage: " + digree);
-                //如果图片为0
-                if (digree == 0) {
-                    // 旋转图片
-                    Matrix m = new Matrix();
-                    //顺时针旋转90
-                    m.postRotate(90);
-                    bm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(),
-                            bm.getHeight(), m, true);
-                }
-                if (bm != null) {
-                    mTextureView.setVisibility(View.INVISIBLE);
-                    frameLayout.setVisibility(View.INVISIBLE);
-                    ll.setVisibility(View.VISIBLE);
-                    l_i.setVisibility(View.VISIBLE);
-                    imageView.setImageBitmap(bm);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                exif = null;
-            }
-
-            return true;
-        }
-    });
 
     //保存图片
     private String savePicture(byte[] data) {

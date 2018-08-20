@@ -1,13 +1,18 @@
 package com.wdl.monitoringofforest.activities;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.TextView;
 
+import com.wdl.common.app.PresenterToolbarActivity;
 import com.wdl.common.app.ToolbarActivity;
+import com.wdl.common.widget.Progress;
+import com.wdl.factory.presenter.set.SetContract;
+import com.wdl.factory.presenter.set.SetPresenter;
 import com.wdl.monitoringofforest.R;
 import com.wdl.utils.DataCleanManager;
 
@@ -16,34 +21,20 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class SettingActivity extends ToolbarActivity {
+@SuppressWarnings("unused")
+public class SettingActivity extends PresenterToolbarActivity<SetContract.Presenter>
+    implements SetContract.View{
 
-    private Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0x01:
-                    mCache.setText("0.0KB");
-                    break;
-                case 0x02:
-                    break;
-            }
-            return true;
-        }
-    });
-
+    private ProgressDialog dialog = null;
     @BindView(R.id.cache)
     TextView mCache;
 
     @OnClick(R.id.clean_cache)
     void clean() {
-        boolean flag = DataCleanManager.cleanInternalCache(getApplicationContext());
-        Message message = new Message();
-        if (flag) {
-            message.what = 0x01;
-        } else
-            message.what = 0x02;
-        handler.sendMessage(message);
+        dialog.show();
+
+        mPresenter.cleanCache();
+
     }
 
     /**
@@ -66,10 +57,31 @@ public class SettingActivity extends ToolbarActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        dialog = new ProgressDialog(this);
+        dialog.setTitle(R.string.title_dealing);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
     }
 
     @Override
     protected int getContentLayoutId() {
         return R.layout.activity_setting;
+    }
+
+    @Override
+    protected SetContract.Presenter initPresenter() {
+        return new SetPresenter(this);
+    }
+
+    @Override
+    public void showError(int res) {
+        super.showError(res);
+        dialog.dismiss();
+    }
+
+    @Override
+    public void cleanSucceed() {
+        mCache.setText(R.string.label_default_cache);
+        dialog.dismiss();
     }
 }

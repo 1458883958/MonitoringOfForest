@@ -12,6 +12,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.wdl.common.app.Fragment;
+import com.wdl.common.common.Common;
 import com.wdl.monitoringofforest.R;
 
 import butterknife.BindView;
@@ -43,7 +44,7 @@ public class ShareFragment extends Fragment {
         Bitmap bitmap;
         BitMatrix matrix;
         MultiFormatWriter writer = new MultiFormatWriter();
-        String words = "https://www.baidu.com";
+        String words = Common.Constance.URL+"/myfile/app-debug.apk";
         try {
             matrix = writer.encode(words, BarcodeFormat.QR_CODE, 500, 500);
             BarcodeEncoder encoder = new BarcodeEncoder();
