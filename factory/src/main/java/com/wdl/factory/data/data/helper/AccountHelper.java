@@ -1,12 +1,16 @@
 package com.wdl.factory.data.data.helper;
 
 
+import android.os.SystemClock;
+
+import com.wdl.common.common.Common;
 import com.wdl.factory.Factory;
 import com.wdl.factory.R;
 import com.wdl.factory.model.api.CallbackImpl;
 import com.wdl.factory.model.api.account.LoginModel;
 import com.wdl.factory.model.api.account.RegisterModel;
 import com.wdl.factory.model.api.account.RspModel;
+import com.wdl.factory.model.card.AccessToken;
 import com.wdl.factory.model.card.User;
 import com.wdl.factory.model.db.UserDb;
 import com.wdl.factory.net.Network;
@@ -15,10 +19,14 @@ import com.wdl.factory.persistence.Account;
 import com.wdl.factory.data.DataSource;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import com.wdl.factory.presenter.account.LoginPresenter;
 import com.wdl.factory.presenter.account.QQPresenter;
 import com.wdl.utils.LogUtils;
+
+import java.util.HashMap;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -214,6 +222,32 @@ public class AccountHelper {
                 if (callback!=null){
                     callback.onLoaded(data);
                 }
+            }
+        });
+    }
+
+    public static void getToken(){
+        RemoteService service = Network.remoteService2();
+        HashMap<String,String> map = new HashMap<>();
+        map.put("grant_type","client_credentials");
+        map.put("client_id", Common.Constance.CLIENT_ID);
+        map.put("client_secret", Common.Constance.CLIENT_SECRET);
+        Call<AccessToken> call = service.getToken(map);
+        call.enqueue(new Callback<AccessToken>() {
+
+            @Override
+            public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
+                AccessToken accessToken = response.body();
+                if (accessToken!=null){
+                    String token = accessToken.getAccess_token();
+                    LogUtils.e("token:"+token);
+                    Account.setToken(token);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AccessToken> call, Throwable t) {
+                return;
             }
         });
     }

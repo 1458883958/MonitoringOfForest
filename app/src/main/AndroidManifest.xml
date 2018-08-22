@@ -52,7 +52,7 @@
             android:process=":remote" />
         <!-- 个推广播注册 -->
         <receiver
-            android:name=".MessageReceiver"
+            android:name=".broadcast.MessageReceiver"
             android:enabled="true"
             android:exported="true"
             android:permission="1000">
@@ -138,6 +138,12 @@
             android:name=".activities.RecognitionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.TransStatusBar" />
+
+        <service
+            android:name=".service.LongRunService"
+            android:enabled="true"
+            android:exported="true"/>
+        <receiver android:name=".broadcast.AlarmReceiver" />
     </application>
 
 </manifest>

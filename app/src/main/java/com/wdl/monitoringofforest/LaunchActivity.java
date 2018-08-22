@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.util.Property;
@@ -18,6 +19,7 @@ import com.wdl.factory.persistence.Account;
 import com.wdl.monitoringofforest.activities.AccountActivity;
 import com.wdl.monitoringofforest.activities.MainActivity;
 import com.wdl.monitoringofforest.fragments.assist.PermissionsFragment;
+import com.wdl.monitoringofforest.service.LongRunService;
 import com.wdl.utils.ApkVersionCodeUtils;
 
 import net.qiujuer.genius.ui.compat.UiCompat;
@@ -48,6 +50,13 @@ public class LaunchActivity extends Activity {
                 receiverPushID();
             }
         });
+    }
+
+    @Override
+    protected void initBefore() {
+        super.initBefore();
+        Intent intent = new Intent(this, LongRunService.class);
+        startService(intent);
     }
 
     /**

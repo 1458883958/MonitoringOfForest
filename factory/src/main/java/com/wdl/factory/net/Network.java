@@ -23,6 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Network {
     private static Network instance;
     private Retrofit retrofit;
+    private Retrofit retrofit2;
 
     static {
         instance = new Network();
@@ -62,11 +63,35 @@ public class Network {
     }
 
     /**
+     * @return Retrofit
+     */
+    public static Retrofit getRetrofit2() {
+        if (instance.retrofit2 != null) return instance.retrofit2;
+        Retrofit.Builder builder = new Retrofit.Builder();
+        instance.retrofit2 = builder
+                .baseUrl(Common.Constance.BAI_D)
+                //设置gson解析器
+                .addConverterFactory(GsonConverterFactory.create(Factory.getGson()))
+                .build();
+        return instance.retrofit2;
+    }
+
+
+    /**
      * 得到一个请求代理
      *
      * @return RemoteService
      */
     public static RemoteService remoteService() {
         return Network.getRetrofit().create(RemoteService.class);
+    }
+
+    /**
+     * 得到一个请求代理
+     *
+     * @return RemoteService
+     */
+    public static RemoteService remoteService2() {
+        return Network.getRetrofit2().create(RemoteService.class);
     }
 }

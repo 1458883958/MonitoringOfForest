@@ -23,14 +23,38 @@ public class Account {
     private static final String KEY_IS_BIND = "KEY_IS_BIND";
     private static final String KEY_USER_ID = "KEY_USER_ID";
     private static final String KEY_ACCOUNT = "KEY_ACCOUNT";
+    private static final String KEY_TOKEN = "KEY_TOKEN";
+    private static final String REQUEST_TIME = "REQUEST_TIME";
     //设备的推送id
     private static String pushId;
     //设备是否绑定到服务器
     private static boolean bind;
     //登录的账号
     private static String account;
+    //百度token
+    private static String token;
     //用户id
     private static Integer userId;
+    //请求时间
+    private static long requestTime;
+
+    public static long getRequestTime() {
+        return requestTime;
+    }
+
+    public static void setRequestTime(long requestTime) {
+        Account.requestTime = requestTime;
+        Account.save(Factory.application());
+    }
+
+    public static String getToken() {
+        return token;
+    }
+
+    public static void setToken(String token) {
+        Account.token = token;
+        Account.save(Factory.application());
+    }
 
     public static String getPushId() {
         return pushId;
@@ -98,6 +122,8 @@ public class Account {
                 .putInt(KEY_USER_ID, userId)
                 .putString(KEY_ACCOUNT, account)
                 .putString(KEY_PUSH_ID, pushId)
+                .putString(KEY_TOKEN,token)
+                .putLong(REQUEST_TIME,requestTime)
                 .apply();
     }
 
@@ -125,6 +151,8 @@ public class Account {
         userId = sp.getInt(KEY_USER_ID, -1);
         account = sp.getString(KEY_ACCOUNT, "");
         pushId = sp.getString(KEY_PUSH_ID, "");
+        token = sp.getString(KEY_TOKEN,"");
+        requestTime = sp.getLong(REQUEST_TIME,0L);
     }
 
     /**
@@ -148,4 +176,6 @@ public class Account {
                         .where(UserDb_Table.id.eq(userId))
                         .querySingle();
     }
+
+
 }

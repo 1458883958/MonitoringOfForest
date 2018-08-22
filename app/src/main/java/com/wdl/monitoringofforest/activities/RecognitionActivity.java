@@ -8,22 +8,33 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.wdl.common.app.PresenterToolbarActivity;
 import com.wdl.common.app.ToolbarActivity;
 import com.wdl.common.widget.Progress;
 import com.wdl.factory.Factory;
+import com.wdl.factory.persistence.Account;
+import com.wdl.factory.presenter.recognition.RecognitionContract;
+import com.wdl.factory.presenter.recognition.RecognitionPresenter;
 import com.wdl.monitoringofforest.R;
 import com.wdl.utils.BitmapUtil;
 import com.wdl.utils.LogUtils;
+import com.wdl.utils.baidu.Base64Util;
+import com.wdl.utils.baidu.FileUtil;
+import com.wdl.utils.baidu.HttpUtil;
 
+
+import java.net.URLEncoder;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class RecognitionActivity extends ToolbarActivity {
+public class RecognitionActivity extends PresenterToolbarActivity<RecognitionContract.Presenter>
+    implements RecognitionContract.View{
     private static final String IMAGE_BITMAP = "IMAGE_BITMAP";
     private String path;
     Progress dialog = null;
@@ -58,6 +69,11 @@ public class RecognitionActivity extends ToolbarActivity {
                 .into(imageView);
     }
 
+    @Override
+    protected RecognitionContract.Presenter initPresenter() {
+        return new RecognitionPresenter(this);
+    }
+
     class DealPicHandler implements Runnable {
 
         @Override
@@ -89,6 +105,11 @@ public class RecognitionActivity extends ToolbarActivity {
     void thr() {
         dialog = new Progress(this);
         Factory.runOnAsy(new DealPicHandler());
+    }
+
+    @OnClick(R.id.action_rec)
+    void rec() {
+        mPresenter.recognition(path);
     }
 
     private Handler handler = new Handler(new Handler.Callback() {

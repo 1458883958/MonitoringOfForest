@@ -4,12 +4,14 @@ import com.wdl.factory.model.api.account.LoginModel;
 import com.wdl.factory.model.api.account.RegisterModel;
 import com.wdl.factory.model.api.account.RspModel;
 import com.wdl.factory.model.api.pi.PiModel;
+import com.wdl.factory.model.card.AccessToken;
 import com.wdl.factory.model.card.Feedback;
 import com.wdl.factory.model.card.Image;
 import com.wdl.factory.model.card.Notice;
 import com.wdl.factory.model.card.Pi;
 import com.wdl.factory.model.card.User;
 
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -19,6 +21,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -29,6 +32,10 @@ import retrofit2.http.Path;
  */
 @SuppressWarnings("unused")
 public interface RemoteService {
+
+    @POST("token")
+    Call<AccessToken> getToken(@QueryMap HashMap<String,String> map);
+
     /**
      * 获取短信验证码
      *

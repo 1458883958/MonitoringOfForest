@@ -1,4 +1,4 @@
-package com.wdl.monitoringofforest;
+package com.wdl.monitoringofforest.broadcast;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
