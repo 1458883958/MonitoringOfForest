@@ -1,5 +1,6 @@
 package com.wdl.factory.presenter.recognition;
 
+import com.wdl.factory.model.card.RecResult;
 import com.wdl.factory.presenter.BaseContract;
 
 /**
@@ -12,7 +13,7 @@ import com.wdl.factory.presenter.BaseContract;
 @SuppressWarnings("unused")
 public interface RecognitionContract {
     interface View extends BaseContract.View<Presenter>{
-
+        void succeed(RecResult result);
     }
 
     interface Presenter extends BaseContract.Presenter{

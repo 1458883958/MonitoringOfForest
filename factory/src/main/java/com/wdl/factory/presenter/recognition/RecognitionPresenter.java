@@ -3,7 +3,9 @@ package com.wdl.factory.presenter.recognition;
 import android.text.TextUtils;
 
 import com.wdl.factory.Factory;
+import com.wdl.factory.data.DataSource;
 import com.wdl.factory.data.data.helper.RecognitionHelper;
+import com.wdl.factory.model.card.RecResult;
 import com.wdl.factory.persistence.Account;
 import com.wdl.factory.presenter.BasePresenter;
 import net.qiujuer.genius.kit.handler.Run;
@@ -19,7 +21,7 @@ import net.qiujuer.genius.kit.handler.runable.Action;
  */
 @SuppressWarnings("unused")
 public class RecognitionPresenter extends BasePresenter<RecognitionContract.View>
-    implements RecognitionContract.Presenter{
+    implements RecognitionContract.Presenter,DataSource.Callback<RecResult>{
     public RecognitionPresenter(RecognitionContract.View view) {
         super(view);
     }
@@ -43,8 +45,26 @@ public class RecognitionPresenter extends BasePresenter<RecognitionContract.View
         Factory.runOnAsy(new Runnable() {
             @Override
             public void run() {
-                RecognitionHelper.recognition(path,accessToken);
+                RecognitionHelper.recognition(path,accessToken,RecognitionPresenter.this);
             }
         });
+    }
+
+    @Override
+    public void onLoaded(final RecResult data) {
+        final RecognitionContract.View view = getView();
+        if (data!=null&&view!=null){
+            Run.onUiAsync(new Action() {
+                @Override
+                public void call() {
+                   view.succeed(data);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onNotAvailable(int res) {
+
     }
 }

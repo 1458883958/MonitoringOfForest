@@ -1,15 +1,18 @@
 package com.wdl.factory.data.data.helper;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.wdl.common.app.Application;
 import com.wdl.factory.Factory;
 import com.wdl.factory.R;
 import com.wdl.factory.data.DataSource;
 import com.wdl.factory.model.api.CallbackImpl;
 import com.wdl.factory.model.api.account.RspModel;
+import com.wdl.factory.model.api.pi.Model;
 import com.wdl.factory.model.api.pi.PiModel;
 import com.wdl.factory.model.card.Pi;
 import com.wdl.factory.model.card.User;
 import com.wdl.factory.model.db.PiDb;
+import com.wdl.factory.model.db.PiDb_Table;
 import com.wdl.factory.net.Network;
 import com.wdl.factory.net.RemoteService;
 import com.wdl.factory.persistence.Account;
@@ -104,9 +107,10 @@ public class PiHelper {
     /**
      * 更新设备信息
      *
+     * @param pi
      * @param model PiModel
      */
-    public static void update(PiModel model) {
+    public static void update(final PiDb pi, final Model model) {
         RemoteService service = Network.remoteService();
         Call<RspModel<Pi>> call = service.update(model);
         call.enqueue(new CallbackImpl<Pi>() {
@@ -117,7 +121,11 @@ public class PiHelper {
 
             @Override
             protected void succeed(Pi data) {
-                Factory.getPiCenter().dispatch(data);
+                pi.setDelayed(data.getpDelayed());
+                pi.setSwitchState(data.getpSwitchstate());
+                pi.setPassword(data.getpPassword());
+                pi.setRemark(data.getpRemark());
+                pi.update();
             }
         });
     }

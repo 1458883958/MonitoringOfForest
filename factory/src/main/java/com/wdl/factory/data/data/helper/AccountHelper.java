@@ -134,7 +134,7 @@ public class AccountHelper {
         call.enqueue(new CallbackImpl<User>() {
             @Override
             protected void failed(String msg) {
-                if (callback!=null)
+                if (callback != null)
                     callback.onNotAvailable(R.string.data_account_unbind_qq);
             }
 
@@ -205,31 +205,31 @@ public class AccountHelper {
         call.enqueue(new CallbackImpl<User>() {
             @Override
             protected void failed(String msg) {
-                if (callback!=null)
-                    Factory.decodeRspCode(msg,callback);
+                if (callback != null)
+                    Factory.decodeRspCode(msg, callback);
             }
 
             @Override
             protected void succeed(User data) {
                 //保存数据库并通知界面
                 UserDb db = Account.getUserDb();
-                if (db==null)return;
-                if (type==1)db.setAlias(data.getuFullname());
-                if (type==2)db.setMail(data.getuEmail());
-                if (type==4)db.setImage(data.getuImagepath());
-                if (type==5)db.setAddress(data.getuIpaddress());
+                if (db == null) return;
+                if (type == 1) db.setAlias(data.getuFullname());
+                if (type == 2) db.setMail(data.getuEmail());
+                if (type == 4) db.setImage(data.getuImagepath());
+                if (type == 5) db.setAddress(data.getuIpaddress());
                 DbHelper.update(UserDb.class, db);
-                if (callback!=null){
+                if (callback != null) {
                     callback.onLoaded(data);
                 }
             }
         });
     }
 
-    public static void getToken(){
+    public static void getToken() {
         RemoteService service = Network.remoteService2();
-        HashMap<String,String> map = new HashMap<>();
-        map.put("grant_type","client_credentials");
+        HashMap<String, String> map = new HashMap<>();
+        map.put("grant_type", "client_credentials");
         map.put("client_id", Common.Constance.CLIENT_ID);
         map.put("client_secret", Common.Constance.CLIENT_SECRET);
         Call<AccessToken> call = service.getToken(map);
@@ -238,9 +238,9 @@ public class AccountHelper {
             @Override
             public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
                 AccessToken accessToken = response.body();
-                if (accessToken!=null){
+                if (accessToken != null) {
                     String token = accessToken.getAccess_token();
-                    LogUtils.e("token:"+token);
+                    LogUtils.e("token:" + token);
                     Account.setToken(token);
                 }
             }

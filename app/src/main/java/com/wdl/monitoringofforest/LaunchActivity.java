@@ -18,6 +18,7 @@ import com.wdl.common.app.Application;
 import com.wdl.factory.persistence.Account;
 import com.wdl.monitoringofforest.activities.AccountActivity;
 import com.wdl.monitoringofforest.activities.MainActivity;
+import com.wdl.monitoringofforest.activities.MapActivity;
 import com.wdl.monitoringofforest.fragments.assist.PermissionsFragment;
 import com.wdl.monitoringofforest.service.LongRunService;
 import com.wdl.utils.ApkVersionCodeUtils;
@@ -116,10 +117,7 @@ public class LaunchActivity extends Activity {
     private void toApp() {
         //已获取全部权限
         if (PermissionsFragment.haveAllPermission(this, getSupportFragmentManager())) {
-            if (Account.isLogin())
-                MainActivity.show(this);
-            else
-                AccountActivity.show(this);
+            MapActivity.show(this);
             finish();
         } else {
             Application.showToast("-----");

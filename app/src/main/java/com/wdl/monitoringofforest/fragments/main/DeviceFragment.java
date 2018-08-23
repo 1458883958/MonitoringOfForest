@@ -232,7 +232,7 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
             String threshold = pThreshold.getText().toString().trim();
             String delayed = pDelayed.getText().toString().trim();
             String password = pPassword.getText().toString().trim();
-            mPresenter.update(remark, Integer.valueOf(threshold), Integer.valueOf(delayed), password);
+            mPresenter.update(data,data.getId(),remark, Integer.valueOf(threshold), Integer.valueOf(delayed), password);
             setState(false);
         }
 

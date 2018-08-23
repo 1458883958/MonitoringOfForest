@@ -7,6 +7,7 @@ import com.wdl.factory.data.DataSource;
 import com.wdl.factory.data.data.helper.PiHelper;
 import com.wdl.factory.data.data.pi.PiDataSource;
 import com.wdl.factory.data.data.pi.PiRepository;
+import com.wdl.factory.model.api.pi.Model;
 import com.wdl.factory.model.api.pi.PiModel;
 import com.wdl.factory.model.card.User;
 import com.wdl.factory.model.db.PiDb;
@@ -108,7 +109,7 @@ public class PiPresenter extends BaseSourcePresenter<PiDb, PiDb, PiDataSource, P
      * @param delayed   延时
      */
     @Override
-    public void update(String remark, Integer threshold, Integer delayed,String password) {
+    public void update(PiDb pi,int pId,String remark, Integer threshold, Integer delayed,String password) {
         final PiContract.View view = getView();
         //LogUtils.e(Account.getUserId() + "");
         int userId = Account.getUserId();
@@ -117,12 +118,15 @@ public class PiPresenter extends BaseSourcePresenter<PiDb, PiDb, PiDataSource, P
             return;
         }
         PiModel model = new PiModel();
-        model.setuId(userId);
+        model.setpId(pId);
         model.setpDelayed(delayed);
         model.setpRemark(remark);
         model.setpThreshold(threshold);
         model.setpPassword(password);
-        PiHelper.update(model);
+        Model model1 = new Model();
+        model1.setuId(userId);
+        model1.setRecord(model);
+        PiHelper.update(pi,model1);
     }
 
 }

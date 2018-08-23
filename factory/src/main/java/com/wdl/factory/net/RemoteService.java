@@ -3,6 +3,7 @@ package com.wdl.factory.net;
 import com.wdl.factory.model.api.account.LoginModel;
 import com.wdl.factory.model.api.account.RegisterModel;
 import com.wdl.factory.model.api.account.RspModel;
+import com.wdl.factory.model.api.pi.Model;
 import com.wdl.factory.model.api.pi.PiModel;
 import com.wdl.factory.model.card.AccessToken;
 import com.wdl.factory.model.card.Feedback;
@@ -129,7 +130,7 @@ public interface RemoteService {
      * @return RspModel<Pi>
      */
     @POST("pi/update")
-    Call<RspModel<Pi>> update(@Body PiModel model);
+    Call<RspModel<Pi>> update(@Body Model model);
 
     /**
      * 添加反馈(需传uId、fSubject、fContent)

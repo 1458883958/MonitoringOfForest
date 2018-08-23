@@ -1,6 +1,7 @@
 package com.wdl.monitoringofforest.activities;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,12 +12,14 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.wdl.common.app.PresenterToolbarActivity;
 import com.wdl.common.app.ToolbarActivity;
 import com.wdl.common.widget.Progress;
 import com.wdl.factory.Factory;
+import com.wdl.factory.model.card.RecResult;
 import com.wdl.factory.persistence.Account;
 import com.wdl.factory.presenter.recognition.RecognitionContract;
 import com.wdl.factory.presenter.recognition.RecognitionPresenter;
@@ -40,6 +43,8 @@ public class RecognitionActivity extends PresenterToolbarActivity<RecognitionCon
     Progress dialog = null;
     @BindView(R.id.image)
     ImageView imageView;
+    @BindView(R.id.result)
+    TextView mResult;
 
     @Override
     protected int getContentLayoutId() {
@@ -74,6 +79,11 @@ public class RecognitionActivity extends PresenterToolbarActivity<RecognitionCon
         return new RecognitionPresenter(this);
     }
 
+    @Override
+    public void succeed(RecResult result) {
+        mResult.setText(result.toString());
+    }
+
     class DealPicHandler implements Runnable {
 
         @Override
@@ -96,7 +106,10 @@ public class RecognitionActivity extends PresenterToolbarActivity<RecognitionCon
             LogUtils.e("result:"+x);
             Message message = new Message();
             message.what = 2;
-            message.obj = bitmapBinary;
+            Bundle bundle = new Bundle();
+            bundle.putDouble("result",x);
+            bundle.putParcelable("bitmap",bitmap);
+            message.setData(bundle);
             handler.sendMessage(message);
         }
     }
@@ -113,6 +126,7 @@ public class RecognitionActivity extends PresenterToolbarActivity<RecognitionCon
     }
 
     private Handler handler = new Handler(new Handler.Callback() {
+        @SuppressLint("SetTextI18n")
         @Override
         public boolean handleMessage(Message msg) {
             if (msg.what == 1) {
@@ -122,8 +136,11 @@ public class RecognitionActivity extends PresenterToolbarActivity<RecognitionCon
                 int x = (int) (result * 100 + 0.5);
                 dialog.setProgress(x);
             } else if (msg.what == 2) {
-                Bitmap x = (Bitmap) msg.obj;
-                imageView.setImageBitmap(x);
+                Bundle bundle = msg.getData();
+                Bitmap bitmap = bundle.getParcelable("bitmap");
+                Double x = bundle.getDouble("result");
+                imageView.setImageBitmap(bitmap);
+                mResult.setText(""+x);
                 dialog.dismiss();
             }
             return true;

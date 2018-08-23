@@ -30,6 +30,8 @@
     <string name="label_look_his">查看历史</string>
     <string name="feed_back_succeed">反馈成功</string>
     <string name="label_default_cache">0.0KB</string>
+    <string name="label_thr">计算郁闭度</string>
+    <string name="label_recognition">植物识别</string>
 
     <string name="label_init_password">初始密码为1245sd</string>
     <string name="label_go_start">请前往启动QQ</string>

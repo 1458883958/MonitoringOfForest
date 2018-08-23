@@ -176,6 +176,7 @@ public class PictureFragment extends PresenterFragment<DataContract.Presenter>
                         .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
                 try {
                     File file = future.get();
+                    LogUtils.e("filePath:"+file.getPath());
                     Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
                     Bitmap bitmapBinary = BitmapUtil.convertToBMW(bitmap, 100);
                     double x = BitmapUtil.result(bitmapBinary, new BitmapUtil.Progress() {

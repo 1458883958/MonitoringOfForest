@@ -39,6 +39,6 @@ public interface PiContract {
          * @param threshold 阈值
          * @param delayed   延时
          */
-        void update(String remark, Integer threshold, Integer delayed,String password);
+        void update(PiDb pi,int pId,String remark, Integer threshold, Integer delayed,String password);
     }
 }
