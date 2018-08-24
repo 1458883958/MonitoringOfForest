@@ -122,7 +122,13 @@ public class AccountInfoActivity extends PresenterToolbarActivity<UpdateContract
             //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
             final String addr = bdLocation.getAddrStr();    //获取详细地址信息
             LogUtils.e(addr);
-            mPresenter.update(type_address, addr);
+            if (TextUtils.isEmpty(addr))return;
+            //经度
+            double lat = bdLocation.getLatitude();
+            //维度
+            double lot = bdLocation.getLongitude();
+            LogUtils.e("lat:"+lat+" lot:"+lot);
+            mPresenter.update(type_address,addr,lat,lot);
             locationClient.stop();
         }
     };

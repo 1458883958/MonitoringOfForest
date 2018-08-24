@@ -1,8 +1,10 @@
 package com.wdl.factory.net;
 
+import com.wdl.factory.model.api.PageInfo;
 import com.wdl.factory.model.api.account.LoginModel;
 import com.wdl.factory.model.api.account.RegisterModel;
 import com.wdl.factory.model.api.account.RspModel;
+import com.wdl.factory.model.api.pi.ImagePage;
 import com.wdl.factory.model.api.pi.Model;
 import com.wdl.factory.model.api.pi.PiModel;
 import com.wdl.factory.model.card.AccessToken;
@@ -159,6 +161,15 @@ public interface RemoteService {
      */
     @POST("image/selectByPid")
     Call<RspModel<List<Image>>> getPic(@Body Pi pId);
+
+    /**
+     * 获取设备的图片
+     *
+     * @param page page
+     * @return RspModel<PageInfo<Image>>
+     */
+    @POST("image/selectPageListByPid")
+    Call<RspModel<PageInfo<Image>>> getPic(@Body ImagePage page);
 
 
     /**

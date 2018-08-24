@@ -86,4 +86,16 @@ public class Image {
     public void setiTime(Date iTime) {
         this.iTime = iTime;
     }
+
+    @Override
+    public String toString() {
+        return "Image{" +
+                "iId=" + iId +
+                ", pId=" + pId +
+                ", iImagepath='" + iImagepath + '\'' +
+                ", iDensity=" + iDensity +
+                ", iTime=" + iTime +
+                ", imageDb=" + imageDb +
+                '}';
+    }
 }

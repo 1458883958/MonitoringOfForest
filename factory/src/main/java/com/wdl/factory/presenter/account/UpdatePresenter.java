@@ -47,6 +47,16 @@ public class UpdatePresenter extends BasePresenter<UpdateContract.View>
     }
 
     @Override
+    public void update(int type,String info, double lat, double lot) {
+        User user = new User();
+        user.setuId(Account.getUserId());
+        user.setuIpaddress(info);
+        user.setuLatitude(lat);
+        user.setuLongitude(lot);
+        AccountHelper.update(type, user, this);
+    }
+
+    @Override
     public UserDb getUser() {
         final UpdateContract.View view = getView();
         int userId = Account.getUserId();

@@ -15,6 +15,7 @@ import com.wdl.factory.presenter.BaseContract;
 public interface UpdateContract {
     interface Presenter extends BaseContract.Presenter {
         void update(int type,String info);
+        void update(int type,String info,double lat,double lot);
         UserDb getUser();
     }
 

@@ -1,15 +1,18 @@
 package com.wdl.factory.presenter.data;
 
 import android.support.v7.util.DiffUtil;
+import android.util.Log;
 
 import com.wdl.common.widget.recycler.RecyclerAdapter;
 import com.wdl.factory.data.data.devicedata.DataRepository;
 import com.wdl.factory.data.data.devicedata.DeviceDataSource;
 import com.wdl.factory.data.data.helper.DataHelper;
+import com.wdl.factory.model.api.pi.ImagePage;
 import com.wdl.factory.model.card.Pi;
 import com.wdl.factory.model.db.ImageDb;
 import com.wdl.factory.presenter.BaseSourcePresenter;
 import com.wdl.factory.utils.DiffUiDataCallback;
+import com.wdl.utils.LogUtils;
 
 import java.util.List;
 
@@ -31,9 +34,11 @@ public class DataPresenter extends BaseSourcePresenter<
     public void start() {
         super.start();
         final DataContract.View view = getView();
-        Pi pi = new Pi();
-        pi.setpId(view.getPiId());
-        DataHelper.select(pi);
+        ImagePage page = new ImagePage();
+        page.setPId(view.getPiId());
+        page.setPageNum(1);
+        page.setPageSize(20);
+        DataHelper.select(page);
     }
 
     @Override

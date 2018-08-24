@@ -29,7 +29,9 @@ public class DataRepository extends BaseDbRepository<ImageDb> implements DeviceD
         super.load(callback);
         SQLite.select()
                 .from(ImageDb.class)
-                .where(ImageDb_Table.id.eq(pId))
+                .where(ImageDb_Table.piId.eq(pId))
+                .orderBy(ImageDb_Table.id,true)
+                .limit(20)
                 .async()
                 //此方法起主导作用
                 .queryListResultCallback(this)

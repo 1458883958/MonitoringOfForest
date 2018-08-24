@@ -221,7 +221,6 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
 
         @OnClick(R.id.setting)
         void setting() {
-            LogUtils.e("setting");
             setState(true);
 
         }
