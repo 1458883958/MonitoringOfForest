@@ -29,8 +29,17 @@ public interface PiContract {
         /**
          * 改变设备拍照状态
          */
-        void changedSwitch(int pId,int state);
+        void changedSwitch(int pId, int state);
+
         void changedSwitch(PiDb db);
+
+        /**
+         * 删除设备
+         *
+         * @param pId 设备Id
+         * @param uId 用户Id
+         */
+        void deleteDevice(int pId, int uId);
 
         /**
          * 更新设备
@@ -39,6 +48,6 @@ public interface PiContract {
          * @param threshold 阈值
          * @param delayed   延时
          */
-        void update(PiDb pi,int pId,String remark, Integer threshold, Integer delayed,String password);
+        void update(PiDb pi, int pId, String remark, Integer threshold, Integer delayed, String password);
     }
 }

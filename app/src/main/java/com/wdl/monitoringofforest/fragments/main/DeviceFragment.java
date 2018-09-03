@@ -1,8 +1,10 @@
 package com.wdl.monitoringofforest.fragments.main;
 
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -52,6 +54,7 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
     private RecyclerAdapter adapter;
     private FloatActionButton fab;
     private StringBuffer stringBuffer;
+
     public DeviceFragment() {
         // Required empty public constructor
     }
@@ -87,9 +90,9 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
                     LogUtils.e("voice:" + stringBuffer.toString());
                     String ints = stringBuffer.toString();
                     //解析语音识别后返回的json格式的结果
-                    if (ints.contains("一号拍照")){
+                    if (ints.contains("一号拍照")) {
                         mPresenter.changedSwitch((PiDb) adapter.getItems().get(0));
-                        
+
                         //adapter.notifyDataSetChanged();
                     }
                 }
@@ -113,7 +116,7 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
                 dictationResult.getWs();
         for (DictationResult.Words w : ws) {
             String info = w.getCw().get(0).getW();
-            LogUtils.e("info:"+info);
+            LogUtils.e("info:" + info);
             buff.append(info);
         }
         return buff.toString();
@@ -152,10 +155,46 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
             }
         });
 
+        /*
+         * 长按删除 设备
+         * */
+        adapter.setListener(new RecyclerAdapter.AdapterListenerImpl<PiDb>() {
+            @Override
+            public void onItemLongClick(RecyclerAdapter.ViewHolder holder, PiDb piDb) {
+                super.onItemLongClick(holder, piDb);
+                showPopMenu(holder,piDb);
+            }
+        });
         //绑定recycler
         emptyView.bind(recyclerView);
         //设置占位布局
         setPlaceHolderView(emptyView);
+    }
+
+    /**
+     * @param holder
+     * @param piDb
+     */
+    public void showPopMenu(RecyclerAdapter.ViewHolder holder, final PiDb piDb){
+        PopupMenu popupMenu = new PopupMenu(Objects.requireNonNull(getContext()),holder.itemView);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_delete,popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                if(item.getItemId()==R.id.removeItem) {
+                    //删除网络存储
+                    int pId = piDb.getId();
+                    int uId = piDb.getUserId();
+                    mPresenter.deleteDevice(pId,uId);
+                }
+                return false;
+            }
+        });
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+            }
+        });
+        popupMenu.show();
     }
 
     @Override
@@ -231,7 +270,7 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
             String threshold = pThreshold.getText().toString().trim();
             String delayed = pDelayed.getText().toString().trim();
             String password = pPassword.getText().toString().trim();
-            mPresenter.update(data,data.getId(),remark, Integer.valueOf(threshold), Integer.valueOf(delayed), password);
+            mPresenter.update(data, data.getId(), remark, Integer.valueOf(threshold), Integer.valueOf(delayed), password);
             setState(false);
         }
 

@@ -103,7 +103,6 @@ public class RecognitionActivity extends PresenterToolbarActivity<RecognitionCon
                     }
                 }
             });
-            LogUtils.e("result:"+x);
             Message message = new Message();
             message.what = 2;
             Bundle bundle = new Bundle();
@@ -140,6 +139,7 @@ public class RecognitionActivity extends PresenterToolbarActivity<RecognitionCon
                 Bitmap bitmap = bundle.getParcelable("bitmap");
                 Double x = bundle.getDouble("result");
                 imageView.setImageBitmap(bitmap);
+                
                 mResult.setText(""+x);
                 dialog.dismiss();
             }

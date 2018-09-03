@@ -45,6 +45,8 @@ public class Pi {
             db.setDelayed(pDelayed);
             db.setSwitchState(pSwitchstate);
             db.setBootState(pBootstate);
+            db.setLatitude(pLatitude);
+            db.setLongitude(pLongitude);
             this.piDb = db;
         }
         return piDb;

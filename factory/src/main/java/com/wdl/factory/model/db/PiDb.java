@@ -42,7 +42,27 @@ public class PiDb extends BaseDbModel<PiDb> implements Serializable {
     private Integer bootState;
     @Column
     private int userId;
+    @Column
+    private Double longitude;
+    @Column
+    private Double latitude;
     public PiDb() {
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
     public int getUserId() {
@@ -151,6 +171,8 @@ public class PiDb extends BaseDbModel<PiDb> implements Serializable {
                 Objects.equals(threshold, piDb.threshold) &&
                 Objects.equals(delayed, piDb.delayed) &&
                 Objects.equals(switchState, piDb.switchState) &&
+                Objects.equals(latitude, piDb.latitude) &&
+                Objects.equals(longitude, piDb.longitude) &&
                 Objects.equals(bootState, piDb.bootState);
     }
 
@@ -172,6 +194,8 @@ public class PiDb extends BaseDbModel<PiDb> implements Serializable {
                 Objects.equals(threshold, old.threshold) &&
                 Objects.equals(delayed, old.delayed) &&
                 Objects.equals(switchState, old.switchState) &&
+                Objects.equals(latitude, old.latitude) &&
+                Objects.equals(longitude, old.longitude) &&
                 Objects.equals(bootState, old.bootState));
     }
 }

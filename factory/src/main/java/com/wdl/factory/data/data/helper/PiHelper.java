@@ -129,4 +129,20 @@ public class PiHelper {
             }
         });
     }
+
+    public static void delete(PiModel model) {
+        RemoteService service = Network.remoteService();
+        Call<RspModel<Pi>> call = service.deletePi(model);
+        call.enqueue(new CallbackImpl<Pi>() {
+            @Override
+            protected void failed(String msg) {
+            }
+
+            @Override
+            protected void succeed(Pi data) {
+                DbHelper.delete(PiDb.class,data.build());
+            }
+
+        });
+    }
 }

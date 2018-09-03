@@ -5,11 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".fragments.device_data.SensorFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:textColor="@color/textPrimary"
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/charts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="hello sensor" />
+        android:layout_height="300dp"/>
+    <Button
+        android:id="@+id/btn_date"
+        android:text="选择时间"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

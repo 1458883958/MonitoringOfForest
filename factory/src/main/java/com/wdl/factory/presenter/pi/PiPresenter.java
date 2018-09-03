@@ -1,6 +1,7 @@
 package com.wdl.factory.presenter.pi;
 
 import android.support.v7.util.DiffUtil;
+
 import com.wdl.common.widget.recycler.RecyclerAdapter;
 import com.wdl.factory.R;
 import com.wdl.factory.data.DataSource;
@@ -28,7 +29,7 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings("unused")
 public class PiPresenter extends BaseSourcePresenter<PiDb, PiDb, PiDataSource, PiContract.View>
-        implements PiContract.Presenter{
+        implements PiContract.Presenter {
     public PiPresenter(PiContract.View view) {
         super(view, new PiRepository());
     }
@@ -78,10 +79,10 @@ public class PiPresenter extends BaseSourcePresenter<PiDb, PiDb, PiDataSource, P
     /**
      * 改变拍照状态
      *
-     * @param state      状态
-     * */
+     * @param state 状态
+     */
     @Override
-    public void changedSwitch(int pId,int state) {
+    public void changedSwitch(int pId, int state) {
         PiModel model = new PiModel();
         model.setpId(pId);
         model.setpSwitchstate(state);
@@ -91,15 +92,29 @@ public class PiPresenter extends BaseSourcePresenter<PiDb, PiDb, PiDataSource, P
     /**
      * 改变拍照状态
      *
-     * @param db      PiDb
-     * */
+     * @param db PiDb
+     */
     @Override
     public void changedSwitch(PiDb db) {
         PiModel model = new PiModel();
         model.setpId(db.getId());
-        int state = db.getSwitchState()==0?1:0;
+        int state = db.getSwitchState() == 0 ? 1 : 0;
         model.setpSwitchstate(state);
-        PiHelper.change(model,db);
+        PiHelper.change(model, db);
+    }
+
+    /**
+     * 删除
+     *
+     * @param pId 设备Id
+     * @param uId 用户Id
+     */
+    @Override
+    public void deleteDevice(int pId, int uId) {
+        PiModel model = new PiModel();
+        model.setpId(pId);
+        model.setuId(uId);
+        PiHelper.delete(model);
     }
 
 
@@ -109,11 +124,11 @@ public class PiPresenter extends BaseSourcePresenter<PiDb, PiDb, PiDataSource, P
      * @param delayed   延时
      */
     @Override
-    public void update(PiDb pi,int pId,String remark, Integer threshold, Integer delayed,String password) {
+    public void update(PiDb pi, int pId, String remark, Integer threshold, Integer delayed, String password) {
         final PiContract.View view = getView();
         //LogUtils.e(Account.getUserId() + "");
         int userId = Account.getUserId();
-        if (userId==-1) {
+        if (userId == -1) {
             view.showError(R.string.data_account_error_un_login);
             return;
         }
@@ -126,7 +141,7 @@ public class PiPresenter extends BaseSourcePresenter<PiDb, PiDb, PiDataSource, P
         Model model1 = new Model();
         model1.setuId(userId);
         model1.setRecord(model);
-        PiHelper.update(pi,model1);
+        PiHelper.update(pi, model1);
     }
 
 }

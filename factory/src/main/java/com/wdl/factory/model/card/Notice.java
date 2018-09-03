@@ -12,7 +12,7 @@ import java.util.Date;
 public class Notice {
     private Integer nId;
 
-    private Integer aId;
+    private Integer uId;
     private String nSubject;
     private String nFilepath;
     private Integer nBeemail;
@@ -29,12 +29,12 @@ public class Notice {
         this.nId = nId;
     }
 
-    public Integer getaId() {
-        return aId;
+    public Integer getuId() {
+        return uId;
     }
 
-    public void setaId(Integer aId) {
-        this.aId = aId;
+    public void setuId(Integer uId) {
+        this.uId = uId;
     }
 
     public String getnSubject() {
@@ -89,7 +89,7 @@ public class Notice {
     public String toString() {
         return "Notice{" +
                 "nId=" + nId +
-                ", aId=" + aId +
+                ", uId=" + uId +
                 ", nSubject='" + nSubject + '\'' +
                 ", nFilepath='" + nFilepath + '\'' +
                 ", nBeemail=" + nBeemail +

@@ -116,6 +116,15 @@ public interface RemoteService {
     Call<RspModel<Pi>> addPi(@Body PiModel model);
 
     /**
+     * 删除设备
+     *
+     * @param model PiModel
+     * @return RspModel<Pi>
+     */
+    @POST("pi/delete")
+    Call<RspModel<Pi>> deletePi(@Body PiModel model);
+
+    /**
      * 控制开关
      *
      * @param model PiModel

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -56,6 +57,9 @@ public class PictureFragment extends PresenterFragment<DataContract.Presenter>
     @BindView(R.id.empty)
     EmptyView mEmpty;
 
+    @BindView(R.id.refresh)
+    SwipeRefreshLayout refreshLayout;
+
     private int pId;
     private RecyclerAdapter<ImageDb> adapter;
 
@@ -88,6 +92,18 @@ public class PictureFragment extends PresenterFragment<DataContract.Presenter>
     @Override
     protected void initWidget(View root) {
         super.initWidget(root);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPresenter.start();
+                        refreshLayout.setRefreshing(false);
+                    }
+                },2000);
+            }
+        });
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecycler.setAdapter(adapter = new RecyclerAdapter<ImageDb>() {
             @Override

@@ -26,7 +26,7 @@ import butterknife.BindView;
  * 账户注册/登陆调度的activity
  */
 @SuppressWarnings("unused")
-public class AccountActivity extends Activity implements AccountTrigger{
+public class AccountActivity extends Activity implements AccountTrigger {
 
     private Fragment mCurrentFragment;
     private Fragment loginFragment;
@@ -41,7 +41,7 @@ public class AccountActivity extends Activity implements AccountTrigger{
      * @param context 上下文
      */
     public static void show(Context context) {
-        context.startActivity(new Intent(context,AccountActivity.class));
+        context.startActivity(new Intent(context, AccountActivity.class));
     }
 
     @Override
@@ -56,7 +56,7 @@ public class AccountActivity extends Activity implements AccountTrigger{
         mCurrentFragment = loginFragment = new LoginFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.lay_container,mCurrentFragment)
+                .add(R.id.lay_container, mCurrentFragment)
                 .commit();
 
         //初始化背景
@@ -87,14 +87,14 @@ public class AccountActivity extends Activity implements AccountTrigger{
         //要切换的页面
         Fragment fragment;
         //当前页面为登陆--->注册
-        if (mCurrentFragment==loginFragment){
+        if (mCurrentFragment == loginFragment) {
             //注册页面未初始化,进行初始化
-            if (registerFragment==null){
+            if (registerFragment == null) {
                 registerFragment = new RegisterFragment();
             }
             //赋值
             fragment = registerFragment;
-        }else {
+        } else {
             //当前是注册--->登陆
             //登陆已初始化,默认加载的就是登陆
             fragment = loginFragment;
@@ -104,7 +104,7 @@ public class AccountActivity extends Activity implements AccountTrigger{
         //替换
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.lay_container,fragment)
+                .replace(R.id.lay_container, fragment)
                 .commit();
     }
 }
