@@ -167,7 +167,10 @@ public class LaunchActivity extends Activity {
     private void toApp() {
         //已获取全部权限
         if (PermissionsFragment.haveAllPermission(this, getSupportFragmentManager())) {
-            MapActivity.show(this);
+            if (Account.isLogin())
+                MapActivity.show(LaunchActivity.this);
+            else
+                AccountActivity.show(LaunchActivity.this);
             finish();
         } else {
             Application.showToast("-----");

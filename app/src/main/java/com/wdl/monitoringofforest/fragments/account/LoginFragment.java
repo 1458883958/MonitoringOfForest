@@ -20,6 +20,7 @@ import com.wdl.factory.presenter.account.LoginContract;
 import com.wdl.factory.presenter.account.LoginPresenter;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.activities.MainActivity;
+import com.wdl.monitoringofforest.activities.MapActivity;
 import com.wdl.monitoringofforest.activities.QQBindActivity;
 import com.wdl.utils.LogUtils;
 
@@ -141,7 +142,7 @@ public class LoginFragment extends PresenterFragment<LoginContract.Presenter>
 
     @Override
     public void loginSucceed() {
-        MainActivity.show(Objects.requireNonNull(getContext()));
+        MapActivity.show(Objects.requireNonNull(getContext()));
         Objects.requireNonNull(getActivity()).finish();
     }
 

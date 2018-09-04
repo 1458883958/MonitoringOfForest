@@ -124,7 +124,7 @@ public class PiPresenter extends BaseSourcePresenter<PiDb, PiDb, PiDataSource, P
      * @param delayed   延时
      */
     @Override
-    public void update(PiDb pi, int pId, String remark, Integer threshold, Integer delayed, String password) {
+    public void update(PiDb pi, int pId, String remark, String threshold, String delayed, String password) {
         final PiContract.View view = getView();
         //LogUtils.e(Account.getUserId() + "");
         int userId = Account.getUserId();
@@ -132,16 +132,23 @@ public class PiPresenter extends BaseSourcePresenter<PiDb, PiDb, PiDataSource, P
             view.showError(R.string.data_account_error_un_login);
             return;
         }
-        PiModel model = new PiModel();
-        model.setpId(pId);
-        model.setpDelayed(delayed);
-        model.setpRemark(remark);
-        model.setpThreshold(threshold);
-        model.setpPassword(password);
-        Model model1 = new Model();
-        model1.setuId(userId);
-        model1.setRecord(model);
-        PiHelper.update(pi, model1);
+       if (isInteger(threshold)&&isInteger(delayed)) {
+           PiModel model = new PiModel();
+           model.setpId(pId);
+           model.setpDelayed(Integer.valueOf(delayed));
+           model.setpRemark(remark);
+           model.setpThreshold(Integer.valueOf(threshold));
+           model.setpPassword(password);
+           model.setpSwitchstate(pi.getSwitchState());
+           Model model1 = new Model();
+           model1.setuId(userId);
+           model1.setRecord(model);
+           PiHelper.update(pi, model1);
+       }else view.showError(R.string.data_input_ok_param);
     }
 
+    public static boolean isInteger(String str) {
+        Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
+        return pattern.matcher(str).matches();
+    }
 }

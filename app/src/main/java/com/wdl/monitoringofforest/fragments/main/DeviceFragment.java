@@ -153,18 +153,18 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
                 int pId = piDb.getId();
                 DeviceDataActivity.show(getContext(), pId);
             }
-        });
 
-        /*
-         * 长按删除 设备
-         * */
-        adapter.setListener(new RecyclerAdapter.AdapterListenerImpl<PiDb>() {
+            /*
+             * 长按删除 设备
+             * */
             @Override
             public void onItemLongClick(RecyclerAdapter.ViewHolder holder, PiDb piDb) {
                 super.onItemLongClick(holder, piDb);
-                showPopMenu(holder,piDb);
+                showPopMenu(holder, piDb);
             }
         });
+
+
         //绑定recycler
         emptyView.bind(recyclerView);
         //设置占位布局
@@ -175,16 +175,16 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
      * @param holder
      * @param piDb
      */
-    public void showPopMenu(RecyclerAdapter.ViewHolder holder, final PiDb piDb){
-        PopupMenu popupMenu = new PopupMenu(Objects.requireNonNull(getContext()),holder.itemView);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_delete,popupMenu.getMenu());
+    public void showPopMenu(RecyclerAdapter.ViewHolder holder, final PiDb piDb) {
+        PopupMenu popupMenu = new PopupMenu(Objects.requireNonNull(getContext()), holder.itemView);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_delete, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-                if(item.getItemId()==R.id.removeItem) {
+                if (item.getItemId() == R.id.removeItem) {
                     //删除网络存储
                     int pId = piDb.getId();
                     int uId = piDb.getUserId();
-                    mPresenter.deleteDevice(pId,uId);
+                    mPresenter.deleteDevice(pId, uId);
                 }
                 return false;
             }
@@ -270,7 +270,8 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
             String threshold = pThreshold.getText().toString().trim();
             String delayed = pDelayed.getText().toString().trim();
             String password = pPassword.getText().toString().trim();
-            mPresenter.update(data, data.getId(), remark, Integer.valueOf(threshold), Integer.valueOf(delayed), password);
+            mPresenter.update(data, data.getId(), remark, threshold
+                    , delayed, password);
             setState(false);
         }
 

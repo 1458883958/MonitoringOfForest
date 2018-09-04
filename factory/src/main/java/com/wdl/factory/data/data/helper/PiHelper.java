@@ -18,6 +18,7 @@ import com.wdl.factory.net.RemoteService;
 import com.wdl.factory.persistence.Account;
 import com.wdl.utils.LogUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,6 +50,12 @@ public class PiHelper {
                 if (data == null || data.size() == 0) return;
                 //唤起进行数据存储
                 Factory.getPiCenter().dispatch(data.toArray(new Pi[0]));
+            }
+
+            @Override
+            protected void succeedMsg(String msg) {
+                super.succeedMsg(msg);
+                return;
             }
         });
     }
@@ -86,7 +93,7 @@ public class PiHelper {
      *
      * @param model PiModel
      */
-    public static void change(PiModel model,final PiDb db) {
+    public static void change(PiModel model, final PiDb db) {
         RemoteService service = Network.remoteService();
         Call<RspModel<Pi>> call = service.changedState(model);
         call.enqueue(new CallbackImpl<Pi>() {
@@ -130,6 +137,11 @@ public class PiHelper {
         });
     }
 
+    /**
+     * 删除
+     *
+     * @param model PiModel
+     */
     public static void delete(PiModel model) {
         RemoteService service = Network.remoteService();
         Call<RspModel<Pi>> call = service.deletePi(model);
@@ -140,9 +152,36 @@ public class PiHelper {
 
             @Override
             protected void succeed(Pi data) {
-                DbHelper.delete(PiDb.class,data.build());
+                DbHelper.delete(PiDb.class, data.build());
             }
 
         });
     }
+
+
+    public static void query(int userId, final DataSource.SucceedCallback<List<PiDb>> callback) {
+
+        RemoteService service = Network.remoteService();
+        User user = new User();
+        user.setuId(userId);
+        Call<RspModel<List<Pi>>> call = service.selectAllPi(user);
+        call.enqueue(new CallbackImpl<List<Pi>>() {
+            @Override
+            protected void failed(String msg) {
+            }
+
+            @Override
+            protected void succeed(List<Pi> data) {
+                if (data == null || data.size() == 0) return;
+                List<PiDb> piDbs = new ArrayList<>();
+                for (Pi datum : data) {
+                    piDbs.add(datum.build());
+                }
+                if (callback!=null)callback.onLoaded(piDbs);
+            }
+
+        });
+
+    }
+
 }

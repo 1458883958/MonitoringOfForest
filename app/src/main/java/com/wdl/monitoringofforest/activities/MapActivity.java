@@ -2,18 +2,6 @@ package com.wdl.monitoringofforest.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-
-import com.baidu.location.BDAbstractLocationListener;
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.CoordType;
-import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -25,16 +13,21 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
-import com.wdl.factory.Factory;
-import com.wdl.factory.persistence.Account;
+import com.wdl.common.app.PresenterActivity;
+import com.wdl.factory.model.db.PiDb;
+import com.wdl.factory.presenter.pi.MapContract;
+import com.wdl.factory.presenter.pi.MapPresenter;
 import com.wdl.monitoringofforest.R;
-import com.wdl.utils.LogUtils;
+
+import java.util.List;
+
+import butterknife.BindView;
 
 @SuppressWarnings("unused")
-public class MapActivity extends AppCompatActivity {
+public class MapActivity extends PresenterActivity<MapContract.Presenter> implements MapContract.View {
 
-    private LocationClient client = null;
-    private MapView mMapView = null;
+    @BindView(R.id.bmapView)
+    MapView mMapView;
     private BaiduMap baiduMap;
     private boolean isFirstLocate = true;
 
@@ -46,44 +39,39 @@ public class MapActivity extends AppCompatActivity {
     public static void show(Context context) {
         context.startActivity(new Intent(context, MapActivity.class));
     }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        client = new LocationClient(Factory.application());
-        client.registerLocationListener(listener);
-        setContentView(R.layout.activity_map);
-        mMapView = findViewById(R.id.bmapView);
+    protected void initWidget() {
+        super.initWidget();
         baiduMap = mMapView.getMap();
         // 开启定位图层
         baiduMap.setMyLocationEnabled(true);
-        requestLocation();
-    }
-    private void requestLocation() {
-        initLocation();
-        client.start();
+        baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                baiduMap.setOnMarkerClickListener(null);
+                MainActivity.show(MapActivity.this);
+                finish();
+                return false;
+            }
+        });
     }
 
-    private void initLocation() {
-        LocationClientOption option = new LocationClientOption();
-        option.setIsNeedAddress(true);
-        option.setIsNeedAltitude(true);
-        //可选，是否需要地址信息，默认为不需要，即参数为false
-        //如果开发者需要获得当前点的地址信息，此处必须为true
-        option.setScanSpan(5000);
-        option.setCoorType("bd09ll");
-        //请求间隔
-        option.setOpenGps(true);
-        client.setLocOption(option);
-        //mLocationClient为第二步初始化过的LocationClient对象
-        //需将配置好的LocationClientOption对象，通过setLocOption方法传递给LocationClient对象使用
-        //更多LocationClientOption的配置，请参照类参考中LocationClientOption类的详细说明
+    @Override
+    protected int getContentLayoutId() {
+        return R.layout.activity_map;
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        mPresenter.query();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-        client.stop();
         mMapView.onDestroy();
         // 当不需要定位图层时关闭定位图层
         baiduMap.setMyLocationEnabled(false);
@@ -103,25 +91,10 @@ public class MapActivity extends AppCompatActivity {
         mMapView.onPause();
     }
 
-    private BDAbstractLocationListener listener = new BDAbstractLocationListener(){
 
-        @Override
-        public void onReceiveLocation(BDLocation bdLocation) {
-            //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
-            //以下只列举部分获取地址相关的结果信息
-            //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
-            if(bdLocation.getLocType()==BDLocation.TypeGpsLocation||
-                    bdLocation.getLocType()==BDLocation.TypeNetWorkLocation){
-                LogUtils.e("location:"+bdLocation.getAddrStr());
-                navigateTo(bdLocation);
-                client.stop();
-            }
-        }
-    };
-
-    private void navigateTo(BDLocation location){
+    private void navigateTo(PiDb db){
         if(isFirstLocate){
-            LatLng ll = new LatLng(location.getLatitude(),location.getLongitude());
+            LatLng ll = new LatLng(db.getLatitude(),db.getLongitude());
             MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(ll);
             baiduMap.animateMapStatus(update);
             update = MapStatusUpdateFactory.zoomTo(16f);
@@ -129,16 +102,21 @@ public class MapActivity extends AppCompatActivity {
             isFirstLocate = false;
         }
         MyLocationData.Builder locationData = new MyLocationData.Builder();
-        locationData.latitude(location.getLatitude());
-        locationData.longitude(location.getLongitude());
+        locationData.latitude(db.getLatitude());
+        locationData.longitude(db.getLongitude());
         MyLocationData myLocationData = locationData.build();
         baiduMap.setMyLocationData(myLocationData);
 
-        mark(location);
     }
 
-    private void mark(BDLocation location) {
-        LatLng ll = new LatLng(location.getLatitude(),location.getLongitude());
+    private void marks(List<PiDb> dbs) {
+        for (PiDb db : dbs) {
+            mark(db);
+        }
+    }
+
+    private void mark(PiDb db) {
+        LatLng ll = new LatLng(db.getLatitude(),db.getLongitude());
         //构建mark 图标
         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.marker);
 
@@ -149,16 +127,28 @@ public class MapActivity extends AppCompatActivity {
 
         //在地图上添加
         baiduMap.addOverlay(overlayOptions);
-        baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                if (Account.isLogin())
-                    MainActivity.show(MapActivity.this);
-                else
-                    AccountActivity.show(MapActivity.this);
-                finish();
-                return false;
-            }
-        });
+    }
+
+    @Override
+    protected MapContract.Presenter initPresenter() {
+        return new MapPresenter(this);
+    }
+
+
+
+    @Override
+    public void result(List<PiDb> dbs) {
+        //移动到第一个设备位置
+        navigateTo(dbs.get(0));
+        //标记
+        marks(dbs);
+
+    }
+
+    @Override
+    public void failed() {
+       showToast(R.string.data_un_device);
+       MainActivity.show(this);
+       finish();
     }
 }
