@@ -96,6 +96,10 @@
     <string name="label_click_deal">点击进行处理</string>
     <string name="label_deal_ok">处理完成</string>
     <string name="label_update_loading">新版本正在更新,请稍等</string>
+    <string name="label_new_version">检测到新版本</string>
+    <string name="label_update">更新</string>
+    <string name="label_update_later">以后再说</string>
+
 
 
     <string name="label_follows">Follows\n%s</string>

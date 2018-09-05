@@ -19,9 +19,7 @@ public class Common {
         String BAI_D =  "https://aip.baidubce.com/oauth/2.0/";
         String CLIENT_ID = "LT1Hld2XGuElExgjb1i8jiSA";
         String CLIENT_SECRET = "rYVtXg64IlgUh3bShGn228knf3W7HGil";
-        //String API_URL = "http://119.23.168.140/api/";
-        //String API_URL = "http://192.168.1.100:80/api/";
-        //String API_URL = "http://192.168.1.118:80/api/";
+        String APP_URL = "https://xmhhs.top/myfile/app-debug.apk";
 
     }
 }

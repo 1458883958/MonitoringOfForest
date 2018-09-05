@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.wdl.monitoringofforest">
 
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
+    <uses-permission
+        android:name="android.permission.WRITE_SECURE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -35,7 +37,8 @@
         tools:ignore="ProtectedPermissions" />
     <!-- 录音 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
+    <!--特需访问权限  android8.0 引入  安装其他软件设置-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -46,6 +49,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:name">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.wdl.monitoringofforest.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="FRLXC3zHES8cGcPR1qzI2RkDx7HA2tu0" />

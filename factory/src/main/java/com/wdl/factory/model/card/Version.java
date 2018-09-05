@@ -93,4 +93,17 @@ public class Version {
         this.vTime = vTime;
     }
 
+    @Override
+    public String toString() {
+        return "Version{" +
+                "vId=" + vId +
+                ", vPiversion='" + vPiversion + '\'' +
+                ", vPicontent='" + vPicontent + '\'' +
+                ", vPipath='" + vPipath + '\'' +
+                ", vAppname='" + vAppname + '\'' +
+                ", vAppversion='" + vAppversion + '\'' +
+                ", vAppcontent='" + vAppcontent + '\'' +
+                ", vTime='" + vTime + '\'' +
+                '}';
+    }
 }

@@ -13,10 +13,12 @@ import com.wdl.factory.model.card.Image;
 import com.wdl.factory.model.card.Notice;
 import com.wdl.factory.model.card.Pi;
 import com.wdl.factory.model.card.User;
+import com.wdl.factory.model.card.Version;
 
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,6 +27,8 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -37,7 +41,7 @@ import retrofit2.http.QueryMap;
 public interface RemoteService {
 
     @POST("token")
-    Call<AccessToken> getToken(@QueryMap HashMap<String,String> map);
+    Call<AccessToken> getToken(@QueryMap HashMap<String, String> map);
 
     /**
      * 获取短信验证码
@@ -90,7 +94,7 @@ public interface RemoteService {
     /**
      * 查询所有公告
      *
-     * @return RspModel<List               <               Notice>>
+     * @return RspModel<List                               <                               Notice>>
      */
     @POST("notice/selectAll")
     Call<RspModel<List<Notice>>> notice();
@@ -101,7 +105,7 @@ public interface RemoteService {
      * 查看已绑定设备列表
      *
      * @param user User
-     * @return RspModel<List < Pi>>
+     * @return RspModel<List   <   Pi>>
      */
     @POST("pi/select")
     Call<RspModel<List<Pi>>> selectAllPi(@Body User user);
@@ -156,7 +160,7 @@ public interface RemoteService {
      * 查看所有反馈(需传uId)
      *
      * @param feedback Feedback
-     * @return RspModel<List   <   Feedback>>
+     * @return RspModel<List       <       Feedback>>
      */
     @POST("feedback/selectByUid")
     Call<RspModel<List<Feedback>>> selectFeedback(@Body Feedback feedback);
@@ -166,7 +170,7 @@ public interface RemoteService {
      * 获取设备的图片
      *
      * @param pId pId
-     * @return RspModel<List < Image>>
+     * @return RspModel<List   <   Image>>
      */
     @POST("image/selectByPid")
     Call<RspModel<List<Image>>> getPic(@Body Pi pId);
@@ -175,7 +179,7 @@ public interface RemoteService {
      * 获取设备的图片
      *
      * @param page page
-     * @return RspModel<PageInfo<Image>>
+     * @return RspModel<PageInfo < Image>>
      */
     @POST("image/selectPageListByPid")
     Call<RspModel<PageInfo<Image>>> getPic(@Body ImagePage page);
@@ -207,4 +211,23 @@ public interface RemoteService {
      */
     @POST("user/qqlogin")
     Call<RspModel<User>> loginQQ(@Body User user);
+
+    /**
+     * 获取版本信息
+     *
+     * @return RspModel<Version>
+     */
+    @POST("getVersion")
+    Call<RspModel<Version>> getVersion();
+
+
+    /**
+     * 下载文件
+     *
+     * @param fileUrl
+     * @return ResponseBody
+     */
+    @Streaming //大文件时要加不然会OOM
+    @GET
+    Call<ResponseBody> downloadFile(@Url String fileUrl);
 }
