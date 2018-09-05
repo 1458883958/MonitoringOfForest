@@ -2,8 +2,10 @@ package com.wdl.monitoringofforest.fragments.assist;
 
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
@@ -69,6 +71,11 @@ public class PermissionsFragment extends BottomSheetDialogFragment
                 && haveWritePermission(context)
                 && havePhoneStatePermission(context)
                 && haveLocationPermission(context);
+
+        //兼容8.0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            haveAll = haveAll && haveInstallPermission(context);
+        }
         if (!haveAll) {
             //跳转申请权限的fragment--PermissionFragment
             show(fragmentManager);
@@ -105,6 +112,7 @@ public class PermissionsFragment extends BottomSheetDialogFragment
     /**
      * 申请权限的方法
      */
+    @TargetApi(Build.VERSION_CODES.M)
     @AfterPermissionGranted(RC)
     private void requestPerms() {
         String[] perms = new String[]{
@@ -118,6 +126,20 @@ public class PermissionsFragment extends BottomSheetDialogFragment
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.RECORD_AUDIO
         };
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            perms = new String[]{
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.INTERNET,
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_NETWORK_STATE,
+                    Manifest.permission.ACCESS_WIFI_STATE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.REQUEST_INSTALL_PACKAGES
+            };
+        }
         //判断权限
         if (EasyPermissions.hasPermissions(Objects.requireNonNull(getContext()), perms)) {
             //提示
@@ -154,6 +176,9 @@ public class PermissionsFragment extends BottomSheetDialogFragment
                 .setVisibility(havePhoneStatePermission(context) ? View.VISIBLE : View.GONE);
         view.findViewById(R.id.iv_state_permission_location)
                 .setVisibility(haveLocationPermission(context) ? View.VISIBLE : View.GONE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            view.findViewById(R.id.iv_state_permission_install)
+                    .setVisibility(haveInstallPermission(Objects.requireNonNull(context)) ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -169,6 +194,17 @@ public class PermissionsFragment extends BottomSheetDialogFragment
                 Manifest.permission.ACCESS_WIFI_STATE
         };
         return EasyPermissions.hasPermissions(context, perms);
+    }
+
+    /**
+     * 判断是否获取网络权限
+     *
+     * @param context 上下文
+     * @return true代表已经获取权限
+     */
+    @TargetApi(Build.VERSION_CODES.O)
+    private static boolean haveInstallPermission(Context context) {
+        return context.getPackageManager().canRequestPackageInstalls();
     }
 
     /**

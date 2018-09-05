@@ -155,7 +155,7 @@ public class AboutFragment extends PresenterFragment<AppVersionContract.Presente
 
                             @Override
                             public void onProgress(final int currentLength) {
-                                LogUtils.e("进度:"+currentLength);
+                                LogUtils.e("进度:" + currentLength);
                                 Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -173,7 +173,7 @@ public class AboutFragment extends PresenterFragment<AppVersionContract.Presente
                                         dialogA.dismiss();
                                     }
                                 });
-                                LogUtils.e("path:"+mPath);
+                                LogUtils.e("path:" + mPath);
                                 openAPK(mPath);
                             }
 
@@ -198,10 +198,11 @@ public class AboutFragment extends PresenterFragment<AppVersionContract.Presente
 
     /**
      * 安装apk
-     * @param fileSavePath
+     *
+     * @param fileSavePath 文件路径
      */
-    private void openAPK(String fileSavePath){
-        File file=new File(Uri.parse(fileSavePath).getPath());
+    private void openAPK(String fileSavePath) {
+        File file = new File(Uri.parse(fileSavePath).getPath());
         String filePath = file.getAbsolutePath();
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri data;
