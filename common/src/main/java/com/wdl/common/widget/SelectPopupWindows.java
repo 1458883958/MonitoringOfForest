@@ -20,7 +20,7 @@ import com.wdl.common.R;
  * 描述：    popupWindows 的简单封装
  */
 @SuppressWarnings("unused")
-public class SelectPopupWindows extends PopupWindow implements View.OnClickListener{
+public class SelectPopupWindows extends PopupWindow implements View.OnClickListener {
 
     private Button selectedByCamera;
     private Button selectedByGallery;
@@ -36,7 +36,7 @@ public class SelectPopupWindows extends PopupWindow implements View.OnClickListe
         super(context);
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        menuView = inflater.inflate(R.layout.popupwindow_layout,null);
+        menuView = inflater.inflate(R.layout.popupwindow_layout, null);
         selectedByCamera = menuView.findViewById(R.id.select_camera);
         selectedByGallery = menuView.findViewById(R.id.select_album);
         cancel = menuView.findViewById(R.id.btn_cancel);
@@ -44,15 +44,17 @@ public class SelectPopupWindows extends PopupWindow implements View.OnClickListe
         selectedByGallery.setOnClickListener(this);
         cancel.setOnClickListener(this);
     }
+
+
     /**
      * 将view添加到popupWindow上并显示
      *
      * @param activity
      */
-    public void showPopupWindow(final Activity activity,View view){
+    public void showPopupWindow(final Activity activity, View view) {
         popupWindow = new PopupWindow(menuView, ViewGroup.LayoutParams.MATCH_PARENT
-            ,ViewGroup.LayoutParams.WRAP_CONTENT,true);
-        setBackgroundAlpha(activity,0.0f);
+                , ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        setBackgroundAlpha(activity, 0.0f);
         popupWindow.setFocusable(true);
         popupWindow.setContentView(menuView);
         popupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.color.grey_300));
@@ -98,8 +100,8 @@ public class SelectPopupWindows extends PopupWindow implements View.OnClickListe
     /**
      * 选择监听接口
      */
-    public interface OnSelectedListener{
-        void onSelected(View v,int position);
+    public interface OnSelectedListener {
+        void onSelected(View v, int position);
     }
 
 
