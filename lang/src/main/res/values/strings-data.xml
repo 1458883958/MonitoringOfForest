@@ -25,5 +25,9 @@
     <string name="data_clean_fail">清理缓存失败</string>
     <string name="data_the_latest_version">当前已经是最新版本</string>
 
+    <string name="data_pay_succeed">支付成功</string>
+    <string name="data_pay_failed">支付失败</string>
+    <string name="data_pay_isv_insufficient_isv_permissions">未签约,支付失败</string>
+
 
 </resources>

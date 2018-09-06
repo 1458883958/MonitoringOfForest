@@ -18,6 +18,7 @@ import com.wdl.monitoringofforest.activities.AccountActivity;
 import com.wdl.monitoringofforest.activities.AccountInfoActivity;
 import com.wdl.monitoringofforest.activities.SettingActivity;
 import com.wdl.monitoringofforest.activities.ShareActivity;
+import com.wdl.monitoringofforest.activities.ShopActivity;
 
 import java.util.Objects;
 
@@ -47,6 +48,11 @@ public class PersonalFragment extends Fragment {
     @OnClick(R.id.user_info)
     void update() {
         AccountInfoActivity.show(Objects.requireNonNull(getContext()));
+    }
+
+    @OnClick(R.id.shop)
+    void shop() {
+        ShopActivity.show(Objects.requireNonNull(getContext()));
     }
 
     @OnClick(R.id.call)

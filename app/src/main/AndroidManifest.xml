@@ -37,8 +37,9 @@
         tools:ignore="ProtectedPermissions" />
     <!-- 录音 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <!--特需访问权限  android8.0 引入  安装其他软件设置-->
+    <!-- 特需访问权限  android8.0 引入  安装其他软件设置 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -58,6 +59,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_path" />
         </provider>
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="FRLXC3zHES8cGcPR1qzI2RkDx7HA2tu0" />
@@ -77,6 +79,16 @@
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" />
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" />
         <activity
             android:name=".LaunchActivity"
             android:screenOrientation="portrait"
@@ -162,7 +174,11 @@
 
         <receiver android:name=".broadcast.AlarmReceiver" />
 
-        <activity android:name=".activities.MapActivity"></activity>
+        <activity android:name=".activities.MapActivity"
+            />
+        <activity android:name=".activities.ShopActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.TransStatusBar"/>
     </application>
 
 </manifest>
