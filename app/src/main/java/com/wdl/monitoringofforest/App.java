@@ -10,6 +10,7 @@ import com.mob.MobSDK;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.wdl.common.app.Application;
 import com.wdl.factory.Factory;
+import com.wdl.monitoringofforest.service.PushService;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -26,7 +27,8 @@ public class App extends Application {
         //初始化Factory
         Factory.setUp();
         //初始化个推
-        PushManager.getInstance().initialize(this);
+        PushManager.getInstance().initialize(this,
+                PushService.class);
         MobSDK.init(this);
         //TTS语音听写
         SpeechUtility

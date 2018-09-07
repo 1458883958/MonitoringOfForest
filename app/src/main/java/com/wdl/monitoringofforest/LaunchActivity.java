@@ -17,15 +17,16 @@ import android.util.Property;
 import android.view.View;
 import android.widget.TextView;
 
+import com.igexin.sdk.PushManager;
 import com.wdl.common.app.Activity;
 import com.wdl.common.app.Application;
 import com.wdl.factory.Factory;
 import com.wdl.factory.persistence.Account;
 import com.wdl.monitoringofforest.activities.AccountActivity;
-import com.wdl.monitoringofforest.activities.MainActivity;
 import com.wdl.monitoringofforest.activities.MapActivity;
 import com.wdl.monitoringofforest.fragments.assist.PermissionsFragment;
 import com.wdl.monitoringofforest.service.LongRunService;
+import com.wdl.monitoringofforest.service.MessageIntentService;
 import com.wdl.utils.ApkVersionCodeUtils;
 import com.wdl.utils.LogUtils;
 
@@ -62,6 +63,7 @@ public class LaunchActivity extends Activity {
     @Override
     protected void initBefore() {
         super.initBefore();
+        PushManager.getInstance().registerPushIntentService(getApplicationContext(), MessageIntentService.class);
         Intent intent = new Intent(this, LongRunService.class);
         startService(intent);
         boolean isOpen = isOPen(this);

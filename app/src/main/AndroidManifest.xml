@@ -68,16 +68,24 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
-        <!-- 个推广播注册 -->
-        <receiver
-            android:name=".broadcast.MessageReceiver"
-            android:enabled="true"
+        <service android:name=".service.MessageIntentService"/>
+        <service
+            android:name=".service.PushService"
             android:exported="true"
-            android:permission="1000">
-            <intent-filter>
-                <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />
-            </intent-filter>
-        </receiver>
+            android:label="PushService"
+            android:process=":pushservice"
+            >
+        </service>
+        <!--&lt;!&ndash;&lt;!&ndash; 个推广播注册 &ndash;&gt;&ndash;&gt;-->
+        <!--<receiver-->
+            <!--android:name=".broadcast.MessageReceiver"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true"-->
+            <!--android:permission="1000">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
