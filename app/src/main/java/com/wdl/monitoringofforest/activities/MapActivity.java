@@ -50,7 +50,8 @@ public class MapActivity extends PresenterActivity<MapContract.Presenter> implem
             @Override
             public boolean onMarkerClick(Marker marker) {
                 baiduMap.setOnMarkerClickListener(null);
-                MainActivity.show(MapActivity.this);
+
+                MainActivity.show(MapActivity.this,marker.getTitle());
                 finish();
                 return false;
             }
@@ -123,6 +124,7 @@ public class MapActivity extends PresenterActivity<MapContract.Presenter> implem
         //构建markerOption,用于在地图上添加marker
         OverlayOptions overlayOptions = new MarkerOptions()
                 .position(ll)
+                .title(db.getName())
                 .icon(bitmap);
 
         //在地图上添加
@@ -147,8 +149,7 @@ public class MapActivity extends PresenterActivity<MapContract.Presenter> implem
 
     @Override
     public void failed() {
-       showToast(R.string.data_un_device);
-       MainActivity.show(this);
+       MainActivity.show(this,"normal");
        finish();
     }
 }

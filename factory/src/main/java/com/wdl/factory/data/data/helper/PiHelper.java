@@ -159,7 +159,7 @@ public class PiHelper {
     }
 
 
-    public static void query(int userId, final DataSource.SucceedCallback<List<PiDb>> callback) {
+    public static void query(int userId, final DataSource.Callback<List<PiDb>> callback) {
 
         RemoteService service = Network.remoteService();
         User user = new User();
@@ -172,7 +172,10 @@ public class PiHelper {
 
             @Override
             protected void succeed(List<Pi> data) {
-                if (data == null || data.size() == 0) return;
+                if (data == null || data.size() == 0) {
+                    if (callback!=null)callback.onNotAvailable(R.string.data_pi_un_response);
+                    return;
+                }
                 List<PiDb> piDbs = new ArrayList<>();
                 for (Pi datum : data) {
                     piDbs.add(datum.build());

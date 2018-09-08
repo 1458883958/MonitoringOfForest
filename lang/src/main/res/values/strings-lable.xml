@@ -111,4 +111,6 @@
     <string name="label_gallery_select_max_size">至多选择%s张</string>
     <string name="label_gallery_selected_size">已选%s张</string>
     <string name="label_density_result">郁闭度为%s</string>
+    <string name="label_go_share">分享</string>
+    <string name="label_back">返回</string>
 </resources>

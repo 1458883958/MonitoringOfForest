@@ -1,5 +1,6 @@
 package com.wdl.monitoringofforest.fragments.main;
 
+import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -8,10 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
@@ -27,6 +28,7 @@ import com.wdl.factory.presenter.pi.PiPresenter;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.activities.DeviceDataActivity;
 import com.wdl.monitoringofforest.activities.MainActivity;
+import com.wdl.monitoringofforest.activities.MainTitle;
 import com.wdl.utils.LogUtils;
 
 import net.qiujuer.genius.ui.widget.FloatActionButton;
@@ -45,6 +47,9 @@ import butterknife.OnClick;
 public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
         implements PiContract.View {
 
+    private MainTitle instance;
+
+    private String title;
     @BindView(R.id.recycler)
     RecyclerView recyclerView;
 
@@ -59,16 +64,35 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
         // Required empty public constructor
     }
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        instance = (MainTitle) context;
+    }
+
     /**
      * 第一次加载
      */
     @Override
     protected void onFirstInit() {
         super.onFirstInit();
+        title = instance.getPiTitle();
+        LogUtils.e("DeviceFragment:"+title);
         //进行数据库查询以及网络查询
         mPresenter.start();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (instance!=null)instance = null;
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+    }
 
     private void tts() {
         //创建语音识别对话框
@@ -233,6 +257,8 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
 
         @BindView(R.id.pName)
         TextView pName;
+        @BindView(R.id.pi_bg)
+        LinearLayout linearLayout;
         @BindView(R.id.pSwitch)
         SwitchCompat pSwitch;
         @BindView(R.id.et_remark)
@@ -286,10 +312,13 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
 
         public ViewHolder(View itemView) {
             super(itemView);
+
         }
 
         @Override
         protected void onBind(PiDb pi) {
+            if (pi.getName().equals(title))
+                linearLayout.setBackgroundColor(getResources().getColor(R.color.amber_200));
             pName.setText(pi.getName());
             pSwitch.setChecked(pi.getSwitchState() == 1);
             pRemark.setText(pi.getRemark());

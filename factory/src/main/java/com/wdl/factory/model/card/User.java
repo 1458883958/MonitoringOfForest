@@ -30,6 +30,7 @@ public class User {
     private Integer uBeemail;
     private Date uRegtime;
     private Date uLastlogintime;
+    private Integer uBeadmin;
 
     public User() {
     }
@@ -50,6 +51,14 @@ public class User {
             this.userDb = db;
         }
         return userDb;
+    }
+
+    public Integer getuBeadmin() {
+        return uBeadmin;
+    }
+
+    public void setuBeadmin(Integer uBeadmin) {
+        this.uBeadmin = uBeadmin;
     }
 
     public Integer getuId() {

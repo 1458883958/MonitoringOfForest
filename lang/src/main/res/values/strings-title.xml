@@ -19,4 +19,8 @@
     <string name="title_update_name">修改昵称</string>
     <string name="title_update_mail">修改邮箱</string>
     <string name="title_update_password">修改密码</string>
+    <string name="title_rec_result">处理结果</string>
+
+
+
 </resources>

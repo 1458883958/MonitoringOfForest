@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,20 +19,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-import com.iflytek.cloud.RecognizerResult;
-import com.iflytek.cloud.SpeechConstant;
-import com.iflytek.cloud.SpeechError;
-import com.iflytek.cloud.ui.RecognizerDialog;
-import com.iflytek.cloud.ui.RecognizerDialogListener;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.wdl.common.app.Activity;
 import com.wdl.common.widget.PortraitView;
-import com.wdl.factory.Factory;
-import com.wdl.factory.model.card.DictationResult;
 import com.wdl.factory.persistence.Account;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.fragments.main.ContactFragment;
@@ -47,8 +34,6 @@ import com.wdl.utils.LogUtils;
 import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.widget.FloatActionButton;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -61,7 +46,9 @@ import butterknife.OnClick;
 @SuppressWarnings("unused")
 public class MainActivity extends Activity
         implements BottomNavigationView.OnNavigationItemSelectedListener,
-        NavHelper.OnTabChangedListener<Integer> {
+        NavHelper.OnTabChangedListener<Integer>,MainTitle {
+    private static final String MAP_TITLE = "MAP_TITLE";
+    private String title;
     @BindView(R.id.appBar)
     View appBar;
     @BindView(R.id.mPortrait)
@@ -112,13 +99,18 @@ public class MainActivity extends Activity
      *
      * @param context 上下文
      */
-    public static void show(Context context) {
-        context.startActivity(new Intent(context, MainActivity.class));
+    public static void show(Context context,String title) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(MAP_TITLE,title);
+        context.startActivity(intent);
     }
 
     @Override
     protected boolean initArgs(Bundle bundle) {
-        return super.initArgs(bundle);
+        super.initArgs(bundle);
+        title = bundle.getString(MAP_TITLE);
+        LogUtils.e("mapTitle:"+title);
+        return !TextUtils.isEmpty(title)||"normal".equals(title);
     }
 
     @Override
@@ -217,5 +209,11 @@ public class MainActivity extends Activity
                 //时间
                 .setDuration(480)
                 .start();
+    }
+
+
+    @Override
+    public String getPiTitle() {
+        return title;
     }
 }

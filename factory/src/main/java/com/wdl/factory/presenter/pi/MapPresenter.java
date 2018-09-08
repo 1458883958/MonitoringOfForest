@@ -21,31 +21,46 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class MapPresenter extends BasePresenter<MapContract.View> implements
-    MapContract.Presenter,DataSource.SucceedCallback<List<PiDb>>{
+        MapContract.Presenter, DataSource.Callback<List<PiDb>> {
     public MapPresenter(MapContract.View view) {
         super(view);
     }
 
-    @Override
-    public void onLoaded(final List<PiDb> data) {
-        final MapContract.View view = getView();
-        if (view!=null){
-            Run.onUiAsync(new Action() {
-                @Override
-                public void call() {
-                    if (data.size()==0)view.failed();
-                    else view.result(data);
-                }
-            });
-        }
-    }
 
     @Override
     public void query() {
         start();
         final MapContract.View view = getView();
         int userId = Account.getUserId();
-        if (userId==-1) view.showError(R.string.data_account_error_un_login);
-        PiHelper.query(userId,this);
+        if (userId == -1) view.showError(R.string.data_account_error_un_login);
+        PiHelper.query(userId, this);
     }
+
+    @Override
+    public void onNotAvailable(final int res) {
+        final MapContract.View view = getView();
+        if (view != null) {
+            Run.onUiAsync(new Action() {
+                @Override
+                public void call() {
+                    view.showError(res);
+                    view.failed();
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onLoaded(final List<PiDb> data) {
+        final MapContract.View view = getView();
+        if (view != null) {
+            Run.onUiAsync(new Action() {
+                @Override
+                public void call() {
+                    view.result(data);
+                }
+            });
+        }
+    }
+
 }
