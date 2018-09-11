@@ -2,6 +2,7 @@ package com.wdl.factory.presenter.user;
 
 import com.wdl.factory.Factory;
 import com.wdl.factory.data.data.helper.UserHelper;
+import com.wdl.factory.model.card.User;
 import com.wdl.factory.model.db.UserDb;
 import com.wdl.factory.persistence.Account;
 import com.wdl.factory.presenter.BasePresenter;
@@ -31,7 +32,7 @@ public class PersonalPresenter extends BasePresenter<PersonalContract.View>
             @Override
             public void run() {
                 int id = getView().getId();
-                UserDb user = UserHelper.searchFromNet(id);
+                UserDb user = UserHelper.findFistOfLocal(id);
                 PersonalContract.View view = getView();
                 if (view!=null&&user!=null)
                     onLoad(view,user);

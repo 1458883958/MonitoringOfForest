@@ -270,4 +270,39 @@ public class BitmapUtil {
         return new VX(bitmap,imagePath);
     }
 
+    public static VX rotateX(Bitmap bmp, String imagePath) {
+        // 创建一个和原图一样大小的图片
+        // 设置画笔，消除锯齿
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        Bitmap afterBitmap = Bitmap.createBitmap(bmp.getWidth(),
+                bmp.getHeight(), bmp.getConfig());
+        Canvas canvas = new Canvas(afterBitmap);
+        Matrix matrix = new Matrix();
+
+        // 根据原图的中心位置旋转
+        matrix.setRotate(90, bmp.getWidth() / 2,
+                bmp.getHeight() / 2);
+        canvas.drawBitmap(bmp, matrix, paint);
+        File imgFile = new File(imagePath);
+        FileOutputStream fos = null;
+        BufferedOutputStream bos = null;
+        try {
+            fos = new FileOutputStream(imgFile);
+            afterBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally {
+            if (fos!=null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return new VX(afterBitmap,imagePath);
+    }
+
 }

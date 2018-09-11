@@ -71,6 +71,15 @@ public interface RemoteService {
     Call<RspModel<User>> login(@Body LoginModel model);
 
     /**
+     * 搜索
+     *
+     * @param user User
+     * @return RspModel<User>
+     */
+    @POST("message/selectUserByKey")
+    Call<RspModel<List<User>>> search(@Body User user);
+
+    /**
      * 更新用户信息
      *
      * @param user User
@@ -83,11 +92,11 @@ public interface RemoteService {
     /**
      * 获取用户信息
      *
-     * @param id uId
+     * @param user User(uId)
      * @return RspModel<User>
      */
-    @GET("user/getUserInfo/{uId}")
-    Call<RspModel<User>> getUserInfo(@Path("uId") int id);
+    @GET("user/selectById")
+    Call<RspModel<User>> getUserInfo(@Body User user);
 
     /*---------------------------------------------------------------------------------------------------------*/
 

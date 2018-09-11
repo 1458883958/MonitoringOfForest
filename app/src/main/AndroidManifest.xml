@@ -68,24 +68,22 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
-        <service android:name=".service.MessageIntentService"/>
+        <service android:name=".service.MessageIntentService" />
         <service
             android:name=".service.PushService"
             android:exported="true"
             android:label="PushService"
-            android:process=":pushservice"
-            >
-        </service>
-        <!--&lt;!&ndash;&lt;!&ndash; 个推广播注册 &ndash;&gt;&ndash;&gt;-->
-        <!--<receiver-->
-            <!--android:name=".broadcast.MessageReceiver"-->
-            <!--android:enabled="true"-->
-            <!--android:exported="true"-->
-            <!--android:permission="1000">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" />-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
+            android:process=":pushservice" />
+        <!-- &lt;!&ndash;&lt;!&ndash; 个推广播注册 &ndash;&gt;&ndash;&gt; -->
+        <!-- <receiver -->
+        <!-- android:name=".broadcast.MessageReceiver" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true" -->
+        <!-- android:permission="1000"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
 
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
@@ -182,11 +180,23 @@
 
         <receiver android:name=".broadcast.AlarmReceiver" />
 
-        <activity android:name=".activities.MapActivity"
-            />
-        <activity android:name=".activities.ShopActivity"
+        <activity android:name=".activities.MapActivity" />
+        <activity
+            android:name=".activities.ShopActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.TransStatusBar"/>
+            android:theme="@style/AppTheme.TransStatusBar" />
+        <activity
+            android:name=".activities.PreviewNoticeActivity"
+            android:theme="@style/AppTheme.TransStatusBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="sh" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

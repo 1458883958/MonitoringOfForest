@@ -1,7 +1,8 @@
 package com.wdl.monitoringofforest.service;
 
 import android.content.Context;
-
+import android.content.Intent;
+import android.net.Uri;
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTNotificationMessage;
@@ -27,6 +28,7 @@ import com.wdl.utils.LogUtils;
  */
 public class MessageIntentService extends GTIntentService {
 
+    private GTNotificationMessage message;
     public MessageIntentService(){}
 
     @Override
@@ -74,6 +76,19 @@ public class MessageIntentService extends GTIntentService {
         LogUtils.e("onNotificationMessageArrived -> " + "appid = " + message.getAppid() + "\ntaskid = " + message.getTaskId() + "\nmessageid = "
                 + message.getMessageId() + "\npkg = " + message.getPkgName() + "\ncid = " + message.getClientId() + "\ntitle = "
                 + message.getTitle() + "\ncontent = " + message.getContent());
+         this.message = message;
+//        Intent intent = new Intent(context, PreviewNoticeActivity.class);
+//        @SuppressLint("WrongConstant")
+//        PendingIntent pendingIntent = PendingIntent
+//                .getActivity(this,1,intent,Intent.FLAG_ACTIVITY_NEW_TASK);
+//        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+//                .setContentText(message.getContent())
+//                .setTicker(message.getTitle())
+//                .setContentTitle(message.getTitle());
+//        Notification notification = builder.build();
+//        assert manager != null;
+//        manager.notify(0,notification);
     }
 
     @Override
@@ -81,6 +96,10 @@ public class MessageIntentService extends GTIntentService {
         LogUtils.d("onNotificationMessageClicked -> " + "appid = " + message.getAppid() + "\ntaskid = " + message.getTaskId() + "\nmessageid = "
                 + message.getMessageId() + "\npkg = " + message.getPkgName() + "\ncid = " + message.getClientId() + "\ntitle = "
                 + message.getTitle() + "\ncontent = " + message.getContent());
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sh://12"));
+        intent.putExtra("content",this.message.getContent());
+        intent.putExtra("title",this.message.getTitle());
+        startActivity(intent);
     }
 
 

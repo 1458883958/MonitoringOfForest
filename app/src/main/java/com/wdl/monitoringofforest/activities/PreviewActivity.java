@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -14,6 +15,7 @@ import com.wdl.common.app.Application;
 import com.wdl.common.app.ToolbarActivity;
 import com.wdl.monitoringofforest.R;
 import com.wdl.utils.BitmapUtil;
+import com.wdl.utils.LogUtils;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -39,7 +41,9 @@ public class PreviewActivity extends ToolbarActivity {
     void rotate() {
         pre.setDrawingCacheEnabled(true);
         Bitmap bitmap = pre.getDrawingCache();
-        BitmapUtil.VX bmp = BitmapUtil.rotate(bitmap, path);
+        LogUtils.e("before:"+bitmap.getHeight()+" "+bitmap.getWidth());
+        BitmapUtil.VX bmp = BitmapUtil.rotateX(bitmap, path);
+        LogUtils.e("after:"+bmp.getBitmap().getHeight()+" "+bmp.getBitmap().getWidth());
         pre.setDrawingCacheEnabled(false);
         pre.setImageBitmap(bmp.getBitmap());
         path = bmp.getPath();

@@ -53,14 +53,15 @@ public class UserHelper {
     /**
      * 从网络拉取
      *
-     * @param id userId
+     * @param userx User
      * @return User
      */
-    public static UserDb searchFromNet(int id) {
+    public static UserDb searchFromNet(User userx) {
         RemoteService service = Network.remoteService();
         try {
-            Response<RspModel<User>> response = service.getUserInfo(id).execute();
+            Response<RspModel<User>> response = service.getUserInfo(userx).execute();
             User user = response.body().getData();
+            LogUtils.e("searchFromNet"+user.toString());
             UserDb db = user.build();
             Factory.getUserCenter().dispatch(user);
             return db;
@@ -92,7 +93,9 @@ public class UserHelper {
     public static UserDb findFistOfLocal(int id) {
         UserDb db = searchFromLocal(id);
         if (db==null){
-            return searchFromNet(id);
+            User user = new User();
+            user.setuId(id);
+            return searchFromNet(user);
         }
         return db;
     }
@@ -104,7 +107,9 @@ public class UserHelper {
      * @return User
      */
     public static UserDb findFistOfNet(int id) {
-        UserDb db = searchFromNet(id);
+        User user = new User();
+        user.setuId(id);
+        UserDb db = searchFromNet(user);
         if (db==null){
             return searchFromLocal(id);
         }
