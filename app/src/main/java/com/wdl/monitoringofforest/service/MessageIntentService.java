@@ -28,7 +28,6 @@ import com.wdl.utils.LogUtils;
  */
 public class MessageIntentService extends GTIntentService {
 
-    private GTNotificationMessage message;
     public MessageIntentService(){}
 
     @Override
@@ -76,7 +75,6 @@ public class MessageIntentService extends GTIntentService {
         LogUtils.e("onNotificationMessageArrived -> " + "appid = " + message.getAppid() + "\ntaskid = " + message.getTaskId() + "\nmessageid = "
                 + message.getMessageId() + "\npkg = " + message.getPkgName() + "\ncid = " + message.getClientId() + "\ntitle = "
                 + message.getTitle() + "\ncontent = " + message.getContent());
-         this.message = message;
 //        Intent intent = new Intent(context, PreviewNoticeActivity.class);
 //        @SuppressLint("WrongConstant")
 //        PendingIntent pendingIntent = PendingIntent
@@ -93,12 +91,12 @@ public class MessageIntentService extends GTIntentService {
 
     @Override
     public void onNotificationMessageClicked(Context context, GTNotificationMessage message) {
-        LogUtils.d("onNotificationMessageClicked -> " + "appid = " + message.getAppid() + "\ntaskid = " + message.getTaskId() + "\nmessageid = "
+        LogUtils.e("onNotificationMessageClicked -> " + "appid = " + message.getAppid() + "\ntaskid = " + message.getTaskId() + "\nmessageid = "
                 + message.getMessageId() + "\npkg = " + message.getPkgName() + "\ncid = " + message.getClientId() + "\ntitle = "
                 + message.getTitle() + "\ncontent = " + message.getContent());
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sh://12"));
-        intent.putExtra("content",this.message.getContent());
-        intent.putExtra("title",this.message.getTitle());
+        intent.putExtra("content",message.getContent());
+        intent.putExtra("title",message.getTitle());
         startActivity(intent);
     }
 

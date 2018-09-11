@@ -187,6 +187,7 @@
             android:theme="@style/AppTheme.TransStatusBar" />
         <activity
             android:name=".activities.PreviewNoticeActivity"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.TransStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

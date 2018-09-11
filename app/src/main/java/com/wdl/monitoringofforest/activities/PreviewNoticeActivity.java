@@ -38,9 +38,11 @@ public class PreviewNoticeActivity extends ToolbarActivity {
         Intent intent = getIntent();
         String content = intent.getStringExtra("content");
         String title = intent.getStringExtra("title");
+        LogUtils.e("preview:"+content+" "+title);
         if (!TextUtils.isEmpty(content) && !TextUtils.isEmpty(title))
             mContent.setText(title + "\n" + content);
-        else LogUtils.e("空");
+        else
+            LogUtils.e("空");
         String action = intent.getAction();
         if (Intent.ACTION_VIEW.equals(action)) {
             Uri uri = intent.getData();
