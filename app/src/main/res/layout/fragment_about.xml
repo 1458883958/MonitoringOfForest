@@ -82,6 +82,37 @@
         android:layout_height="1dp" />
 
     <RelativeLayout
+        android:id="@+id/his_notice"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/len_36"
+        android:background="#fff"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/len_16"
+            android:text="@string/label_account_notice"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/textPrimary"
+            tools:ignore="RelativeOverlap" />
+
+        <ImageView
+            android:layout_width="@dimen/len_12"
+            android:layout_height="@dimen/len_12"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/len_12"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_direction_right"
+            android:tint="@color/textSecond" />
+
+    </RelativeLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <RelativeLayout
         android:id="@+id/feedback"
         android:layout_width="match_parent"
         android:layout_height="@dimen/len_36"

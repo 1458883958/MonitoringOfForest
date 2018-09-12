@@ -10,10 +10,13 @@ import com.wdl.factory.data.data.devicedata.DataCenter;
 import com.wdl.factory.data.data.devicedata.DataDispatch;
 import com.wdl.factory.data.data.feedback.FeedbackCenter;
 import com.wdl.factory.data.data.feedback.FeedbackDispatch;
+import com.wdl.factory.data.data.notice.NoticeCenter;
+import com.wdl.factory.data.data.notice.NoticeDispatcher;
 import com.wdl.factory.data.data.pi.PiCenter;
 import com.wdl.factory.data.data.pi.PiDispatcher;
 import com.wdl.factory.data.data.user.UserCenter;
 import com.wdl.factory.model.card.Feedback;
+import com.wdl.factory.model.card.Notice;
 import com.wdl.factory.persistence.Account;
 import com.wdl.factory.utils.DBFlowExclusionStrategies;
 
@@ -165,6 +168,10 @@ public class Factory {
      */
     public static DataCenter getDataCenter() {
         return DataDispatch.getDataCenter();
+    }
+
+    public static NoticeCenter getNoticeCenter() {
+        return NoticeDispatcher.getNoticeCenter();
     }
 }
 

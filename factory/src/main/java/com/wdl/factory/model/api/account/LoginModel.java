@@ -12,6 +12,7 @@ public class LoginModel {
    private String uTelephone;
    private String uPassword;
    private String uPushId;
+   private String key;
 
     public LoginModel(String uTelephone) {
         this.uTelephone = uTelephone;
@@ -26,6 +27,10 @@ public class LoginModel {
         this.uTelephone = uTelephone;
         this.uPassword = uPassword;
         this.uPushId = uPushId;
+    }
+
+    public LoginModel() {
+
     }
 
     public String getuPushId() {
@@ -52,4 +57,11 @@ public class LoginModel {
         this.uPassword = uPassword;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 }

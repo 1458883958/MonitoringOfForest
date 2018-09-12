@@ -8,8 +8,11 @@ import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTNotificationMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
 import com.wdl.factory.Factory;
+import com.wdl.factory.model.card.Notice;
 import com.wdl.factory.persistence.Account;
 import com.wdl.utils.LogUtils;
+
+import java.util.Date;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -75,6 +78,12 @@ public class MessageIntentService extends GTIntentService {
         LogUtils.e("onNotificationMessageArrived -> " + "appid = " + message.getAppid() + "\ntaskid = " + message.getTaskId() + "\nmessageid = "
                 + message.getMessageId() + "\npkg = " + message.getPkgName() + "\ncid = " + message.getClientId() + "\ntitle = "
                 + message.getTitle() + "\ncontent = " + message.getContent());
+//        Notice notice = new Notice();
+//        notice.setnContent(message.getContent());
+//        notice.setnFilepath("");
+//        notice.setnSubject(message.getTitle());
+//        notice.setnTime(new Date());
+//        Factory.getNoticeCenter().dispatch(notice);
 //        Intent intent = new Intent(context, PreviewNoticeActivity.class);
 //        @SuppressLint("WrongConstant")
 //        PendingIntent pendingIntent = PendingIntent

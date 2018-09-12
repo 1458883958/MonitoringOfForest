@@ -2,7 +2,10 @@ package com.wdl.factory.data.data.helper;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.wdl.factory.Factory;
+import com.wdl.factory.R;
+import com.wdl.factory.data.DataSource;
 import com.wdl.factory.model.api.CallbackImpl;
+import com.wdl.factory.model.api.account.LoginModel;
 import com.wdl.factory.model.api.account.RspModel;
 import com.wdl.factory.model.card.Notice;
 import com.wdl.factory.model.card.User;
@@ -37,15 +40,12 @@ public class UserHelper {
         call.enqueue(new CallbackImpl<List<Notice>>() {
             @Override
             protected void failed(String msg) {
-                LogUtils.e("0x0x0x0x0x0xx0");
+
             }
 
             @Override
             protected void succeed(List<Notice> data) {
-                for (Notice datum : data) {
-                    LogUtils.e(datum.toString());
-                }
-
+                Factory.getNoticeCenter().dispatch(data.toArray(new Notice[0]));
             }
         });
     }
@@ -114,5 +114,29 @@ public class UserHelper {
             return searchFromLocal(id);
         }
         return db;
+    }
+
+    /**
+     * @param query 查询的key
+     * @param callback 回调
+     * @return Call 用来判断上次的请求是否完成等
+     */
+    public static Call search(LoginModel query, final DataSource.Callback<List<User>> callback){
+        RemoteService service = Network.remoteService();
+        final Call<RspModel<List<User>>> call = service.search(query);
+        call.enqueue(new CallbackImpl<List<User>>() {
+            @Override
+            protected void failed(String msg) {
+                if (callback!=null)
+                    callback.onNotAvailable(R.string.data_net_error);
+            }
+
+            @Override
+            protected void succeed(List<User> data) {
+                if (callback!=null)
+                    callback.onLoaded(data);
+            }
+        });
+        return call;
     }
 }

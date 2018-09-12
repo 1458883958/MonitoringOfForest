@@ -73,11 +73,11 @@ public interface RemoteService {
     /**
      * 搜索
      *
-     * @param user User
-     * @return RspModel<User>
+     * @param model LoginModel
+     * @return RspModel<List<User>>
      */
     @POST("message/selectUserByKey")
-    Call<RspModel<List<User>>> search(@Body User user);
+    Call<RspModel<List<User>>> search(@Body LoginModel model);
 
     /**
      * 更新用户信息

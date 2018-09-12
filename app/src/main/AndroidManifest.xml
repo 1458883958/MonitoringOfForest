@@ -194,10 +194,12 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="sh" />
             </intent-filter>
-
         </activity>
+        <activity android:name=".activities.NoticeActivity"
+            android:theme="@style/AppTheme.TransStatusBar"/>
     </application>
 
 </manifest>

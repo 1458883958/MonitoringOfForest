@@ -8,13 +8,18 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.wdl.common.app.Fragment;
+import com.wdl.common.app.PresenterFragment;
 import com.wdl.common.widget.EmptyView;
 import com.wdl.common.widget.PortraitView;
 import com.wdl.common.widget.recycler.RecyclerAdapter;
 import com.wdl.factory.model.card.User;
+import com.wdl.factory.presenter.user_search.SearchContract;
+import com.wdl.factory.presenter.user_search.SearchPresenter;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.activities.SearchActivity;
 import com.wdl.utils.LogUtils;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -22,7 +27,8 @@ import butterknife.BindView;
  * A simple {@link Fragment} subclass.
  */
 @SuppressWarnings("unused")
-public class SearchUserFragment extends Fragment implements SearchActivity.SearchListener {
+public class SearchUserFragment extends PresenterFragment<SearchContract.Presenter>
+        implements SearchActivity.SearchListener ,SearchContract.UserView{
 
     @BindView(R.id.recycler)
     RecyclerView mRecycler;
@@ -70,7 +76,18 @@ public class SearchUserFragment extends Fragment implements SearchActivity.Searc
 
     @Override
     public void search(String content) {
-        LogUtils.e("search:" + content);
+        mPresenter.search(content);
+    }
+
+    @Override
+    protected SearchContract.Presenter initPresenter() {
+        return new SearchPresenter(this);
+    }
+
+    @Override
+    public void onSearchDone(List<User> users) {
+        mAdapter.replace(users);
+        placeHolderView.triggerOkOrEmpty(mAdapter.getItemCount()>0);
     }
 
     class ViewHolder extends RecyclerAdapter.ViewHolder<User> {

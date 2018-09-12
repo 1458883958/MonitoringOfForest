@@ -74,6 +74,7 @@
     <string name="label_ok">确定退出</string>
     <string name="label_check_version">检查更新</string>
     <string name="label_account_feedback">反馈</string>
+    <string name="label_account_notice">历史公告</string>
     <string name="label_copyright">Copyright© 2018&#8211;2018 Smu. All Rights Reserved</string>
     <string name="label_privacy">隐私政策</string>
     <string name="label_bind_mail">绑定邮箱</string>

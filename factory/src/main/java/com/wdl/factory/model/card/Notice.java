@@ -1,5 +1,7 @@
 package com.wdl.factory.model.card;
 
+import com.wdl.factory.model.db.NoticeDb;
+
 import java.util.Date;
 
 /**
@@ -20,6 +22,25 @@ public class Notice {
     private Integer nBesms;
     private Date nTime;
     private String nContent;
+
+    public Notice() {
+    }
+
+
+    private transient NoticeDb noticeDb;
+    public NoticeDb build(){
+        if (noticeDb==null){
+            NoticeDb db = new NoticeDb();
+            db.setId(nId);
+            db.setUserId(uId);
+            db.setSubject(nSubject);
+            db.setContent(nContent);
+            db.setFilePath(nFilepath);
+            db.setTime(nTime);
+            this.noticeDb = db;
+        }
+        return noticeDb;
+    }
 
     public Integer getnId() {
         return nId;

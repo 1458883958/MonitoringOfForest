@@ -25,6 +25,7 @@ import com.wdl.factory.presenter.version.AppVersionContract;
 import com.wdl.factory.presenter.version.AppVersionPresenter;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.activities.FeedbackActivity;
+import com.wdl.monitoringofforest.activities.NoticeActivity;
 import com.wdl.utils.LogUtils;
 
 import java.io.File;
@@ -57,6 +58,11 @@ public class AboutFragment extends PresenterFragment<AppVersionContract.Presente
     @Override
     protected int getContentLayoutId() {
         return R.layout.fragment_about;
+    }
+
+    @OnClick(R.id.his_notice)
+    void notice(){
+        NoticeActivity.show(Objects.requireNonNull(getContext()));
     }
 
     //检查更新

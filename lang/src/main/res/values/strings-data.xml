@@ -12,6 +12,8 @@
     <string name="data_oss_cancel">授权登陆取消</string>
     <string name="data_account_unbind_qq">此账户未绑定(ρ_・).。</string>
     <string name="data_un_device">暂无设备(ρ_・).。</string>
+    <string name="data_network_error">网络错误！</string>
+
 
     <string name="data_rsp_error_parameters_exist_account">已有该账户! ★~★</string>
     <string name="data_rsp_error_unknown">未知错误(ρ_・).。</string>
