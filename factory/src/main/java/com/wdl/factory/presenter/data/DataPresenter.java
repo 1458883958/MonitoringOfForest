@@ -25,17 +25,19 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class DataPresenter extends BaseSourcePresenter<
-        ImageDb,ImageDb,DeviceDataSource,DataContract.View> implements DataContract.Presenter{
-    public DataPresenter(DataContract.View view,int pId) {
+        ImageDb,ImageDb,DeviceDataSource,DataContract.ImageView> implements DataContract.Presenter{
+    private int pId;
+    public DataPresenter(DataContract.ImageView view,int pId) {
         super(view, new DataRepository(pId));
+        this.pId = pId;
     }
 
     @Override
     public void start() {
         super.start();
-        final DataContract.View view = getView();
+        final DataContract.ImageView view = getView();
         ImagePage page = new ImagePage();
-        page.setPId(view.getPiId());
+        page.setPId(pId);
         page.setPageNum(1);
         page.setPageSize(20);
         DataHelper.select(page);
@@ -43,7 +45,7 @@ public class DataPresenter extends BaseSourcePresenter<
 
     @Override
     public void onLoaded(List<ImageDb> data) {
-        final DataContract.View view = getView();
+        final DataContract.ImageView view = getView();
         if (view == null) return;
         RecyclerAdapter<ImageDb> adapter = view.getRecyclerAdapter();
         //获取老数据
@@ -59,5 +61,15 @@ public class DataPresenter extends BaseSourcePresenter<
     @Override
     public void destroy() {
         super.destroy();
+    }
+
+    @Override
+    public void select(int pId, int limitNum) {
+
+    }
+
+    @Override
+    public void selectOf(int pId, int limitNum) {
+
     }
 }

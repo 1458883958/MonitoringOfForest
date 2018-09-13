@@ -1,6 +1,7 @@
 package com.wdl.factory.model.api;
 
 import com.wdl.factory.model.api.account.RspModel;
+import com.wdl.utils.LogUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,6 +21,7 @@ public abstract class CallbackImpl<T> implements Callback<RspModel<T>> {
     public void onResponse(Call<RspModel<T>> call, Response<RspModel<T>> response) {
         RspModel<T> rspModel = response.body();
         if (rspModel!=null) {
+            LogUtils.e("rspModel:"+rspModel.toString());
             if (rspModel.getStatus() == 200) {
                 T data = rspModel.getData();
                 if (data==null){

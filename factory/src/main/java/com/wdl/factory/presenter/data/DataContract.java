@@ -1,7 +1,10 @@
 package com.wdl.factory.presenter.data;
 
 import com.wdl.factory.model.db.ImageDb;
+import com.wdl.factory.model.db.SensorDb;
 import com.wdl.factory.presenter.BaseContract;
+
+import java.util.List;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -12,11 +15,33 @@ import com.wdl.factory.presenter.BaseContract;
  */
 @SuppressWarnings("unused")
 public interface DataContract {
-    interface Presenter extends BaseContract.Presenter{
+    interface Presenter extends BaseContract.Presenter {
+        /**
+         * 查询传感器数据
+         *
+         * @param pId      设备ID
+         * @param limitNum 查询条数
+         */
+        void select(int pId, int limitNum);
 
+        /**
+         * 查询传感器数据 数据库
+         *
+         * @param pId      设备ID
+         * @param limitNum 查询条数
+         */
+        void selectOf(int pId, int limitNum);
     }
 
-    interface View extends BaseContract.RecyclerView<ImageDb,Presenter>{
-        int getPiId();
+    interface ImageView extends BaseContract.RecyclerView<ImageDb, Presenter> {
+    }
+
+    interface SensorView extends BaseContract.View<Presenter> {
+        /**
+         * 成功回调用
+         *
+         * @param dbList List<SensorDb>
+         */
+        void succeed(List<SensorDb> dbList);
     }
 }

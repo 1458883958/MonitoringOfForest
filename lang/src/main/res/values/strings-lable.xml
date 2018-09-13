@@ -84,6 +84,8 @@
     <string name="label_feedback_hint">请输入遇到的问题或建议</string>
     <string name="label_cache_kb">%sKB</string>
     <string name="label_cache_mb">%sMB</string>
+    <string name="label_attach">附件:</string>
+    <string name="label_no_file">暂无文件</string>
 
 
 

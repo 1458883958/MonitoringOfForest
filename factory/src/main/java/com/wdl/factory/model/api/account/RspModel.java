@@ -42,6 +42,7 @@ public class RspModel<Object> {
         return "RspModel{" +
                 "status=" + status +
                 ", msg='" + msg + '\'' +
+                ", data=" + data +
                 '}';
     }
 }

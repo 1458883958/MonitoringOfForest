@@ -20,6 +20,7 @@ import com.wdl.factory.model.db.FeedbackDb;
 import com.wdl.factory.presenter.feedback.HisFeedbackContract;
 import com.wdl.factory.presenter.feedback.HisFeedbackPresenter;
 import com.wdl.monitoringofforest.R;
+import com.wdl.utils.DateUtil;
 import com.wdl.utils.LogUtils;
 
 import java.util.Objects;
@@ -126,7 +127,7 @@ public class FeedbackHisFragment extends PresenterFragment<HisFeedbackContract.P
         protected void onBind(FeedbackDb feedbackDb) {
             mSubject.setText(feedbackDb.getSubject());
             mContent.setText("\u3000\u3000" + feedbackDb.getContent());
-            mTime.setText(""+feedbackDb.getTime());
+            mTime.setText(DateUtil.format(feedbackDb.getTime()));
         }
     }
 }

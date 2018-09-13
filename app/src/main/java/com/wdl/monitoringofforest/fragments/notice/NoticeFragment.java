@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,6 +19,9 @@ import com.wdl.factory.model.db.NoticeDb;
 import com.wdl.factory.presenter.notice.NoticeContract;
 import com.wdl.factory.presenter.notice.NoticePresenter;
 import com.wdl.monitoringofforest.R;
+import com.wdl.utils.DateUtil;
+
+import java.text.SimpleDateFormat;
 
 import butterknife.BindView;
 
@@ -75,6 +79,10 @@ public class NoticeFragment extends PresenterFragment<NoticeContract.Presenter>
         TextView nTime;
         @BindView(R.id.im_attach)
         LinearLayout linearLayout;
+        @BindView(R.id.im_file_path)
+        TextView nFilePath;
+        @BindView(R.id.im_file)
+        ImageView nFile;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -85,11 +93,15 @@ public class NoticeFragment extends PresenterFragment<NoticeContract.Presenter>
         protected void onBind(NoticeDb noticeDb) {
             nTitle.setText(noticeDb.getSubject());
             nContent.setText(noticeDb.getContent());
-            nTime.setText(noticeDb.getTime()+"");
+            nTime.setText(DateUtil.format(noticeDb.getTime()));
             if (TextUtils.isEmpty(noticeDb.getFilePath())) {
-                linearLayout.setVisibility(View.GONE);
+                nFile.setVisibility(View.GONE);
+                nFilePath.setText(R.string.label_no_file);
             }
-            else linearLayout.setVisibility(View.VISIBLE);
+            else {
+                nFile.setVisibility(View.VISIBLE);
+                nFilePath.setText(noticeDb.getFilePath());
+            }
 
         }
     }

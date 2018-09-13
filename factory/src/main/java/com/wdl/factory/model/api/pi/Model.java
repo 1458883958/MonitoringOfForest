@@ -10,6 +10,24 @@ package com.wdl.factory.model.api.pi;
 public class Model {
     private int uId;
     private PiModel record;
+    private int pId;
+    private int limitNum;
+
+    public int getpId() {
+        return pId;
+    }
+
+    public void setpId(int pId) {
+        this.pId = pId;
+    }
+
+    public int getLimitNum() {
+        return limitNum;
+    }
+
+    public void setLimitNum(int limitNum) {
+        this.limitNum = limitNum;
+    }
 
     public int getuId() {
         return uId;
@@ -25,5 +43,15 @@ public class Model {
 
     public void setRecord(PiModel record) {
         this.record = record;
+    }
+
+    @Override
+    public String toString() {
+        return "Model{" +
+                "uId=" + uId +
+                ", record=" + record +
+                ", pId=" + pId +
+                ", limitNum=" + limitNum +
+                '}';
     }
 }

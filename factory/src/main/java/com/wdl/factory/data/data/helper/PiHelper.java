@@ -10,12 +10,15 @@ import com.wdl.factory.model.api.account.RspModel;
 import com.wdl.factory.model.api.pi.Model;
 import com.wdl.factory.model.api.pi.PiModel;
 import com.wdl.factory.model.card.Pi;
+import com.wdl.factory.model.card.Sensor;
 import com.wdl.factory.model.card.User;
 import com.wdl.factory.model.db.PiDb;
 import com.wdl.factory.model.db.PiDb_Table;
+import com.wdl.factory.model.db.SensorDb;
 import com.wdl.factory.net.Network;
 import com.wdl.factory.net.RemoteService;
 import com.wdl.factory.persistence.Account;
+import com.wdl.factory.presenter.data.SensorPresenter;
 import com.wdl.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -173,18 +176,47 @@ public class PiHelper {
             @Override
             protected void succeed(List<Pi> data) {
                 if (data == null || data.size() == 0) {
-                    if (callback!=null)callback.onNotAvailable(R.string.data_pi_un_response);
+                    if (callback != null) callback.onNotAvailable(R.string.data_pi_un_response);
                     return;
                 }
                 List<PiDb> piDbs = new ArrayList<>();
                 for (Pi datum : data) {
                     piDbs.add(datum.build());
                 }
-                if (callback!=null)callback.onLoaded(piDbs);
+                if (callback != null) callback.onLoaded(piDbs);
             }
 
         });
 
     }
 
+    /**
+     * 查询限制条数的传感器数据
+     *
+     * @param model    Model
+     * @param callback Callback
+     */
+    public static void querySensor(Model model, final DataSource.Callback<List<SensorDb>> callback) {
+        RemoteService service = Network.remoteService3();
+        Call<RspModel<List<Sensor>>> call = service.getSensor(model);
+        LogUtils.e("model:" + model.toString());
+        call.enqueue(new CallbackImpl<List<Sensor>>() {
+            @Override
+            protected void failed(String msg) {
+
+            }
+
+            @Override
+            protected void succeed(List<Sensor> data) {
+                //存库
+                Factory.getSensorCenter().dispatch(data.toArray(new Sensor[0]));
+                List<SensorDb> dbs = new ArrayList<>();
+                for (Sensor datum : data) {
+                    dbs.add(datum.build());
+                }
+                if (callback != null)
+                    callback.onLoaded(dbs);
+            }
+        });
+    }
 }

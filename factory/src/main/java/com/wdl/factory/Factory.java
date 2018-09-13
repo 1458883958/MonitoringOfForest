@@ -8,6 +8,8 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 import com.wdl.common.app.Application;
 import com.wdl.factory.data.data.devicedata.DataCenter;
 import com.wdl.factory.data.data.devicedata.DataDispatch;
+import com.wdl.factory.data.data.devicedata.SensorCenter;
+import com.wdl.factory.data.data.devicedata.SensorDispatch;
 import com.wdl.factory.data.data.feedback.FeedbackCenter;
 import com.wdl.factory.data.data.feedback.FeedbackDispatch;
 import com.wdl.factory.data.data.notice.NoticeCenter;
@@ -17,6 +19,7 @@ import com.wdl.factory.data.data.pi.PiDispatcher;
 import com.wdl.factory.data.data.user.UserCenter;
 import com.wdl.factory.model.card.Feedback;
 import com.wdl.factory.model.card.Notice;
+import com.wdl.factory.model.card.Sensor;
 import com.wdl.factory.persistence.Account;
 import com.wdl.factory.utils.DBFlowExclusionStrategies;
 
@@ -168,6 +171,10 @@ public class Factory {
      */
     public static DataCenter getDataCenter() {
         return DataDispatch.getDataCenter();
+    }
+
+    public static SensorCenter getSensorCenter() {
+        return SensorDispatch.getSensorCenter();
     }
 
     public static NoticeCenter getNoticeCenter() {

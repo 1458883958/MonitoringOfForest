@@ -33,6 +33,7 @@ import com.wdl.factory.presenter.data.DataContract;
 import com.wdl.factory.presenter.data.DataPresenter;
 import com.wdl.monitoringofforest.R;
 import com.wdl.utils.BitmapUtil;
+import com.wdl.utils.DateUtil;
 import com.wdl.utils.LogUtils;
 
 import java.io.File;
@@ -49,7 +50,7 @@ import static com.wdl.monitoringofforest.activities.DeviceDataActivity.P_ID;
  */
 @SuppressWarnings("unused")
 public class PictureFragment extends PresenterFragment<DataContract.Presenter>
-        implements DataContract.View {
+        implements DataContract.ImageView {
 
     @BindView(R.id.recycler)
     RecyclerView mRecycler;
@@ -135,12 +136,6 @@ public class PictureFragment extends PresenterFragment<DataContract.Presenter>
     public void adapterDataChanged() {
         mEmpty.triggerOkOrEmpty(adapter.getItemCount() > 0);
     }
-
-    @Override
-    public int getPiId() {
-        return pId;
-    }
-
 
     class ViewHolder extends RecyclerAdapter.ViewHolder<ImageDb> {
 
@@ -245,7 +240,7 @@ public class PictureFragment extends PresenterFragment<DataContract.Presenter>
                     .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imDe);
-            time.setText("" + imageDb.getTime());
+            time.setText(DateUtil.format(imageDb.getTime()));
         }
     }
 }
