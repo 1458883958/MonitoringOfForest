@@ -17,6 +17,7 @@ import com.wdl.factory.data.data.notice.NoticeDispatcher;
 import com.wdl.factory.data.data.pi.PiCenter;
 import com.wdl.factory.data.data.pi.PiDispatcher;
 import com.wdl.factory.data.data.user.UserCenter;
+import com.wdl.factory.data.data.user.UserDispatcher;
 import com.wdl.factory.model.card.Feedback;
 import com.wdl.factory.model.card.Notice;
 import com.wdl.factory.model.card.Sensor;
@@ -161,7 +162,7 @@ public class Factory {
      * @return 用户中心实现类
      */
     public static UserCenter getUserCenter() {
-        return null;
+        return UserDispatcher.getUserCenter();
     }
 
     /**

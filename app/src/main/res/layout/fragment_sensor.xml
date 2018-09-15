@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"/>
     <Button
+        android:visibility="gone"
         android:id="@+id/btn_date"
         android:text="选择时间"
         android:layout_width="match_parent"

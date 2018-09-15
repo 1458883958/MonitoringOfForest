@@ -45,7 +45,6 @@ public class SensorFragment extends PresenterFragment<DataContract.Presenter>
     private int pId;
     @BindView(R.id.charts)
     LineChart mLineChart;
-    private Calendar cal;
     private int year, month, day;
 
     public SensorFragment() {
@@ -90,7 +89,7 @@ public class SensorFragment extends PresenterFragment<DataContract.Presenter>
     @Override
     protected void initData() {
         super.initData();
-        cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         year = cal.get(Calendar.YEAR);       //获取年月日时分秒
         month = cal.get(Calendar.MONTH);   //获取到的月份是从0开始计数
         day = cal.get(Calendar.DAY_OF_MONTH);
@@ -106,18 +105,32 @@ public class SensorFragment extends PresenterFragment<DataContract.Presenter>
 
     @Override
     public void succeed(List<SensorDb> dbList) {
-        for (int i = 0; i < dbList.size(); i++)
-            LogUtils.e("sensor:" + i + " " + dbList.get(i).toString());
         //显示边界
         mLineChart.setDrawBorders(true);
         //设置数据
-        List<Entry> entries = new ArrayList<>();
+        List<Entry> entries1 = new ArrayList<>();
+        List<Entry> entries2 = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            entries.add(new Entry(i, Float.parseFloat(dbList.get(i).getTemperature()+"")));
+            entries1.add(new Entry(i, Float.parseFloat(dbList.get(i).getTemperature()+"")));
+            entries2.add(new Entry(i, Float.parseFloat(dbList.get(i).getHumidity()+"")));
         }
         //一个LineDataSet就是一条线
-        LineDataSet lineDataSet = new LineDataSet(entries, "温度");
-        LineData data = new LineData(lineDataSet);
+        LineDataSet lineDataSet1 = new LineDataSet(entries1, "温度");
+        LineDataSet lineDataSet2 = new LineDataSet(entries2, "湿度");
+        lineDataSet2.setColor(R.color.red_a100);
+        LineData data = new LineData(lineDataSet1,lineDataSet2);
         mLineChart.setData(data);
+        //得到x轴
+        XAxis xAxis = mLineChart.getXAxis();
+        //设置x 位置 ,默认在上
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //设置x轴坐标之间的最小距离
+        xAxis.setGranularity(1f);
+        //设置刻度数量,第二个参数表示是否平均分配 如果为true则按比例分为12个点、如果为false则适配X刻度的值来分配点，可能没有12个点。
+        //对比图：左图的参数为true，右图的参数为false
+        xAxis.setLabelCount(10,true);
+        xAxis.setAxisMaximum(10f);
+        xAxis.setAxisMinimum(0f);
+
     }
 }

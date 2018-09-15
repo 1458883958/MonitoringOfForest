@@ -12,6 +12,24 @@ public class Model {
     private PiModel record;
     private int pId;
     private int limitNum;
+    private int rSender;
+    private int rReceiver;
+
+    public int getrSender() {
+        return rSender;
+    }
+
+    public void setrSender(int rSender) {
+        this.rSender = rSender;
+    }
+
+    public int getrReceiver() {
+        return rReceiver;
+    }
+
+    public void setrReceiver(int rReceiver) {
+        this.rReceiver = rReceiver;
+    }
 
     public int getpId() {
         return pId;

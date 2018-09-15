@@ -14,6 +14,7 @@ import java.util.Date;
 @SuppressWarnings("unused")
 public class User {
     private Integer uId;
+    private String uCid;
     private String uUsername;
     private String uPassword;
     private String uFullname;
@@ -46,11 +47,39 @@ public class User {
             db.setMail(uEmail);
             db.setAbout(uAboutme);
             db.setMoney(uMoney);
+            db.setPushId(uCid);
             db.setImage(uImagepath);
             db.setAddress(uIpaddress);
             this.userDb = db;
         }
         return userDb;
+    }
+
+//    private transient UserDb userDbWithCid;
+//    public UserDb buildWithCid(){
+//        if (userDbWithCid==null){
+//            UserDb db = new UserDb();
+//            db.setId(uId);
+//            db.setUsername(uUsername);
+//            db.setAlias(uFullname);
+//            db.setPhone(uTelephone);
+//            db.setMail(uEmail);
+//            db.setAbout(uAboutme);
+//            db.setMoney(uMoney);
+//            db.setPushId(uCid);
+//            db.setImage(uImagepath);
+//            db.setAddress(uIpaddress);
+//            this.userDbWithCid = db;
+//        }
+//        return userDbWithCid;
+//    }
+
+    public String getuCid() {
+        return uCid;
+    }
+
+    public void setuCid(String uCid) {
+        this.uCid = uCid;
     }
 
     public Integer getuBeadmin() {

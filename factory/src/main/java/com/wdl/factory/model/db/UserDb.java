@@ -24,6 +24,8 @@ public class UserDb extends BaseDbModel<UserDb> implements Author,Serializable {
     @PrimaryKey
     private Integer id;
     @Column
+    private String pushId;
+    @Column
     private String username;
     @Column
     private String alias;
@@ -41,6 +43,14 @@ public class UserDb extends BaseDbModel<UserDb> implements Author,Serializable {
     private String address;
 
     public UserDb() {
+    }
+
+    public String getPushId() {
+        return pushId;
+    }
+
+    public void setPushId(String pushId) {
+        this.pushId = pushId;
     }
 
     public Integer getId() {

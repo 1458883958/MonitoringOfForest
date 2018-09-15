@@ -10,6 +10,7 @@ import com.wdl.factory.model.api.pi.PiModel;
 import com.wdl.factory.model.card.AccessToken;
 import com.wdl.factory.model.card.Feedback;
 import com.wdl.factory.model.card.Image;
+import com.wdl.factory.model.card.Message;
 import com.wdl.factory.model.card.Notice;
 import com.wdl.factory.model.card.Pi;
 import com.wdl.factory.model.card.Sensor;
@@ -75,7 +76,7 @@ public interface RemoteService {
      * 搜索
      *
      * @param model LoginModel
-     * @return RspModel<List < User>>
+     * @return RspModel<List               <               User>>
      */
     @POST("message/selectUserByKey")
     Call<RspModel<List<User>>> search(@Body LoginModel model);
@@ -104,7 +105,7 @@ public interface RemoteService {
     /**
      * 查询所有公告
      *
-     * @return RspModel<List                                                               <                                                               Notice>>
+     * @return RspModel<List                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               <                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Notice>>
      */
     @POST("notice/selectAll")
     Call<RspModel<List<Notice>>> notice();
@@ -115,7 +116,7 @@ public interface RemoteService {
      * 查看已绑定设备列表
      *
      * @param user User
-     * @return RspModel<List       <       Pi>>
+     * @return RspModel<List                                                               <                                                               Pi>>
      */
     @POST("pi/select")
     Call<RspModel<List<Pi>>> selectAllPi(@Body User user);
@@ -170,7 +171,7 @@ public interface RemoteService {
      * 查看所有反馈(需传uId)
      *
      * @param feedback Feedback
-     * @return RspModel<List               <               Feedback>>
+     * @return RspModel<List                                                                                                                               <                                                                                                                               Feedback>>
      */
     @POST("feedback/selectByUid")
     Call<RspModel<List<Feedback>>> selectFeedback(@Body Feedback feedback);
@@ -180,7 +181,7 @@ public interface RemoteService {
      * 获取设备的图片
      *
      * @param pId pId
-     * @return RspModel<List       <       Image>>
+     * @return RspModel<List                                                               <                                                               Image>>
      */
     @POST("image/selectByPid")
     Call<RspModel<List<Image>>> getPic(@Body Pi pId);
@@ -189,7 +190,7 @@ public interface RemoteService {
      * 获取设备的图片
      *
      * @param page page
-     * @return RspModel<PageInfo   <   Image>>
+     * @return RspModel<PageInfo                               <                               Image>>
      */
     @POST("image/selectPageListByPid")
     Call<RspModel<PageInfo<Image>>> getPic(@Body ImagePage page);
@@ -249,4 +250,40 @@ public interface RemoteService {
     @Streaming //大文件时要加不然会OOM
     @GET
     Call<ResponseBody> downloadFile(@Url String fileUrl);
+
+    /**
+     * 查询所有好友
+     *
+     * @param model Model uId
+     * @return RspModel<List   <   User>>
+     */
+    @POST("message/selectFriend")
+    Call<RspModel<List<User>>> selected(@Body Model model);
+
+    /**
+     * 申请好友请求
+     *
+     * @param model Model 	"rSender":12,"rReceiver":13
+     * @return RspModel
+     */
+    @POST("message/addFriend")
+    Call<RspModel> addFriend(@Body Model model);
+
+    /**
+     * 同意好友请求
+     *
+     * @param model Model
+     * @return RspModel
+     */
+    @POST("message/agreeFriend")
+    Call<RspModel> agree(@Body Model model);
+
+    /**
+     * 发送消息
+     *
+     * @param message Message
+     * @return RspModel
+     */
+    @POST("message/sendMessage")
+    Call<RspModel> pushMessage(@Body Message message);
 }

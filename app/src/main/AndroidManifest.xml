@@ -198,8 +198,12 @@
                 <data android:scheme="sh" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.NoticeActivity"
-            android:theme="@style/AppTheme.TransStatusBar"/>
+        <activity
+            android:name=".activities.NoticeActivity"
+            android:theme="@style/AppTheme.TransStatusBar" />
+        <activity android:name=".activities.MessageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Message" />
     </application>
 
 </manifest>
