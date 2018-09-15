@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import com.wdl.common.app.Activity;
 import com.wdl.factory.model.db.UserDb;
 import com.wdl.monitoringofforest.R;
-import com.wdl.monitoringofforest.message.ChatUserFragment;
+import com.wdl.monitoringofforest.fragments.message.ChatUserFragment;
 
 public class MessageActivity extends Activity {
     //接收者ID

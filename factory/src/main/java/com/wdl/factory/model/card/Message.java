@@ -1,5 +1,7 @@
 package com.wdl.factory.model.card;
 
+import com.wdl.factory.model.db.MessageDb;
+
 /**
  * 项目名：  MonitoringOfForest
  * 包名：    com.wdl.factory.model.card
@@ -22,6 +24,22 @@ public class Message {
     private int mSender;
     private int mReceiver;
     private int mBeemail;
+
+    public Message() {
+    }
+
+    private transient MessageDb messageDb;
+
+    public MessageDb build(){
+        if (messageDb==null){
+            MessageDb db = new MessageDb();
+            db.setReceiverId(mReceiver);
+            db.setContent(mContent);
+            db.setSenderId(mSender);
+            this.messageDb = db;
+        }
+        return messageDb;
+    }
 
     public String getMSubject() {
         return mSubject;

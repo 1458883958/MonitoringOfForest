@@ -141,7 +141,7 @@
             android:focusable="true"
             android:foreground="@drawable/ic_touch_fg"
             android:padding="@dimen/len_8"
-            android:src="@drawable/ic_submit"
+            android:src="@drawable/ic_submit_selector"
             android:tint="@color/textPrimary" />
 
     </LinearLayout>

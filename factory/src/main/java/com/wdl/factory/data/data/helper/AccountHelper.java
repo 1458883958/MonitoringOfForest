@@ -61,6 +61,7 @@ public class AccountHelper {
                 DbHelper.save(UserDb.class, user.build());
                 //同步至XML文件
                 Account.saveUserInfo(user);
+                AccountHelper.bindPushId(Account.getPushId());
                 if (callback != null) {
                     callback.onLoaded(user);
                 }
@@ -144,6 +145,7 @@ public class AccountHelper {
                 DbHelper.save(UserDb.class, data.build());
                 //同步至XML文件
                 Account.saveUserInfo(data);
+                AccountHelper.bindPushId(Account.getPushId());
                 if (callback != null) {
                     callback.onLoaded(data);
                 }
@@ -248,6 +250,34 @@ public class AccountHelper {
             @Override
             public void onFailure(Call<AccessToken> call, Throwable t) {
                 return;
+            }
+        });
+    }
+
+    /**
+     * 绑定pushID
+     * @param clientid id
+     */
+    public static void bindPushId(final String clientid) {
+        User user = new User();
+        user.setuId(Account.getUserId());
+        user.setuCid(clientid);
+        RemoteService service = Network.remoteService();
+        final Call<RspModel<User>> call = service.update(user);
+        call.enqueue(new CallbackImpl<User>() {
+            @Override
+            protected void failed(String msg) {
+
+            }
+            @Override
+            protected void succeed(User data) {
+                //保存数据库并通知界面
+                UserDb db = Account.getUserDb();
+                if (db == null) return;
+                db.setPushId(clientid);
+                DbHelper.update(UserDb.class, db);
+                Account.setBind(true);
+
             }
         });
     }

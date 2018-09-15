@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowLog;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.wdl.common.app.Activity;
 import com.wdl.common.app.Application;
 import com.wdl.factory.data.data.devicedata.DataCenter;
 import com.wdl.factory.data.data.devicedata.DataDispatch;
@@ -12,6 +13,9 @@ import com.wdl.factory.data.data.devicedata.SensorCenter;
 import com.wdl.factory.data.data.devicedata.SensorDispatch;
 import com.wdl.factory.data.data.feedback.FeedbackCenter;
 import com.wdl.factory.data.data.feedback.FeedbackDispatch;
+import com.wdl.factory.data.data.helper.DbHelper;
+import com.wdl.factory.data.data.message.MessageCenter;
+import com.wdl.factory.data.data.message.MessageDispatcher;
 import com.wdl.factory.data.data.notice.NoticeCenter;
 import com.wdl.factory.data.data.notice.NoticeDispatcher;
 import com.wdl.factory.data.data.pi.PiCenter;
@@ -21,6 +25,7 @@ import com.wdl.factory.data.data.user.UserDispatcher;
 import com.wdl.factory.model.card.Feedback;
 import com.wdl.factory.model.card.Notice;
 import com.wdl.factory.model.card.Sensor;
+import com.wdl.factory.model.db.MessageDb;
 import com.wdl.factory.persistence.Account;
 import com.wdl.factory.utils.DBFlowExclusionStrategies;
 
@@ -136,6 +141,13 @@ public class Factory {
      * @param message 消息
      */
     public static void dispatchMessage(String message) {
+        //TODO 数据解析成MessageDb
+        String[] strings = message.split("-");
+        MessageDb db = new MessageDb();
+        db.setSenderId(Integer.valueOf(strings[0]));
+        db.setReceiverId(Account.getUserId());
+        db.setContent(strings[1]);
+        DbHelper.save(MessageDb.class,db);
     }
 
     /**
@@ -180,6 +192,10 @@ public class Factory {
 
     public static NoticeCenter getNoticeCenter() {
         return NoticeDispatcher.getNoticeCenter();
+    }
+
+    public static MessageCenter getMessageCenter() {
+        return MessageDispatcher.getMessageCenter();
     }
 }
 

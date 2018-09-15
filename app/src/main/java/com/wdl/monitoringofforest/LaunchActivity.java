@@ -118,22 +118,25 @@ public class LaunchActivity extends Activity {
     private void receiverPushID() {
         //如果登陆
         if (Account.isLogin()) {
-            skip();
-            return;
+            //判断是否绑定pushId
+            if (Account.isBind()){
+                skip();
+                return;
+            }
         } else {
-//            if (!TextUtils.isEmpty(Account.getPushId())) {
-//                skip();
-//                return;
-//            }
-            skip();return;
+            if (!TextUtils.isEmpty(Account.getPushId())) {
+                skip();
+                return;
+            }
+
         }
         //循环等待
-//        getWindow().getDecorView().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                receiverPushID();
-//            }
-//        }, 500);
+        getWindow().getDecorView().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                receiverPushID();
+            }
+        }, 500);
     }
 
     private void skip() {

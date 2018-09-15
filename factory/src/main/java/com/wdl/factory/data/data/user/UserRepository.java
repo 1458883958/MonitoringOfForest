@@ -6,6 +6,7 @@ import com.wdl.factory.data.data.BaseDbRepository;
 import com.wdl.factory.model.db.UserDb;
 import com.wdl.factory.model.db.UserDb_Table;
 import com.wdl.factory.persistence.Account;
+import com.wdl.utils.LogUtils;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class UserRepository extends BaseDbRepository<UserDb> implements UserData
     @Override
     public void load(SucceedCallback<List<UserDb>> callback) {
        super.load(callback);
+        LogUtils.e("userId:callback  "+Account.getUserId() );
        //数据加载
        SQLite.select()
                .from(UserDb.class)
@@ -40,6 +42,6 @@ public class UserRepository extends BaseDbRepository<UserDb> implements UserData
      */
     @Override
     protected boolean isRequired(UserDb datum) {
-        return true;
+        return !datum.getId().equals(Account.getUserId());
     }
 }

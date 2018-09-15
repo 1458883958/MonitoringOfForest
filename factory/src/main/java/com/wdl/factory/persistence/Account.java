@@ -38,6 +38,15 @@ public class Account {
     //请求时间
     private static long requestTime;
 
+    public static boolean isBind() {
+        return bind;
+    }
+
+    public static void setBind(boolean bind) {
+        Account.bind = bind;
+        Account.save(Factory.application());
+    }
+
     public static long getRequestTime() {
         return requestTime;
     }
@@ -122,6 +131,7 @@ public class Account {
                 .putInt(KEY_USER_ID, userId)
                 .putString(KEY_ACCOUNT, account)
                 .putString(KEY_PUSH_ID, pushId)
+                .putBoolean(KEY_IS_BIND,bind)
                 .putString(KEY_TOKEN,token)
                 .putLong(REQUEST_TIME,requestTime)
                 .apply();
@@ -152,6 +162,7 @@ public class Account {
         account = sp.getString(KEY_ACCOUNT, "");
         pushId = sp.getString(KEY_PUSH_ID, "");
         token = sp.getString(KEY_TOKEN,"");
+        bind = sp.getBoolean(KEY_IS_BIND,false);
         requestTime = sp.getLong(REQUEST_TIME,0L);
     }
 

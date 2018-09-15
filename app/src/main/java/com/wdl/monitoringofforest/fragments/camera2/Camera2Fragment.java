@@ -17,9 +17,7 @@ package com.wdl.monitoringofforest.fragments.camera2;/*
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -49,27 +47,16 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
-import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.TextureView;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.wdl.common.app.Fragment;
 import com.wdl.common.widget.AutoFitTextureView;
-import com.wdl.factory.Factory;
 import com.wdl.monitoringofforest.R;
-import com.wdl.monitoringofforest.activities.Camera2Activity;
 import com.wdl.monitoringofforest.activities.PreviewActivity;
-import com.wdl.monitoringofforest.media.GalleryFragment;
+import com.wdl.monitoringofforest.fragments.media.GalleryFragment;
 import com.wdl.utils.BitmapUtil;
-import com.wdl.utils.LogUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
