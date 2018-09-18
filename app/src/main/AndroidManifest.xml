@@ -203,6 +203,7 @@
             android:theme="@style/AppTheme.TransStatusBar" />
         <activity android:name=".activities.MessageActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.Message" />
     </application>
 

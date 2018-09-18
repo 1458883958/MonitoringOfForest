@@ -24,6 +24,7 @@ public class Message {
     private int mSender;
     private int mReceiver;
     private int mBeemail;
+    private int tyep;
 
     public Message() {
     }
@@ -32,13 +33,23 @@ public class Message {
 
     public MessageDb build(){
         if (messageDb==null){
+            String[] strings = mContent.split("-");
             MessageDb db = new MessageDb();
+            db.setType(Integer.valueOf(strings[0]));
             db.setReceiverId(mReceiver);
-            db.setContent(mContent);
+            db.setContent(strings[1]);
             db.setSenderId(mSender);
             this.messageDb = db;
         }
         return messageDb;
+    }
+
+    public int getTyep() {
+        return tyep;
+    }
+
+    public void setTyep(int tyep) {
+        this.tyep = tyep;
     }
 
     public String getMSubject() {

@@ -42,7 +42,7 @@ public abstract class RecyclerAdapter<Data>
         this(new ArrayList<Data>(), listener);
     }
 
-    public RecyclerAdapter(ArrayList<Data> dataList, AdapterListener<Data> listener) {
+    public RecyclerAdapter(List<Data> dataList, AdapterListener<Data> listener) {
         this.dataList = dataList;
         this.listener = listener;
     }

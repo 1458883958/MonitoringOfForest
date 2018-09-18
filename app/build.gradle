@@ -81,6 +81,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     implementation "com.tencent.bugly:crashreport:$rootProject.ext.buglyVersion"
     implementation "com.google.zxing:core:$rootProject.ext.zxingCoreVersion"
+    implementation "net.qiujuer.widget:airpanel:$rootProject.ext.airpanelVersion"
     implementation project(':common')
     api project(':factory')
     implementation files('libs/Msc.jar')

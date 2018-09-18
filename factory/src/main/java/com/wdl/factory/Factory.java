@@ -142,11 +142,13 @@ public class Factory {
      */
     public static void dispatchMessage(String message) {
         //TODO 数据解析成MessageDb
-        String[] strings = message.split("-");
+        //senderId-id-messageType-type-content
+        String[] strings = message.split("-",3);
         MessageDb db = new MessageDb();
         db.setSenderId(Integer.valueOf(strings[0]));
         db.setReceiverId(Account.getUserId());
-        db.setContent(strings[1]);
+        db.setContent(strings[2]);
+        db.setType(Integer.valueOf(strings[1]));
         DbHelper.save(MessageDb.class,db);
     }
 

@@ -47,10 +47,11 @@ public class MessagePresenter extends BaseSourcePresenter<MessageDb, MessageDb, 
     }
 
     @Override
-    public void pushMessage(int receiver, String content) {
+    public void pushMessage(int type,int receiver, String content) {
         Message message = new Message();
+        message.setTyep(type);
         message.setMBeemail(1);
-        message.setMContent(content);
+        message.setMContent(type+"-"+content);
         message.setMReceiver(receiver);
         message.setMSender(Account.getUserId());
         message.setMSubject("chat");

@@ -19,9 +19,10 @@ public interface MessageContract {
         /**
          * 发送消息
          *
+         * @param type     发送类型
          * @param receiver 接收者
          * @param content  内容
          */
-        void pushMessage(int receiver, String content);
+        void pushMessage(int type, int receiver, String content);
     }
 }

@@ -34,8 +34,8 @@ public class PersonalPresenter extends BasePresenter<PersonalContract.View>
                 int id = getView().getId();
                 UserDb user = UserHelper.findFistOfLocal(id);
                 PersonalContract.View view = getView();
-                if (view!=null&&user!=null)
-                    onLoad(view,user);
+                if (view==null||user==null)return;
+                onLoad(view,user);
             }
         });
     }

@@ -102,7 +102,7 @@ public class PersonalActivity extends PresenterToolbarActivity<PersonalContract.
         if (user==null)
             return;
         mPortrait.setUp(Glide.with(this),user);
-        mName.setText(user.getUsername());
+        mName.setText(user.getPhone());
         mDesc.setText(user.getAlias());
         mFollow.setText(String.format(getString(R.string.label_follows),""+3));
         mFollowing.setText(String.format(getString(R.string.label_following),""+3));

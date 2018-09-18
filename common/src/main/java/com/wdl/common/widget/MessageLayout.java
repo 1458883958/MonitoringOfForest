@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+import net.qiujuer.widget.airpanel.AirPanelLinearLayout;
+
 /**
  * 项目名：  MonitoringOfForest
  * 包名：    com.wdl.common.widget
@@ -14,7 +16,7 @@ import android.widget.LinearLayout;
  * 创建时间： 2018/8/15 20:00
  * 描述：    TODO
  */
-public class MessageLayout extends LinearLayout {
+public class MessageLayout extends AirPanelLinearLayout {
     public MessageLayout(Context context) {
         super(context);
     }

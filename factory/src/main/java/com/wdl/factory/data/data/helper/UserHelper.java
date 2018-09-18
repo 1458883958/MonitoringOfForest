@@ -15,6 +15,7 @@ import com.wdl.factory.model.card.Notice;
 import com.wdl.factory.model.card.User;
 import com.wdl.factory.model.db.FeedbackDb;
 import com.wdl.factory.model.db.ImageDb;
+import com.wdl.factory.model.db.MessageDb;
 import com.wdl.factory.model.db.NoticeDb;
 import com.wdl.factory.model.db.PiDb;
 import com.wdl.factory.model.db.PiDb_Table;
@@ -155,7 +156,7 @@ public class UserHelper {
 
     public static void clear() {
         Delete.tables(UserDb.class, FeedbackDb.class, ImageDb.class
-                , NoticeDb.class, PiDb.class, SensorDb.class);
+                , NoticeDb.class, PiDb.class, SensorDb.class, MessageDb.class);
 //        SQLite.delete(UserDb.class)
 //                .execute();
 //        SQLite.delete(FeedbackDb.class);

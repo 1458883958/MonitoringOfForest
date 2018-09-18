@@ -17,6 +17,12 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 @Table(database = AppDatabase.class)
 public class MessageDb extends BaseDbModel<MessageDb> implements Serializable{
+
+    public static final int MESSAGE_TYPE_NOR = 1;
+    public static final int MESSAGE_TYPE_FILE = 2;
+    public static final int MESSAGE_TYPE_PIC = 3;
+    public static final int MESSAGE_TYPE_AUDIO = 4;
+
     @PrimaryKey(autoincrement = true)
     private int id;
     @Column
@@ -25,6 +31,8 @@ public class MessageDb extends BaseDbModel<MessageDb> implements Serializable{
     private int senderId;
     @Column
     private String content;
+    @Column
+    private int type;
 
     public MessageDb() {
     }
@@ -61,6 +69,14 @@ public class MessageDb extends BaseDbModel<MessageDb> implements Serializable{
         this.content = content;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,6 +85,7 @@ public class MessageDb extends BaseDbModel<MessageDb> implements Serializable{
         return id == db.id &&
                 receiverId == db.receiverId &&
                 senderId == db.senderId &&
+                type == db.type &&
                 Objects.equals(content, db.content);
     }
 
@@ -85,6 +102,7 @@ public class MessageDb extends BaseDbModel<MessageDb> implements Serializable{
     @Override
     public boolean isUiContentSame(MessageDb old) {
         return this == old || (Objects.equals(id, old.id) &&
+                Objects.equals(type, old.type) &&
                 Objects.equals(content, old.content));
     }
 }

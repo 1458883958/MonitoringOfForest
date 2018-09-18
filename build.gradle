@@ -63,4 +63,6 @@ ext{
     zxingCoreVersion = '3.3.0'
     embeddedVersion = '3.6.0'
     buglyVersion = '2.6.6.1'
+
+    airpanelVersion = "1.1.0"
 }
