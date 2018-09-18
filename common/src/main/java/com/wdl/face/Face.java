@@ -8,12 +8,22 @@ import android.text.Spannable;
 import android.util.ArrayMap;
 import android.view.View;
 
-import net.qiujuer.genius.res.Resource;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+import com.wdl.utils.StreamUtil;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * author：   wdl
@@ -22,127 +32,187 @@ import java.util.Locale;
  */
 public class Face {
 
-    //全局的表情映射 轻量级
-    private static final ArrayMap<String,Bean> FACE_MAP = new ArrayMap<>();
+    // 全局的表情的映射ArrayMap，更加轻量级
+    private static final ArrayMap<String, Bean> FACE_MAP = new ArrayMap<>();
     private static List<FaceTab> FACE_TABS = null;
-    private static void init(Context context){
-        if (FACE_TABS==null){
-            synchronized (Face.class){
-                if (FACE_TABS==null){
+
+    private static void init(Context context) {
+        if (FACE_TABS == null) {
+            synchronized (Face.class) {
+                if (FACE_TABS == null) {
                     ArrayList<FaceTab> faceTabs = new ArrayList<>();
-                    //drawable中拉取
-                    FaceTab tab = initResources(context);
-                    if (tab!=null)faceTabs.add(tab);
-                    //assert中拉取
-                    tab = initAssertsFace(context);
-                    if (tab!=null)faceTabs.add(tab);
-                    //init map
+                    FaceTab tab = initAssetsFace(context);
+                    if (tab != null)
+                        faceTabs.add(tab);
+
+
+                    tab = initResourceFace(context);
+                    if (tab != null)
+                        faceTabs.add(tab);
+
+                    // init map
                     for (FaceTab faceTab : faceTabs) {
                         faceTab.copyToMap(FACE_MAP);
                     }
 
-                    //init list 不可变的集合
+                    // init list 不可变的集合
                     FACE_TABS = Collections.unmodifiableList(faceTabs);
                 }
             }
+
+        }
+
+    }
+
+    // 从face-t.zip包解析我们的表情
+    private static FaceTab initAssetsFace(Context context) {
+        String faceAsset = "face-t.zip";
+        // data/data/包名/files/face/ft/*
+        String faceCacheDir = String.format("%s/face/tf", context.getFilesDir());
+        File faceFolder = new File(faceCacheDir);
+        if (!faceFolder.exists()) {
+            // 不存在进行初始化
+            if (faceFolder.mkdirs()) {
+                try {
+                    InputStream inputStream = context.getAssets().open(faceAsset);
+                    // 存储文件
+                    File faceSource = new File(faceFolder, "source.zip");
+                    // copy
+                    StreamUtil.copy(inputStream, faceSource);
+
+                    // 解压
+                    unZipFile(faceSource, faceFolder);
+
+                    // 清理文件
+                    StreamUtil.delete(faceSource.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        // info.json
+        File infoFile = new File(faceCacheDir, "info.json");
+
+        Gson gson = new Gson();
+        JsonReader reader;
+        try {
+            reader = gson.newJsonReader(new FileReader(infoFile));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+        // 解析
+        FaceTab tab = gson.fromJson(reader, FaceTab.class);
+
+        // 相对路径到绝对路径
+        for (Bean face : tab.faces) {
+            face.preview = String.format("%s/%s", faceCacheDir, face.preview);
+            face.source = String.format("%s/%s", faceCacheDir, face.source);
+        }
+
+        return tab;
+    }
+
+    // 把zipFile解压到desDir目录
+    private static void unZipFile(File zipFile, File desDir) throws IOException {
+        final String folderPath = desDir.getAbsolutePath();
+
+        ZipFile zf = new ZipFile(zipFile);
+        // 判断节点进行循环
+        for (Enumeration<?> entries = zf.entries(); entries.hasMoreElements(); ) {
+            ZipEntry entry = (ZipEntry) entries.nextElement();
+            // 过滤缓存的文件
+            String name = entry.getName();
+            if (name.startsWith("."))
+                continue;
+
+            // 输入流
+            InputStream in = zf.getInputStream(entry);
+            String str = folderPath + File.separator + name;
+
+            // 防止名字错乱
+            str = new String(str.getBytes("8859_1"), "GB2312");
+
+            File desFile = new File(str);
+            // 输出文件
+            StreamUtil.copy(in, desFile);
         }
     }
 
-    //assert中拉取
-    private static FaceTab initAssertsFace(Context context) {
-        return null;
-    }
-
-    //drawable中拉取并映射到对应的key
-    private static FaceTab initResources(Context context) {
+    // 从drawable资源中加载数据并映射到对应的key
+    private static FaceTab initResourceFace(Context context) {
         final ArrayList<Bean> faces = new ArrayList<>();
         final Resources resources = context.getResources();
         String packageName = context.getApplicationInfo().packageName;
-        for (int i = 0;i<=142;i++){
-            //i=0 001
-            String key = String.format(Locale.ENGLISH,"fb%03d",i);
-            String resStr = String.format(Locale.ENGLISH,"face_base_%03d",i);
-            //根据资源名拿资源对应的id
-            int resId = resources.getIdentifier(resStr,"drawable",packageName);
-            if (resId==0)continue;
-            //添加表情
-            faces.add(new Bean(key,resId));
+        for (int i = 1; i <= 142; i++) {
+
+            // i=1=>  001
+            String key = String.format(Locale.ENGLISH, "fb%03d", i);
+            String resStr = String.format(Locale.ENGLISH, "face_base_%03d", i);
+
+            // 根据资源名称去拿资源对应的ID
+            int resId = resources.getIdentifier(resStr, "drawable", packageName);
+            if (resId == 0)
+                continue;
+
+            // 添加表情
+            faces.add(new Bean(key, resId));
+
         }
-        if (faces.size()==0)
+
+        if (faces.size() == 0)
             return null;
 
-        return new FaceTab(faces,"NAME",faces.get(0).preview);
+        return new FaceTab("NAME", faces.get(0).preview, faces);
     }
 
-    /**
-     * 获取所有表情
-     * @param context
-     * @return
-     */
-    public static List<FaceTab> all(@NonNull Context context){
+    // 获取所有的表情
+    public static List<FaceTab> all(@NonNull Context context) {
         init(context);
         return FACE_TABS;
     }
 
-    /**
-     * 输入表情到edit
-     * @param context 上下文
-     * @param editable Editable
-     * @param bean Face.Bean
-     * @param size 大小
-     */
-    public static void inputFace(@NonNull Context context, final Editable editable,
-                                          final Face.Bean bean,final int size){
-
+    public static void inputFace(Context context, Editable text, Bean bean, int i) {
     }
 
     /**
-     * 从spannable解析表情并替换
-     * @param target
-     * @param spannable Spannable
-     * @param size 大小
-     * @return
+     * 每一个表情盘，含有很多表情
      */
-    public static List<FaceTab> decode(@NonNull View target, final Spannable spannable,
-                                       final int size){
-        return null;
-    }
-
-    /**
-     * 表情盘,含多个表情
-     */
-    public static class FaceTab{
-        public List<Bean> faces = new ArrayList<>();
+    public static class FaceTab {
+        public List<Bean> faces;
         public String name;
-        //预览图，Object 因为  drawable 下的表情资源是以id int 形式存在的
+        // 预览图, 包括了drawable下面的资源int类型
         public Object preview;
 
-        public FaceTab(List<Bean> faces, String name, Object preview) {
+        FaceTab(String name, Object preview, List<Bean> faces) {
             this.faces = faces;
             this.name = name;
             this.preview = preview;
         }
 
-        public void copyToMap(ArrayMap<String,Bean> faceMap){
+        // 添加到Map
+        void copyToMap(ArrayMap<String, Bean> faceMap) {
             for (Bean face : faces) {
-                faceMap.put(face.key,face);
+                faceMap.put(face.key, face);
             }
         }
     }
 
     /**
-     * 每个表情
+     * 每一个表情
      */
-    public static class Bean{
-        public static String key;
-        public static Object source;
-        public static Object preview;
-        public static String desc;
-
-        public Bean(String key,int preview) {
+    public static class Bean {
+        Bean(String key, int preview) {
             this.key = key;
             this.source = preview;
             this.preview = preview;
         }
+
+        public String key;
+        public String desc;
+        public Object source;
+        public Object preview;
     }
 }
