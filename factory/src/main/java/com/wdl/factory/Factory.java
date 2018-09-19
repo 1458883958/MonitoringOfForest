@@ -144,11 +144,12 @@ public class Factory {
         //TODO 数据解析成MessageDb
         //senderId-id-messageType-type-content
         String[] strings = message.split("-",3);
+        int type = Integer.valueOf(strings[1]);
         MessageDb db = new MessageDb();
         db.setSenderId(Integer.valueOf(strings[0]));
         db.setReceiverId(Account.getUserId());
         db.setContent(strings[2]);
-        db.setType(Integer.valueOf(strings[1]));
+        db.setType(type);
         DbHelper.save(MessageDb.class,db);
     }
 

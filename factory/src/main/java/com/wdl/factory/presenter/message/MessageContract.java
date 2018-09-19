@@ -24,5 +24,7 @@ public interface MessageContract {
          * @param content  内容
          */
         void pushMessage(int type, int receiver, String content);
+
+        void pushImages(int type, int receiver, String[] contents);
     }
 }

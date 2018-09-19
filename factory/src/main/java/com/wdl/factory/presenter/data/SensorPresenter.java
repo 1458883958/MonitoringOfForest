@@ -28,7 +28,7 @@ public class SensorPresenter extends BasePresenter<DataContract.SensorView> impl
     @Override
     public void onLoaded(final List<SensorDb> data) {
         final DataContract.SensorView view = getView();
-        if (view!=null){
+        if (view!=null&&data!=null&&data.size()!=0){
             Run.onUiAsync(new Action() {
                 @Override
                 public void call() {

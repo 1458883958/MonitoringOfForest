@@ -31,6 +31,7 @@ import com.wdl.common.widget.recycler.RecyclerAdapter;
 import com.wdl.face.Face;
 import com.wdl.factory.data.data.helper.MessageHelper;
 import com.wdl.factory.data.data.helper.UserHelper;
+import com.wdl.factory.model.card.Message;
 import com.wdl.factory.model.card.User;
 import com.wdl.factory.model.db.MessageDb;
 import com.wdl.factory.model.db.UserDb;
@@ -41,6 +42,7 @@ import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.activities.MessageActivity;
 import com.wdl.monitoringofforest.activities.PersonalActivity;
 import com.wdl.monitoringofforest.fragments.panel.PanelFragment;
+import com.wdl.utils.LogUtils;
 
 import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.compat.UiCompat;
@@ -223,7 +225,7 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
         if (mView.isActivated()) {
             String content = mContent.getText().toString();
             mContent.setText("");
-            mPresenter.pushMessage(1, receiverId, content);
+            mPresenter.pushMessage(MessageDb.MESSAGE_TYPE_NOR, receiverId, content);
         } else {
             onMoreClick();
         }
@@ -313,7 +315,11 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
     @Override
     public void onSendGallery(String[] paths) {
         //图片回调
-        mPresenter.pushMessage(2,receiverId,paths[0]);
+//        StringBuilder content = new StringBuilder();
+//        for (String path : paths) {
+//            content.append(path).append("@");
+//        }
+        mPresenter.pushImages(MessageDb.MESSAGE_TYPE_PIC,receiverId, paths);
     }
 
     @Override
@@ -401,6 +407,7 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
         @Override
         protected void onBind(MessageDb message) {
             super.onBind(message);
+            LogUtils.e("message:"+message.getContent());
             Spannable spannable = new SpannableString(message.getContent());
             //解析表情
             Face.decode(mContent,spannable, (int)Ui.dipToPx(getResources(),20));

@@ -197,7 +197,7 @@ public class PiHelper {
      * @param callback Callback
      */
     public static void querySensor(Model model, final DataSource.Callback<List<SensorDb>> callback) {
-        RemoteService service = Network.remoteService3();
+        RemoteService service = Network.remoteService();
         Call<RspModel<List<Sensor>>> call = service.getSensor(model);
         LogUtils.e("model:" + model.toString());
         call.enqueue(new CallbackImpl<List<Sensor>>() {

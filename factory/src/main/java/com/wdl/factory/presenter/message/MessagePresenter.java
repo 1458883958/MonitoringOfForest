@@ -12,6 +12,7 @@ import com.wdl.factory.persistence.Account;
 import com.wdl.factory.presenter.BaseSourcePresenter;
 import com.wdl.factory.presenter.notice.NoticeContract;
 import com.wdl.factory.utils.DiffUiDataCallback;
+import com.wdl.utils.LogUtils;
 
 import java.util.List;
 
@@ -49,12 +50,31 @@ public class MessagePresenter extends BaseSourcePresenter<MessageDb, MessageDb, 
     @Override
     public void pushMessage(int type,int receiver, String content) {
         Message message = new Message();
+        message.setMContent(type + "-" + content);
         message.setTyep(type);
         message.setMBeemail(1);
-        message.setMContent(type+"-"+content);
         message.setMReceiver(receiver);
         message.setMSender(Account.getUserId());
         message.setMSubject("chat");
+        LogUtils.e("pushMessage:"+message.toString());
         MessageHelper.pushMsg(message);
     }
+
+    @Override
+    public void pushImages(int type, int receiver, String[] contents) {
+        if (contents==null||contents.length==0)return;
+        for (String content : contents) {
+            Message message = new Message();
+            message.setMContent(type + "-" + content);
+            message.setTyep(type);
+            message.setMBeemail(1);
+            message.setMReceiver(receiver);
+            message.setMSender(Account.getUserId());
+            message.setMSubject("chat");
+            MessageHelper.pushMsg(message);
+        }
+
+    }
+
+
 }

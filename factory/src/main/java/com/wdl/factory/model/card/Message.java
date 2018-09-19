@@ -33,7 +33,7 @@ public class Message {
 
     public MessageDb build(){
         if (messageDb==null){
-            String[] strings = mContent.split("-");
+            String[] strings = mContent.split("-",2);
             MessageDb db = new MessageDb();
             db.setType(Integer.valueOf(strings[0]));
             db.setReceiverId(mReceiver);
@@ -90,5 +90,18 @@ public class Message {
 
     public void setMBeemail(int mBeemail) {
         this.mBeemail = mBeemail;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "mSubject='" + mSubject + '\'' +
+                ", mContent='" + mContent + '\'' +
+                ", mSender=" + mSender +
+                ", mReceiver=" + mReceiver +
+                ", mBeemail=" + mBeemail +
+                ", tyep=" + tyep +
+                ", messageDb=" + messageDb +
+                '}';
     }
 }
