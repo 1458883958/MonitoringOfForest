@@ -32,11 +32,12 @@ import java.util.Objects;
  * 底部空气栏
  * A simple {@link Fragment} subclass.
  */
-public class PanelFragment extends Fragment {
+public class PanelFragment extends Fragment implements GalleryView.SelectedChangedListener{
 
     private PanelCallback callback;
     private View mFacePanel, mGalleryPanel, mRecordPanel;
 
+    private TextView selectedSize;
     public PanelFragment() {
         // Required empty public constructor
     }
@@ -59,14 +60,9 @@ public class PanelFragment extends Fragment {
     private void initGallery(View root) {
         final View galleryPanel = mGalleryPanel = root.findViewById(R.id.lay_gallery_panel);
         final GalleryView galleryView = galleryPanel.findViewById(R.id.view_gallery);
-        final TextView selectedSize = galleryPanel.findViewById(R.id.txt_gallery_select_count);
+        selectedSize = galleryPanel.findViewById(R.id.txt_gallery_select_count);
         //设置选中条数
-        galleryView.setUp(getLoaderManager(), new GalleryView.SelectedChangedListener() {
-            @Override
-            public void notifyChanged(int size) {
-                selectedSize.setText(String.format(getText(R.string.label_gallery_selected_size).toString(), size));
-            }
-        });
+        galleryView.setUp(getLoaderManager(),this);
         //发送按钮
         galleryPanel.findViewById(R.id.btn_send).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,6 +205,12 @@ public class PanelFragment extends Fragment {
      */
     public void setUp(PanelCallback callback) {
         this.callback = callback;
+    }
+
+    @Override
+    public void notifyChanged(int size) {
+        String str = getText(R.string.label_gallery_selected_size).toString();
+        selectedSize.setText(String.format(str, size));
     }
 
     /**

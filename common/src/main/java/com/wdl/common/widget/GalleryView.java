@@ -339,7 +339,6 @@ public class GalleryView extends RecyclerView {
 
         @Override
         public int hashCode() {
-
             return Objects.hash(path);
         }
     }

@@ -160,6 +160,8 @@ public abstract class RecyclerAdapter<Data>
             dataList.add(position, data);
             //通知刷新
             notifyItemInserted(position);
+            //刷新
+            notifyDataSetChanged();
         }
     }
 
