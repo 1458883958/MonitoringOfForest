@@ -10,11 +10,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +28,7 @@ import com.wdl.common.app.Fragment;
 import com.wdl.common.app.PresenterFragment;
 import com.wdl.common.widget.PortraitView;
 import com.wdl.common.widget.recycler.RecyclerAdapter;
+import com.wdl.face.Face;
 import com.wdl.factory.data.data.helper.MessageHelper;
 import com.wdl.factory.data.data.helper.UserHelper;
 import com.wdl.factory.model.card.User;
@@ -38,12 +42,14 @@ import com.wdl.monitoringofforest.activities.MessageActivity;
 import com.wdl.monitoringofforest.activities.PersonalActivity;
 import com.wdl.monitoringofforest.fragments.panel.PanelFragment;
 
+import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.compat.UiCompat;
 import net.qiujuer.genius.ui.widget.Loading;
 import net.qiujuer.widget.airpanel.AirPanel;
 import net.qiujuer.widget.airpanel.AirPanelFrameLayout;
 import net.qiujuer.widget.airpanel.Util;
 
+import java.io.File;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -304,6 +310,17 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
         return mContent;
     }
 
+    @Override
+    public void onSendGallery(String[] paths) {
+        //图片回调
+        mPresenter.pushMessage(2,receiverId,paths[0]);
+    }
+
+    @Override
+    public void onRecordDone(File file, long time) {
+        //TODO 语音回调
+    }
+
     /**
      * 内容适配器
      */
@@ -384,8 +401,11 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
         @Override
         protected void onBind(MessageDb message) {
             super.onBind(message);
+            Spannable spannable = new SpannableString(message.getContent());
+            //解析表情
+            Face.decode(mContent,spannable, (int)Ui.dipToPx(getResources(),20));
             //把内容设置到布局
-            mContent.setText(message.getContent());
+            mContent.setText(spannable);
         }
     }
 
@@ -410,6 +430,8 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
      */
     class PicHolder extends BaseHolder {
 
+        @BindView(R.id.iv_image)
+        ImageView mContent;
         public PicHolder(View itemView) {
             super(itemView);
         }
@@ -417,7 +439,11 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
         @Override
         protected void onBind(MessageDb message) {
             super.onBind(message);
-
+            String content = message.getContent();
+            Glide.with(ChatUserFragment.this)
+                    .load(content)
+                    .fitCenter()
+                    .into(mContent);
         }
     }
 

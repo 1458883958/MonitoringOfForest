@@ -2,14 +2,28 @@ package com.wdl.face;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.util.ArrayMap;
 import android.view.View;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.wdl.common.R;
 import com.wdl.utils.StreamUtil;
 
 import java.io.File;
@@ -22,6 +36,8 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -174,7 +190,132 @@ public class Face {
         return FACE_TABS;
     }
 
-    public static void inputFace(Context context, Editable text, Bean bean, int i) {
+    public static void inputFace(final Context context, final Editable text, final Bean bean, int size) {
+        Glide.with(context)
+                .load(bean.preview)
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>(size, size) {
+                    @Override
+                    public void onResourceReady(Bitmap resource,
+                                                GlideAnimation<? super Bitmap> glideAnimation) {
+                        Spannable spannable = new SpannableString(String.format("[%s]", bean.key));
+                        ImageSpan span = new ImageSpan(context, resource, ImageSpan.ALIGN_BASELINE);
+                        //前后不关联
+                        spannable.setSpan(span, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        text.append(spannable);
+                    }
+                });
+    }
+
+    public static Spannable decode(View target, Spannable spannable, int size) {
+        if (spannable == null) return null;
+        String str = spannable.toString();
+        if (TextUtils.isEmpty(str)) return null;
+        final Context context = target.getContext();
+
+        //匹配[][][]
+        Pattern pattern = Pattern.compile("(\\[[^\\[\\]:\\s\\n]+\\])");
+        Matcher matcher = pattern.matcher(str);
+        while (matcher.find()) {
+            //[ft112]
+            String key = matcher.group();
+            if (TextUtils.isEmpty(key))
+                continue;
+            Bean bean = get(context, key.replace("[", "")
+                    .replace("]", ""));
+            if (bean == null) continue;
+            final int start = matcher.start();
+            final int end = matcher.end();
+
+            //得到一个复写后的span
+            ImageSpan imageSpan = new FaceSpan(context, target, bean.preview, size);
+            //设置标示
+            spannable.setSpan(imageSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return spannable;
+    }
+
+
+    public static class FaceSpan extends ImageSpan {
+
+        //自己真实绘制的
+        private Drawable drawable;
+        private View mView;
+        private int mSize;
+
+        /**
+         * @param context Context
+         * @param view    目标View,用于加载完成后刷新
+         * @param source  加载目标
+         * @param size    显示的大小
+         */
+        public FaceSpan(Context context, final View view, Object source, final int size) {
+            //虽然设置了占位,但是不显示,只用于占位
+            super(context, R.drawable.default_face, ALIGN_BOTTOM);
+            this.mView = view;
+            this.mSize = size;
+            Glide.with(context)
+                    .load(source)
+                    .fitCenter()
+                    .into(new SimpleTarget<GlideDrawable>(size, size) {
+                        @Override
+                        public void onResourceReady(GlideDrawable resource,
+                                                    GlideAnimation<? super GlideDrawable> glideAnimation) {
+                            drawable = resource.getCurrent();
+                            //获取自测量的高宽
+                            int width = drawable.getIntrinsicWidth();
+                            int height = drawable.getIntrinsicHeight();
+                            //左上角0 0   比较自测宽高 设置宽高
+                            drawable.setBounds(0, 0, width > 0 ? width : size, height > 0 ? height : size);
+                            //通知刷新
+                            mView.invalidate();
+                        }
+                    });
+        }
+
+        @Override
+        public Drawable getDrawable() {
+            //复写获取drawable 可能为空
+            return drawable;
+        }
+
+        @Override
+        public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
+            //过滤为空的绘制
+            if (drawable != null)
+                super.draw(canvas, text, start, end, x, top, y, bottom, paint);
+        }
+
+        @Override
+        public int getSize(Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm) {
+            //获取大小  走自己逻辑
+            Rect rect = drawable != null ? drawable.getBounds() :
+                    new Rect(0, 0, mSize, mSize);
+
+            if (fm != null) {
+                fm.ascent = -rect.bottom;
+                fm.descent = 0;
+
+                fm.top = fm.ascent;
+                fm.bottom = 0;
+            }
+            return rect.right;
+        }
+    }
+
+    /**
+     * 获取一个表情
+     *
+     * @param context Context
+     * @param key     KEY
+     * @return Bean
+     */
+    public static Bean get(Context context, String key) {
+        init(context);
+        if (FACE_MAP.containsKey(key)) {
+            return FACE_MAP.get(key);
+        }
+        return null;
     }
 
     /**

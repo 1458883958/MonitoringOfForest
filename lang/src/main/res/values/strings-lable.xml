@@ -117,4 +117,6 @@
     <string name="label_density_result">郁闭度为%s</string>
     <string name="label_go_share">分享</string>
     <string name="label_back">返回</string>
+    <string name="label_preview">预览</string>
+    <string name="label_send">发送</string>
 </resources>
