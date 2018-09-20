@@ -25,6 +25,7 @@ public class Message {
     private int mReceiver;
     private int mBeemail;
     private int tyep;
+    private String attach;
 
     public Message() {
     }
@@ -35,13 +36,30 @@ public class Message {
         if (messageDb==null){
             String[] strings = mContent.split("-",2);
             MessageDb db = new MessageDb();
-            db.setType(Integer.valueOf(strings[0]));
+            int type = Integer.valueOf(strings[0]);
+            String content = strings[1];
+            db.setType(type);
             db.setReceiverId(mReceiver);
-            db.setContent(strings[1]);
             db.setSenderId(mSender);
+            if (type!=MessageDb.MESSAGE_TYPE_AUDIO)
+                db.setContent(content);
+            else {
+                String[] str = content.split("@",2);
+                db.setContent(str[0]);
+                db.setAttach(str[1]);
+            }
+
             this.messageDb = db;
         }
         return messageDb;
+    }
+
+    public String getAttach() {
+        return attach;
+    }
+
+    public void setAttach(String attach) {
+        this.attach = attach;
     }
 
     public int getTyep() {

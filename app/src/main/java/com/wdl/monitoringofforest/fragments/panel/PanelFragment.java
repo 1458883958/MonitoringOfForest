@@ -15,8 +15,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.wdl.common.app.Application;
 import com.wdl.common.app.Fragment;
+import com.wdl.common.tools.AudioRecordHelper;
 import com.wdl.common.tools.UiTool;
+import com.wdl.common.widget.AudioRecordView;
 import com.wdl.common.widget.GalleryView;
 import com.wdl.common.widget.recycler.RecyclerAdapter;
 import com.wdl.face.Face;
@@ -32,12 +35,13 @@ import java.util.Objects;
  * 底部空气栏
  * A simple {@link Fragment} subclass.
  */
-public class PanelFragment extends Fragment implements GalleryView.SelectedChangedListener{
+public class PanelFragment extends Fragment implements GalleryView.SelectedChangedListener {
 
     private PanelCallback callback;
     private View mFacePanel, mGalleryPanel, mRecordPanel;
 
     private TextView selectedSize;
+
     public PanelFragment() {
         // Required empty public constructor
     }
@@ -62,7 +66,7 @@ public class PanelFragment extends Fragment implements GalleryView.SelectedChang
         final GalleryView galleryView = galleryPanel.findViewById(R.id.view_gallery);
         selectedSize = galleryPanel.findViewById(R.id.txt_gallery_select_count);
         //设置选中条数
-        galleryView.setUp(getLoaderManager(),this);
+        galleryView.setUp(getLoaderManager(), this);
         //发送按钮
         galleryPanel.findViewById(R.id.btn_send).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,13 +86,73 @@ public class PanelFragment extends Fragment implements GalleryView.SelectedChang
         //通知到聊天界面
         PanelCallback mCallback = callback;
         if (mCallback == null) return;
-            mCallback.onSendGallery(imagePaths);
+        mCallback.onSendGallery(imagePaths);
         //清理状态
         galleryView.clear();
     }
 
     private void initRecord(View root) {
-        //final View recordPanel = mRecordPanel = root.findViewById(R.id.lay_gallery_panel);
+        final View recordPanel = mRecordPanel = root.findViewById(R.id.lay_panel_record);
+        final AudioRecordView audioRecordView = recordPanel.findViewById(R.id.view_audio_record);
+
+        //缓存文件
+        File file = Application.getAudioTmpFile(true);
+        //录音帮助类
+        final AudioRecordHelper helper = new AudioRecordHelper(file, new AudioRecordHelper.RecordCallback() {
+            @Override
+            public void onRecordStart() {
+
+            }
+
+            //录制进度
+            @Override
+            public void onProgress(long time) {
+
+            }
+
+            //录音结束
+            @Override
+            public void onRecordDone(File file, long time) {
+                //时间小于1S
+                if (time < 1000) return;
+                //更改为一个要发送的录音文件
+                File audioFile = Application.getAudioTmpFile(false);
+                if (file.renameTo(audioFile)) {
+                    //通知到聊天界面
+                    PanelCallback panelCallback = callback;
+                    if (panelCallback != null)
+                        panelCallback.onRecordDone(audioFile, time);
+                }
+
+            }
+        });
+        //初始化
+        audioRecordView.setup(new AudioRecordView.Callback() {
+            //请求开始录音
+            @Override
+            public void requestStartRecord() {
+                //异步开始
+                helper.recordAsync();
+            }
+
+            //请求停止录音
+            @Override
+            public void requestStopRecord(int type) {
+                switch (type) {
+                    //非正常录制成功,按了删除 取消 等
+                    case AudioRecordView.END_TYPE_DELETE:
+                    case AudioRecordView.END_TYPE_CANCEL:
+                        helper.stop(true);
+                        break;
+                    //停止后发送
+                    case AudioRecordView.END_TYPE_NONE:
+                    case AudioRecordView.END_TYPE_PLAY:
+                        helper.stop(false);
+                        break;
+                }
+
+            }
+        });
     }
 
     //初始化表情
@@ -181,19 +245,19 @@ public class PanelFragment extends Fragment implements GalleryView.SelectedChang
     }
 
     public void showFace() {
-        //mRecordPanel.setVisibility(View.GONE);
+        mRecordPanel.setVisibility(View.GONE);
         mGalleryPanel.setVisibility(View.GONE);
         mFacePanel.setVisibility(View.VISIBLE);
     }
 
     public void showRecord() {
-//mRecordPanel.setVisibility(View.GONE);
+        mRecordPanel.setVisibility(View.VISIBLE);
         mGalleryPanel.setVisibility(View.GONE);
         mFacePanel.setVisibility(View.GONE);
     }
 
     public void showGallery() {
-        //mRecordPanel.setVisibility(View.GONE);
+        mRecordPanel.setVisibility(View.GONE);
         mGalleryPanel.setVisibility(View.VISIBLE);
         mFacePanel.setVisibility(View.GONE);
     }

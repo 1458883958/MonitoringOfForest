@@ -78,5 +78,8 @@ public interface BaseContract {
          * 当适配器数据更改时触发
          */
         void adapterDataChanged();
+
+
     }
+
 }

@@ -65,4 +65,9 @@ ext{
     buglyVersion = '2.6.6.1'
 
     airpanelVersion = "1.1.0"
+
+    //在这里主要依赖了一个lame库，Lame是一个音频压缩库，可以把PCM转换为MP3格式。
+    // 当然原始是C语言的，我在这里进行了封装，所以需要引入这个库。
+
+    lameVersion = "1.0.0"
 }

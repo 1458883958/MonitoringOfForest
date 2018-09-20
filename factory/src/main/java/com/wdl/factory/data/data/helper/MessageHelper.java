@@ -45,14 +45,22 @@ public class MessageHelper {
             public void run() {
                 //判断发送的类型
                 //是图片 文件类型的  先上传阿里云OSS
-                String content = null;
+                String content;
                 if (message.getTyep() == MessageDb.MESSAGE_TYPE_PIC) {
                     //图片上传
                     String path = message.getMContent().split("-")[1];
                     content = uploadImage(path);
+                    if (!TextUtils.isEmpty(content))
+                        message.setMContent(message.getTyep() + "-" + content);
+                } else if (message.getTyep() == MessageDb.MESSAGE_TYPE_AUDIO) {
+                    //type-content@time
+                    //获取content
+                    String path = message.getMContent().split("-")[1].split("@")[0];
+                    content = uploadAudio(path);
+                    if (!TextUtils.isEmpty(content))
+                        message.setMContent(message.getTyep() + "-" + content + "@" + message.getAttach());
                 }
-                if (!TextUtils.isEmpty(content))
-                    message.setMContent(message.getTyep() + "-" + content);
+
                 RemoteService service = Network.remoteService();
                 Call<RspModel> call = service.pushMessage(message);
                 call.enqueue(new Callback<RspModel>() {
@@ -65,6 +73,7 @@ public class MessageHelper {
                             }
                         }
                     }
+
                     @Override
                     public void onFailure(Call<RspModel> call, Throwable t) {
 
@@ -73,6 +82,14 @@ public class MessageHelper {
             }
         });
 
+    }
+
+    private static String uploadAudio(String path) {
+        //上传语音
+        File file = new File(path);
+        if (!file.exists()||file.length()<=0)return null;
+
+        return UploadHelper.uploadAudio(path);
     }
 
     /**

@@ -148,8 +148,15 @@ public class Factory {
         MessageDb db = new MessageDb();
         db.setSenderId(Integer.valueOf(strings[0]));
         db.setReceiverId(Account.getUserId());
-        db.setContent(strings[2]);
         db.setType(type);
+        String content = strings[2];
+        if (type!=MessageDb.MESSAGE_TYPE_AUDIO) {
+            db.setContent(content);
+        }else {
+            String[] s = content.split("@",2);
+            db.setAttach(s[1]);
+            db.setContent(s[0]);
+        }
         DbHelper.save(MessageDb.class,db);
     }
 

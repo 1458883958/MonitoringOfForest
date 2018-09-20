@@ -1,6 +1,7 @@
 package com.wdl.factory.presenter;
 
 import android.support.v7.util.DiffUtil;
+import android.support.v7.widget.RecyclerView;
 
 import com.wdl.common.widget.recycler.RecyclerAdapter;
 
@@ -48,6 +49,15 @@ public class BaseRecyclerPresenter<ViewModel, View extends BaseContract.Recycler
      * @param result   差异结果
      * @param dataList 数据
      */
+    protected void refreshData(final DiffUtil.DiffResult result, final List<ViewModel> dataList, final RecyclerView recyclerView) {
+        Run.onUiAsync(new Action() {
+            @Override
+            public void call() {
+                refreshDataOnUiThread(result, dataList,recyclerView);
+            }
+        });
+    }
+
     protected void refreshData(final DiffUtil.DiffResult result, final List<ViewModel> dataList) {
         Run.onUiAsync(new Action() {
             @Override
@@ -73,6 +83,21 @@ public class BaseRecyclerPresenter<ViewModel, View extends BaseContract.Recycler
         //通知刷新占位布局
         view.adapterDataChanged();
 
+        //增量更新
+        result.dispatchUpdatesTo(adapter);
+    }
+
+    private void refreshDataOnUiThread(final DiffUtil.DiffResult result, final List<ViewModel> dataList,RecyclerView recyclerView) {
+        View view = getView();
+        if (view == null) return;
+        //更新数据，不通知界面刷新 replace方法带有界面刷新
+        RecyclerAdapter<ViewModel> adapter = view.getRecyclerAdapter();
+        adapter.getItems().clear();
+        adapter.getItems().addAll(dataList);
+        //通知刷新占位布局
+        view.adapterDataChanged();
+        if (adapter.getItems().size()>0)
+        recyclerView.smoothScrollToPosition(adapter.getItemCount()-1);
         //增量更新
         result.dispatchUpdatesTo(adapter);
     }

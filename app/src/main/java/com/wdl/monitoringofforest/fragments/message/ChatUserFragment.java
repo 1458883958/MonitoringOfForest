@@ -314,17 +314,18 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
 
     @Override
     public void onSendGallery(String[] paths) {
-        //图片回调
-//        StringBuilder content = new StringBuilder();
-//        for (String path : paths) {
-//            content.append(path).append("@");
-//        }
         mPresenter.pushImages(MessageDb.MESSAGE_TYPE_PIC,receiverId, paths);
     }
 
     @Override
     public void onRecordDone(File file, long time) {
         //TODO 语音回调
+        mPresenter.pushAudio(MessageDb.MESSAGE_TYPE_AUDIO,receiverId,file.getAbsolutePath(),time);
+    }
+
+    @Override
+    public RecyclerView getRecycler() {
+        return mRecyclerView;
     }
 
     /**
@@ -356,11 +357,11 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
                 case R.layout.cell_chat_text_right:
                 case R.layout.cell_chat_text_left:
                     return new TextHolder(root);
-                //文字的
+                //图片的
                 case R.layout.cell_chat_pic_right:
                 case R.layout.cell_chat_pic_left:
                     return new PicHolder(root);
-                //文字的
+                //语音的
                 case R.layout.cell_chat_audio_right:
                 case R.layout.cell_chat_audio_left:
                     return new AudioHolder(root);
@@ -421,6 +422,11 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
      */
     class AudioHolder extends BaseHolder {
 
+        @BindView(R.id.txt_content)
+        TextView mContent;
+        @BindView(R.id.im_audio_track)
+        ImageView mAudioTrack;
+
         public AudioHolder(View itemView) {
             super(itemView);
         }
@@ -428,6 +434,34 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
         @Override
         protected void onBind(MessageDb message) {
             super.onBind(message);
+            String content = message.getAttach();
+            mContent.setText(formatTime(TextUtils.isEmpty(content)?"0":content));
+
+        }
+        //播放开始
+        void onPlayStart(){
+            mAudioTrack.setVisibility(View.VISIBLE);
+        }
+        //播放停止
+        void onPlayStop(){
+            mAudioTrack.setVisibility(View.INVISIBLE);
+        }
+
+        private String formatTime(String attach){
+            float time;
+            try {
+                time = Float.parseFloat(attach)/1000f;
+            }catch (Exception e){
+                e.printStackTrace();
+                time = 0;
+            }
+            //12000 / 1000f = 12.0000
+            //取整   1.234 -> 12.3 1.200->1.2
+            String shortTime = String.valueOf(Math.round(time*10f)/10f);
+            //去除多余的0
+            //1.0 -> 1
+            shortTime = shortTime.replaceAll("[.]0+?$|0+?$","");
+            return shortTime+"\"";
 
         }
     }

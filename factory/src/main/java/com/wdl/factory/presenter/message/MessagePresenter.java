@@ -26,7 +26,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class MessagePresenter extends BaseSourcePresenter<MessageDb, MessageDb, MessageRepository,
         MessageContract.View> implements MessageContract.Presenter {
-    public MessagePresenter(MessageContract.View view,int receiver) {
+    public MessagePresenter(MessageContract.View view, int receiver) {
         super(view, new MessageRepository(receiver));
     }
 
@@ -39,16 +39,17 @@ public class MessagePresenter extends BaseSourcePresenter<MessageDb, MessageDb, 
     @Override
     public void onLoaded(List<MessageDb> data) {
         final MessageContract.View view = getView();
-        if (view==null)return;
+        if (view == null) return;
         RecyclerAdapter<MessageDb> adapter = view.getRecyclerAdapter();
         List<MessageDb> old = adapter.getItems();
-        DiffUtil.Callback callback = new DiffUiDataCallback<>(old,data);
+        DiffUtil.Callback callback = new DiffUiDataCallback<>(old, data);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback);
-        refreshData(result,data);
+        refreshData(result, data, view.getRecycler());
     }
 
     @Override
-    public void pushMessage(int type,int receiver, String content) {
+    public void pushMessage(int type, int receiver, String content) {
+        if (content == null) return;
         Message message = new Message();
         message.setMContent(type + "-" + content);
         message.setTyep(type);
@@ -56,13 +57,13 @@ public class MessagePresenter extends BaseSourcePresenter<MessageDb, MessageDb, 
         message.setMReceiver(receiver);
         message.setMSender(Account.getUserId());
         message.setMSubject("chat");
-        LogUtils.e("pushMessage:"+message.toString());
+        LogUtils.e("pushMessage:" + message.toString());
         MessageHelper.pushMsg(message);
     }
 
     @Override
     public void pushImages(int type, int receiver, String[] contents) {
-        if (contents==null||contents.length==0)return;
+        if (contents == null || contents.length == 0) return;
         for (String content : contents) {
             Message message = new Message();
             message.setMContent(type + "-" + content);
@@ -74,6 +75,21 @@ public class MessagePresenter extends BaseSourcePresenter<MessageDb, MessageDb, 
             MessageHelper.pushMsg(message);
         }
 
+    }
+
+    @Override
+    public void pushAudio(int type, int receiver, String content, long time) {
+        if (content == null) return;
+        Message message = new Message();
+        message.setMContent(type + "-" + content + "@" + time);
+        message.setTyep(type);
+        message.setMBeemail(1);
+        message.setMReceiver(receiver);
+        message.setMSender(Account.getUserId());
+        message.setAttach(String.valueOf(time));
+        message.setMSubject("chat");
+        LogUtils.e("pushMessage:" + message.toString());
+        MessageHelper.pushMsg(message);
     }
 
 
