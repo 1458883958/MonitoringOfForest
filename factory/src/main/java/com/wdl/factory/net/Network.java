@@ -33,6 +33,7 @@ public class Network {
     private Retrofit retrofit;
     private Retrofit retrofit2;
     private Retrofit retrofit3;
+    private OkHttpClient client;
 
     static {
         instance = new Network();
@@ -41,13 +42,10 @@ public class Network {
     private Network() {
     }
 
-    /**
-     * @return Retrofit
-     */
-    public static Retrofit getRetrofit() {
-        if (instance.retrofit != null) return instance.retrofit;
+    public static OkHttpClient getClient(){
+        if (instance.client != null) return instance.client;
         //获取一个client
-        OkHttpClient client = new OkHttpClient
+        instance.client = new OkHttpClient
                 .Builder()
                 //添加一个拦截器
                 .addInterceptor(new Interceptor() {
@@ -61,6 +59,18 @@ public class Network {
                     }
                 })
                 .build();
+        //存储client
+        return instance.client;
+    }
+
+    /**
+     * @return Retrofit
+     */
+    public static Retrofit getRetrofit() {
+        if (instance.retrofit != null) return instance.retrofit;
+        //获取一个client
+        OkHttpClient client = getClient();
+
         Retrofit.Builder builder = new Retrofit.Builder();
         instance.retrofit = builder
                 .baseUrl(Common.Constance.API_URL)

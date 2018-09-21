@@ -26,6 +26,8 @@
     <string name="data_account_update_succeed">更新成功</string>
     <string name="data_clean_fail">清理缓存失败</string>
     <string name="data_the_latest_version">当前已经是最新版本</string>
+    <string name="data_play_error">播放失败</string>
+    <string name="data_download_error">下载失败</string>
 
     <string name="data_pay_succeed">支付成功</string>
     <string name="data_pay_failed">支付失败</string>

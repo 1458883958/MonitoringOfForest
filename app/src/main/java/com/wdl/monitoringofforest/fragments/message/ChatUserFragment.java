@@ -24,8 +24,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
+import com.wdl.common.app.Application;
 import com.wdl.common.app.Fragment;
 import com.wdl.common.app.PresenterFragment;
+import com.wdl.common.tools.AudioPlayHelper;
 import com.wdl.common.widget.PortraitView;
 import com.wdl.common.widget.recycler.RecyclerAdapter;
 import com.wdl.face.Face;
@@ -38,12 +40,15 @@ import com.wdl.factory.model.db.UserDb;
 import com.wdl.factory.persistence.Account;
 import com.wdl.factory.presenter.message.MessageContract;
 import com.wdl.factory.presenter.message.MessagePresenter;
+import com.wdl.factory.utils.FileCache;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.activities.MessageActivity;
 import com.wdl.monitoringofforest.activities.PersonalActivity;
 import com.wdl.monitoringofforest.fragments.panel.PanelFragment;
 import com.wdl.utils.LogUtils;
 
+import net.qiujuer.genius.kit.handler.Run;
+import net.qiujuer.genius.kit.handler.runable.Action;
 import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.compat.UiCompat;
 import net.qiujuer.genius.ui.widget.Loading;
@@ -61,7 +66,7 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  */
 public class ChatUserFragment extends PresenterFragment<MessageContract.Presenter>
-        implements AppBarLayout.OnOffsetChangedListener, MessageContract.View ,PanelFragment.PanelCallback{
+        implements AppBarLayout.OnOffsetChangedListener, MessageContract.View, PanelFragment.PanelCallback {
     private int receiverId;
     private Adapter adapter;
     @BindView(R.id.toolbar)
@@ -80,6 +85,9 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
     EditText mContent;
     @BindView(R.id.btn_submit)
     View mView;
+
+    private FileCache<AudioHolder> mAudioFileCache;
+    private AudioPlayHelper<AudioHolder> helper;
 
     private PanelFragment panelFragment;
     //控制底部面板与主页面的切换
@@ -131,7 +139,66 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
         //设置RecyclerView的布局管理器
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new Adapter();
+        adapter.setListener(new RecyclerAdapter.AdapterListenerImpl<MessageDb>() {
+            @Override
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, MessageDb messageDb) {
+                //TODO 下载语音  传递OSS
+                //先判断类型
+                if (messageDb.getType() == MessageDb.MESSAGE_TYPE_AUDIO && holder instanceof AudioHolder)
+                    mAudioFileCache.download((AudioHolder) holder, messageDb.getContent());
+            }
+        });
         mRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //进入界面时就进行初始化
+
+        //播放最后一个点击的
+        helper = new AudioPlayHelper<>(new AudioPlayHelper.RecordPlayListener<AudioHolder>() {
+            @Override
+            public void onPlayStart(AudioHolder audioHolder) {
+                //泛型作用
+                audioHolder.onPlayStart();
+            }
+
+            @Override
+            public void onPlayStop(AudioHolder audioHolder) {
+                audioHolder.onPlayStop();
+            }
+
+            @Override
+            public void onPlayError(AudioHolder audioHolder) {
+                Application.showToast(R.string.data_play_error);
+            }
+        });
+
+        // 下载工具类
+        mAudioFileCache = new FileCache<>("audio/cache", "mp3",
+                new FileCache.CacheListener<AudioHolder>() {
+                    @Override
+                    public void succeed(final AudioHolder audioHolder, final File file) {
+                        Run.onUiAsync(new Action() {
+                            @Override
+                            public void call() {
+                                helper.trigger(audioHolder, file.getAbsolutePath());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failed(AudioHolder audioHolder) {
+                        Application.showToast(R.string.data_download_error);
+                    }
+                });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        helper.destroy();
     }
 
     private void initContent() {
@@ -314,13 +381,14 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
 
     @Override
     public void onSendGallery(String[] paths) {
-        mPresenter.pushImages(MessageDb.MESSAGE_TYPE_PIC,receiverId, paths);
+        LogUtils.e("paths:"+paths.length);
+        mPresenter.pushImages(MessageDb.MESSAGE_TYPE_PIC, receiverId, paths);
     }
 
     @Override
     public void onRecordDone(File file, long time) {
         //TODO 语音回调
-        mPresenter.pushAudio(MessageDb.MESSAGE_TYPE_AUDIO,receiverId,file.getAbsolutePath(),time);
+        mPresenter.pushAudio(MessageDb.MESSAGE_TYPE_AUDIO, receiverId, file.getAbsolutePath(), time);
     }
 
     @Override
@@ -408,10 +476,10 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
         @Override
         protected void onBind(MessageDb message) {
             super.onBind(message);
-            LogUtils.e("message:"+message.getContent());
+            LogUtils.e("message:" + message.getContent());
             Spannable spannable = new SpannableString(message.getContent());
             //解析表情
-            Face.decode(mContent,spannable, (int)Ui.dipToPx(getResources(),20));
+            Face.decode(mContent, spannable, (int) Ui.dipToPx(getResources(), 20));
             //把内容设置到布局
             mContent.setText(spannable);
         }
@@ -435,33 +503,35 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
         protected void onBind(MessageDb message) {
             super.onBind(message);
             String content = message.getAttach();
-            mContent.setText(formatTime(TextUtils.isEmpty(content)?"0":content));
+            mContent.setText(formatTime(TextUtils.isEmpty(content) ? "0" : content));
 
         }
+
         //播放开始
-        void onPlayStart(){
+        void onPlayStart() {
             mAudioTrack.setVisibility(View.VISIBLE);
         }
+
         //播放停止
-        void onPlayStop(){
+        void onPlayStop() {
             mAudioTrack.setVisibility(View.INVISIBLE);
         }
 
-        private String formatTime(String attach){
+        private String formatTime(String attach) {
             float time;
             try {
-                time = Float.parseFloat(attach)/1000f;
-            }catch (Exception e){
+                time = Float.parseFloat(attach) / 1000f;
+            } catch (Exception e) {
                 e.printStackTrace();
                 time = 0;
             }
             //12000 / 1000f = 12.0000
             //取整   1.234 -> 12.3 1.200->1.2
-            String shortTime = String.valueOf(Math.round(time*10f)/10f);
+            String shortTime = String.valueOf(Math.round(time * 10f) / 10f);
             //去除多余的0
             //1.0 -> 1
-            shortTime = shortTime.replaceAll("[.]0+?$|0+?$","");
-            return shortTime+"\"";
+            shortTime = shortTime.replaceAll("[.]0+?$|0+?$", "");
+            return shortTime + "\"";
 
         }
     }
@@ -473,6 +543,7 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
 
         @BindView(R.id.iv_image)
         ImageView mContent;
+
         public PicHolder(View itemView) {
             super(itemView);
         }
