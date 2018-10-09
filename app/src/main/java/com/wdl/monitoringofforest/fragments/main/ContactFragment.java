@@ -1,6 +1,8 @@
 package com.wdl.monitoringofforest.fragments.main;
 
 
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -35,6 +37,9 @@ public class ContactFragment extends PresenterFragment<ContactContract.Presenter
     EmptyView mEmpty;
 
     private RecyclerAdapter<UserDb> mAdapter;
+
+    @BindView(R.id.refresh)
+    SwipeRefreshLayout refreshLayout;
     public ContactFragment() {
         // Required empty public constructor
     }
@@ -48,6 +53,18 @@ public class ContactFragment extends PresenterFragment<ContactContract.Presenter
     @Override
     protected void initWidget(View root) {
         super.initWidget(root);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPresenter.start();
+                        refreshLayout.setRefreshing(false);
+                    }
+                },2000);
+            }
+        });
         //初始化RecyclerView
         //设置布局方向
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));

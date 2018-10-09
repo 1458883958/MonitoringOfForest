@@ -3,6 +3,7 @@ package com.wdl.factory.presenter.data;
 import com.wdl.factory.data.DataSource;
 import com.wdl.factory.data.data.helper.PiHelper;
 import com.wdl.factory.model.api.pi.Model;
+import com.wdl.factory.model.db.PiDb;
 import com.wdl.factory.model.db.SensorDb;
 import com.wdl.factory.presenter.BasePresenter;
 
@@ -48,6 +49,11 @@ public class SensorPresenter extends BasePresenter<DataContract.SensorView> impl
 
     @Override
     public void selectOf(int pId, int limitNum) {
+
+    }
+
+    @Override
+    public void changedSwitch(PiDb db) {
 
     }
 

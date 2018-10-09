@@ -1,6 +1,7 @@
 package com.wdl.factory.presenter.data;
 
 import com.wdl.factory.model.db.ImageDb;
+import com.wdl.factory.model.db.PiDb;
 import com.wdl.factory.model.db.SensorDb;
 import com.wdl.factory.presenter.BaseContract;
 
@@ -31,6 +32,10 @@ public interface DataContract {
          * @param limitNum 查询条数
          */
         void selectOf(int pId, int limitNum);
+
+        void changedSwitch(PiDb db);
+
+
     }
 
     interface ImageView extends BaseContract.RecyclerView<ImageDb, Presenter> {

@@ -19,7 +19,6 @@ import java.util.Objects;
 public class MessageDb extends BaseDbModel<MessageDb> implements Serializable{
 
     public static final int MESSAGE_TYPE_NOR = 1;
-    public static final int MESSAGE_TYPE_FILE = 2;
     public static final int MESSAGE_TYPE_PIC = 3;
     public static final int MESSAGE_TYPE_AUDIO = 4;
 

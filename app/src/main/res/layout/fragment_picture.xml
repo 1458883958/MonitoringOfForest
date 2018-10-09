@@ -28,5 +28,13 @@
         android:id="@+id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <Switch
+        android:id="@+id/pSwitch"
+        android:text="@string/label_take_photo"
+        android:textColor="@color/black_alpha_224"
+        android:layout_marginStart="@dimen/len_20"
+        android:layout_marginBottom="@dimen/len_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

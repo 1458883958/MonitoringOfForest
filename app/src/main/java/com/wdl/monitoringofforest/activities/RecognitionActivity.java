@@ -1,7 +1,6 @@
 package com.wdl.monitoringofforest.activities;
 
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,31 +10,20 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.wdl.common.app.PresenterToolbarActivity;
-import com.wdl.common.app.ToolbarActivity;
 import com.wdl.common.common.Common;
 import com.wdl.common.widget.Progress;
 import com.wdl.factory.Factory;
 import com.wdl.factory.model.card.RecResult;
-import com.wdl.factory.persistence.Account;
 import com.wdl.factory.presenter.recognition.RecognitionContract;
 import com.wdl.factory.presenter.recognition.RecognitionPresenter;
 import com.wdl.monitoringofforest.R;
 import com.wdl.utils.BitmapUtil;
-import com.wdl.utils.LogUtils;
-import com.wdl.utils.baidu.Base64Util;
-import com.wdl.utils.baidu.FileUtil;
-import com.wdl.utils.baidu.HttpUtil;
-
-
-import java.net.URLEncoder;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.sharesdk.onekeyshare.OnekeyShare;
@@ -171,7 +159,6 @@ public class RecognitionActivity extends PresenterToolbarActivity<RecognitionCon
     }
 
     private Handler handler = new Handler(new Handler.Callback() {
-        @SuppressLint("SetTextI18n")
         @Override
         public boolean handleMessage(Message msg) {
             if (msg.what == 1) {

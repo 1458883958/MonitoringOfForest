@@ -13,6 +13,7 @@ import com.wdl.common.app.Fragment;
 import com.wdl.factory.Factory;
 import com.wdl.factory.data.data.helper.UserHelper;
 import com.wdl.factory.persistence.Account;
+import com.wdl.monitoringofforest.App;
 import com.wdl.monitoringofforest.R;
 import com.wdl.monitoringofforest.activities.AboutAppActivity;
 import com.wdl.monitoringofforest.activities.AccountActivity;
@@ -90,8 +91,9 @@ public class PersonalFragment extends Fragment {
                         dialog.cancel();
                         Account.clear(Factory.application());
                         UserHelper.clear();
-                        AccountActivity.show(getContext());
-                        Objects.requireNonNull(getActivity()).finish();
+                        Factory.application().exit();
+//                        AccountActivity.show(getContext());
+//                        Objects.requireNonNull(getActivity()).finish();
                     }
                 })
                 .create();

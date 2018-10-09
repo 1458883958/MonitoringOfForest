@@ -108,7 +108,7 @@ public class Factory {
                 decodeRspCoded(R.string.data_rsp_account_invalid_password, callback);
                 break;
             case "帐号或密码错误。":
-                decodeRspCoded(R.string.data_rsp_account_invalid,callback);
+                decodeRspCoded(R.string.data_rsp_account_invalid, callback);
                 break;
             default:
                 decodeRspCoded(R.string.data_rsp_error_unknown, callback);
@@ -142,22 +142,23 @@ public class Factory {
      */
     public static void dispatchMessage(String message) {
         //TODO 数据解析成MessageDb
-        //senderId-id-messageType-type-content
-        String[] strings = message.split("-",3);
+        //senderId-messageType-content
+        //id-type-filepath-content
+        String[] strings = message.split("-", 3);
         int type = Integer.valueOf(strings[1]);
         MessageDb db = new MessageDb();
         db.setSenderId(Integer.valueOf(strings[0]));
         db.setReceiverId(Account.getUserId());
         db.setType(type);
-        String content = strings[2];
-        if (type!=MessageDb.MESSAGE_TYPE_AUDIO) {
-            db.setContent(content);
-        }else {
-            String[] s = content.split("@",2);
-            db.setAttach(s[1]);
-            db.setContent(s[0]);
+        if (type != MessageDb.MESSAGE_TYPE_AUDIO) {
+            db.setContent(strings[2]);
+        } else {
+            String[] s = strings[2].split("-", 2);
+            db.setAttach(s[0]);
+            db.setContent(s[1]);
         }
-        DbHelper.save(MessageDb.class,db);
+        DbHelper.save(MessageDb.class, db);
+
     }
 
     /**

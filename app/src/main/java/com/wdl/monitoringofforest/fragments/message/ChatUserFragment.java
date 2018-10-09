@@ -119,6 +119,22 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
                 Util.hideKeyboard(mContent);
             }
         });
+        boss.setOnStateChangedListener(new AirPanel.OnStateChangedListener() {
+            @Override
+            public void onPanelStateChanged(boolean isOpen) {
+                //面板状态改变
+
+                if (isOpen)
+                    onBottomPanelOpened();
+            }
+
+            @Override
+            public void onSoftKeyboardStateChanged(boolean isOpen) {
+                //软键盘
+                if (isOpen)
+                    onBottomPanelOpened();
+            }
+        });
         panelFragment = (PanelFragment) getChildFragmentManager()
                 .findFragmentById(R.id.frag_panel);
         panelFragment.setUp(this);
@@ -149,6 +165,13 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
             }
         });
         mRecyclerView.setAdapter(adapter);
+    }
+
+    private void onBottomPanelOpened(){
+        //当底部面板或者软键盘打开时
+        if(mAppBarLayout!=null){
+            mAppBarLayout.setExpanded(false,true);
+        }
     }
 
     @Override
@@ -199,6 +222,16 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
     public void onDestroy() {
         super.onDestroy();
         helper.destroy();
+    }
+
+    @Override
+    protected boolean onBackPressed() {
+        //底部面板打开状态下 拦截返回键
+        if (boss.isOpen()) {
+            boss.closePanel();
+            return true;
+        }
+        return super.onBackPressed();
     }
 
     private void initContent() {
@@ -381,7 +414,7 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
 
     @Override
     public void onSendGallery(String[] paths) {
-        LogUtils.e("paths:"+paths.length);
+        LogUtils.e("paths:" + paths.length);
         mPresenter.pushImages(MessageDb.MESSAGE_TYPE_PIC, receiverId, paths);
     }
 
@@ -476,7 +509,7 @@ public class ChatUserFragment extends PresenterFragment<MessageContract.Presente
         @Override
         protected void onBind(MessageDb message) {
             super.onBind(message);
-            LogUtils.e("message:" + message.getContent());
+           // LogUtils.e("message:" + message.getContent());
             Spannable spannable = new SpannableString(message.getContent());
             //解析表情
             Face.decode(mContent, spannable, (int) Ui.dipToPx(getResources(), 20));

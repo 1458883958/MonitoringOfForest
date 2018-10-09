@@ -24,7 +24,8 @@ public class Message {
     private int mSender;
     private int mReceiver;
     private int mBeemail;
-    private int tyep;
+    private int mType;
+    private String mFilepath;
     private String attach;
 
     public Message() {
@@ -34,24 +35,29 @@ public class Message {
 
     public MessageDb build(){
         if (messageDb==null){
-            String[] strings = mContent.split("-",2);
+            //senderId-mType-content
             MessageDb db = new MessageDb();
-            int type = Integer.valueOf(strings[0]);
-            String content = strings[1];
-            db.setType(type);
+            db.setType(mType);
             db.setReceiverId(mReceiver);
             db.setSenderId(mSender);
-            if (type!=MessageDb.MESSAGE_TYPE_AUDIO)
-                db.setContent(content);
+            if (mType!=MessageDb.MESSAGE_TYPE_AUDIO)
+                db.setContent(mContent);
             else {
-                String[] str = content.split("@",2);
-                db.setContent(str[0]);
-                db.setAttach(str[1]);
+                db.setContent(mContent);
+                db.setAttach(mFilepath);
             }
 
             this.messageDb = db;
         }
         return messageDb;
+    }
+
+    public String getmFilepath() {
+        return mFilepath;
+    }
+
+    public void setmFilepath(String mFilepath) {
+        this.mFilepath = mFilepath;
     }
 
     public String getAttach() {
@@ -62,12 +68,12 @@ public class Message {
         this.attach = attach;
     }
 
-    public int getTyep() {
-        return tyep;
+    public int getmType() {
+        return mType;
     }
 
-    public void setTyep(int tyep) {
-        this.tyep = tyep;
+    public void setmType(int mType) {
+        this.mType = mType;
     }
 
     public String getMSubject() {
@@ -118,7 +124,7 @@ public class Message {
                 ", mSender=" + mSender +
                 ", mReceiver=" + mReceiver +
                 ", mBeemail=" + mBeemail +
-                ", tyep=" + tyep +
+                ", tyep=" + mType +
                 ", messageDb=" + messageDb +
                 '}';
     }

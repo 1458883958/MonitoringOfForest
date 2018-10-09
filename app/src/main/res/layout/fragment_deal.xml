@@ -5,10 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".fragments.main.DealFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.wdl.monitoringofforest.media.IjkVideoView
+        android:id="@+id/video_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/title_deal" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>

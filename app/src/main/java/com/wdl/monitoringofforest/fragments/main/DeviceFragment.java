@@ -1,6 +1,8 @@
 package com.wdl.monitoringofforest.fragments.main;
 
 import android.content.Context;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -59,7 +61,8 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
     private RecyclerAdapter adapter;
     private FloatActionButton fab;
     private StringBuffer stringBuffer;
-
+    @BindView(R.id.refresh)
+    SwipeRefreshLayout refreshLayout;
     public DeviceFragment() {
         // Required empty public constructor
     }
@@ -149,6 +152,18 @@ public class DeviceFragment extends PresenterFragment<PiContract.Presenter>
     @Override
     protected void initWidget(View root) {
         super.initWidget(root);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPresenter.start();
+                        refreshLayout.setRefreshing(false);
+                    }
+                },2000);
+            }
+        });
         fab = Objects.requireNonNull(getActivity()).findViewById(R.id.fab_action);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -36,23 +36,24 @@ public class LongRunService extends Service {
                 //TODO 网络请求
                 LogUtils.e("BroadcastReceiver : 网络请求");
                 getBaiDuToken();
+                stopSelf();
             }
         }).start();
-        //一个月的毫秒数
-        int anMonth = 1000 * 60 * 60 * 24;
-        //int anMonth = 1000;
-        BigDecimal decimal = new BigDecimal(anMonth);
-        decimal = decimal.multiply(new BigDecimal(30));
-
-        AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        BigDecimal decimal2 = decimal.add(new BigDecimal(SystemClock.elapsedRealtime()));
-        long triggerAtTime = decimal2.longValue();
-        //int anMonth = 1000 * 60 * 30;
-        //long triggerAtTime = SystemClock.elapsedRealtime() + anMonth;
-        Intent i = new Intent(this, AlarmReceiver.class);
-        PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, 0);
-        assert manager != null;
-        manager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
+//        //一个月的毫秒数
+//        int anMonth = 1000 * 60 * 60 * 24;
+//        //int anMonth = 1000;
+//        BigDecimal decimal = new BigDecimal(anMonth);
+//        decimal = decimal.multiply(new BigDecimal(30));
+//
+//        AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+//        BigDecimal decimal2 = decimal.add(new BigDecimal(SystemClock.elapsedRealtime()));
+//        long triggerAtTime = decimal2.longValue();
+//        //int anMonth = 1000 * 60 * 30;
+//        //long triggerAtTime = SystemClock.elapsedRealtime() + anMonth;
+//        Intent i = new Intent(this, AlarmReceiver.class);
+//        PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, 0);
+//        assert manager != null;
+//        manager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
         return super.onStartCommand(intent, flags, startId);
     }
 

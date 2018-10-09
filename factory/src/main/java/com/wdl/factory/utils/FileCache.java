@@ -96,7 +96,7 @@ public class FileCache<Holder> {
         }
 
         @Override
-        public void onResponse(Call call, Response response) throws IOException {
+        public void onResponse(Call call, Response response) {
             InputStream inputStream = response.body().byteStream();
             if (inputStream != null && StreamUtil.copy(inputStream, file)) {
                 Holder holder = holderSoftReference.get();

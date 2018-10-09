@@ -46,19 +46,19 @@ public class MessageHelper {
                 //判断发送的类型
                 //是图片 文件类型的  先上传阿里云OSS
                 String content;
-                if (message.getTyep() == MessageDb.MESSAGE_TYPE_PIC) {
+                if (message.getmType() == MessageDb.MESSAGE_TYPE_PIC) {
                     //图片上传
-                    String path = message.getMContent().split("-")[1];
+                    String path = message.getMContent();
                     content = uploadImage(path);
                     if (!TextUtils.isEmpty(content))
-                        message.setMContent(message.getTyep() + "-" + content);
-                } else if (message.getTyep() == MessageDb.MESSAGE_TYPE_AUDIO) {
+                        message.setMContent(content);
+                } else if (message.getmType() == MessageDb.MESSAGE_TYPE_AUDIO) {
                     //type-content@time
                     //获取content
-                    String path = message.getMContent().split("-")[1].split("@")[0];
+                    String path = message.getMContent();
                     content = uploadAudio(path);
                     if (!TextUtils.isEmpty(content))
-                        message.setMContent(message.getTyep() + "-" + content + "@" + message.getAttach());
+                        message.setMContent(content);
                 }
 
                 RemoteService service = Network.remoteService();

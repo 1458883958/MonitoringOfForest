@@ -51,13 +51,12 @@ public class MessagePresenter extends BaseSourcePresenter<MessageDb, MessageDb, 
     public void pushMessage(int type, int receiver, String content) {
         if (content == null) return;
         Message message = new Message();
-        message.setMContent(type + "-" + content);
-        message.setTyep(type);
+        message.setMContent(content);
+        message.setmType(type);
         message.setMBeemail(1);
         message.setMReceiver(receiver);
         message.setMSender(Account.getUserId());
         message.setMSubject("chat");
-        LogUtils.e("pushMessage:" + message.toString());
         MessageHelper.pushMsg(message);
     }
 
@@ -66,8 +65,8 @@ public class MessagePresenter extends BaseSourcePresenter<MessageDb, MessageDb, 
         if (contents == null || contents.length == 0) return;
         for (String content : contents) {
             Message message = new Message();
-            message.setMContent(type + "-" + content);
-            message.setTyep(type);
+            message.setMContent(content);
+            message.setmType(type);
             message.setMBeemail(1);
             message.setMReceiver(receiver);
             message.setMSender(Account.getUserId());
@@ -81,14 +80,14 @@ public class MessagePresenter extends BaseSourcePresenter<MessageDb, MessageDb, 
     public void pushAudio(int type, int receiver, String content, long time) {
         if (content == null) return;
         Message message = new Message();
-        message.setMContent(type + "-" + content + "@" + time);
-        message.setTyep(type);
+        message.setMContent(content);
+        message.setmType(type);
         message.setMBeemail(1);
+        message.setmFilepath(String.valueOf(time));
         message.setMReceiver(receiver);
         message.setMSender(Account.getUserId());
         message.setAttach(String.valueOf(time));
         message.setMSubject("chat");
-        LogUtils.e("pushMessage:" + message.toString());
         MessageHelper.pushMsg(message);
     }
 

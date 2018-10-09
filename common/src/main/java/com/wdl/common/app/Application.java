@@ -1,6 +1,9 @@
 package com.wdl.common.app;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.StringRes;
 import android.widget.Toast;
@@ -9,6 +12,7 @@ import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
 
 import java.io.File;
+import java.util.Stack;
 
 /**
  * 项目名：  MonitoringOfForest
@@ -21,11 +25,62 @@ import java.io.File;
 public class Application extends android.app.Application {
 
     private static Application instance;
+    private Stack<Activity> activities = new Stack<>();
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                activities.push(activity);
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                activities.remove(activity);
+                activity.finish();
+            }
+        });
+    }
+
+    public void exit(){
+        for (Activity activity : activities) {
+            activities.remove(activity);
+            activity.finish();
+        }
+        showAccount(this);
+
+    }
+    protected void showAccount(Context context){
+
     }
 
     /**

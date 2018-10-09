@@ -7,9 +7,12 @@ import com.wdl.common.widget.recycler.RecyclerAdapter;
 import com.wdl.factory.data.data.devicedata.DataRepository;
 import com.wdl.factory.data.data.devicedata.DeviceDataSource;
 import com.wdl.factory.data.data.helper.DataHelper;
+import com.wdl.factory.data.data.helper.PiHelper;
 import com.wdl.factory.model.api.pi.ImagePage;
+import com.wdl.factory.model.api.pi.PiModel;
 import com.wdl.factory.model.card.Pi;
 import com.wdl.factory.model.db.ImageDb;
+import com.wdl.factory.model.db.PiDb;
 import com.wdl.factory.presenter.BaseSourcePresenter;
 import com.wdl.factory.utils.DiffUiDataCallback;
 import com.wdl.utils.LogUtils;
@@ -71,5 +74,19 @@ public class DataPresenter extends BaseSourcePresenter<
     @Override
     public void selectOf(int pId, int limitNum) {
 
+    }
+
+    /**
+     * 改变拍照状态
+     *
+     * @param db PiDb
+     */
+    @Override
+    public void changedSwitch(PiDb db) {
+        PiModel model = new PiModel();
+        model.setpId(db.getId());
+        int state = db.getSwitchState() == 0 ? 1 : 0;
+        model.setpSwitchstate(state);
+        PiHelper.change(model, db);
     }
 }

@@ -129,6 +129,8 @@ public class GalleryView extends RecyclerView {
         }
         selectedImages.clear();
         adapter.notifyDataSetChanged();
+        //通知清空
+        notifySelectedChanged();
     }
 
     /**
@@ -224,7 +226,7 @@ public class GalleryView extends RecyclerView {
             List<Image> images = new ArrayList<>();
             if (data != null) {
                 int count = data.getCount();
-                LogUtils.e(""+count);
+                LogUtils.e("" + count);
                 if (count > 0) {
                     //游标移动到开始
                     data.moveToFirst();
@@ -250,7 +252,7 @@ public class GalleryView extends RecyclerView {
                     } while (data.moveToNext());
                 }
             }
-            LogUtils.e(""+images.size());
+            LogUtils.e("" + images.size());
             //通知界面更新
             updateSource(images);
         }

@@ -15,12 +15,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.target.Target;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.wdl.common.app.Application;
 import com.wdl.common.app.Fragment;
 import com.wdl.common.app.PresenterFragment;
@@ -28,7 +30,10 @@ import com.wdl.common.widget.EmptyView;
 import com.wdl.common.widget.Progress;
 import com.wdl.common.widget.recycler.RecyclerAdapter;
 import com.wdl.factory.Factory;
+import com.wdl.factory.data.data.helper.PiHelper;
 import com.wdl.factory.model.db.ImageDb;
+import com.wdl.factory.model.db.PiDb;
+import com.wdl.factory.model.db.PiDb_Table;
 import com.wdl.factory.presenter.data.DataContract;
 import com.wdl.factory.presenter.data.DataPresenter;
 import com.wdl.monitoringofforest.R;
@@ -60,10 +65,12 @@ public class PictureFragment extends PresenterFragment<DataContract.Presenter>
 
     @BindView(R.id.refresh)
     SwipeRefreshLayout refreshLayout;
-
+    @BindView(R.id.pSwitch)
+    Switch aSwitch;
     private int pId;
     private RecyclerAdapter<ImageDb> adapter;
 
+    private  PiDb piDb;
     public PictureFragment() {
         // Required empty public constructor
     }
@@ -78,8 +85,17 @@ public class PictureFragment extends PresenterFragment<DataContract.Presenter>
     protected void initArgs(Bundle bundle) {
         super.initArgs(bundle);
         pId = bundle.getInt(P_ID);
+        piDb = SQLite.select()
+                .from(PiDb.class)
+                .where(PiDb_Table.id.eq(pId))
+                .querySingle();
 
     }
+    @OnClick(R.id.pSwitch)
+    void changed(){
+        mPresenter.changedSwitch(piDb);
+    }
+
 
     public static PictureFragment newInstance() {
         return new PictureFragment();
@@ -93,6 +109,7 @@ public class PictureFragment extends PresenterFragment<DataContract.Presenter>
     @Override
     protected void initWidget(View root) {
         super.initWidget(root);
+        aSwitch.setChecked(piDb.getSwitchState() != 0);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -102,7 +119,7 @@ public class PictureFragment extends PresenterFragment<DataContract.Presenter>
                         mPresenter.start();
                         refreshLayout.setRefreshing(false);
                     }
-                },2000);
+                }, 2000);
             }
         });
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -187,7 +204,7 @@ public class PictureFragment extends PresenterFragment<DataContract.Presenter>
                         .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
                 try {
                     File file = future.get();
-                    LogUtils.e("filePath:"+file.getPath());
+                    LogUtils.e("filePath:" + file.getPath());
                     Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
                     Bitmap bitmapBinary = BitmapUtil.convertToBMW(bitmap, 100);
                     double x = BitmapUtil.result(bitmapBinary, new BitmapUtil.Progress() {
